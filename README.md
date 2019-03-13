@@ -22,13 +22,13 @@ make destroy
 **Add User:**
 
 ```
-./blksmanager -m add -a admin -w 4dm1n -u hulio3 -p hulio3 -g 5000 -d example.com
+./blksmanager -m add -a admin -w 4dm1n -u user3 -p user3 -g 5000 -d example.com
 ```
 
 **Delete User:**
 
 ```
-./blksmanager -m add -a admin -w 4dm1n -u hulio3 -p hulio3 -g 5000 -d example.com
+./blksmanager -m add -a admin -w 4dm1n -u user3 -p user3 -g 5000 -d example.com
 ```
 
 ### Manual
@@ -37,43 +37,43 @@ make destroy
 
 ```
 ldapadd -D "cn=admin, dc=example,dc=com" -w 4dm1n << EOF
-dn: uid=hulio,ou=People,dc=example,dc=com
+dn: uid=user,ou=People,dc=example,dc=com
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: person
-uid: hulio
-sn: hulio
-givenName: hulio
-cn: hulio
-displayName: hulio
+uid: user
+sn: user
+givenName: user
+cn: user
+displayName: user
 uidNumber: 1005
 gidNumber: 5000
-gecos: hulio
+gecos: user
 loginShell: /bin/bash
-homeDirectory: /home/hulio
+homeDirectory: /home/user
 EOF
 ```
 ```
-kadmin.local -q "add_principal hulio@EXAMPLE.COM"
-kinit hulio@EXAMPLE.COM
+kadmin.local -q "add_principal user@EXAMPLE.COM"
+kinit user@EXAMPLE.COM
 ```
 
 Option 1:
 ```
-kadmin.local -q "ktadd -norandkey hulio@EXAMPLE.COM"
+kadmin.local -q "ktadd -norandkey user@EXAMPLE.COM"
 ```
 
 Option 2:
 ```
-kadmin.local -q "xst -norandkey hulio@EXAMPLE.COM"
+kadmin.local -q "xst -norandkey user@EXAMPLE.COM"
 ```
 
 **Delete User:**
 
 ```
-ldapdelete -x -D "cn=admin,dc=example,dc=com" 'uid=hulio,ou=People,dc=example,dc=com' -w 4dm1n
-kadmin.local -q "delete_principal hulio@EXAMPLE.COM"
+ldapdelete -x -D "cn=admin,dc=example,dc=com" 'uid=user,ou=People,dc=example,dc=com' -w 4dm1n
+kadmin.local -q "delete_principal user@EXAMPLE.COM"
 kdestroy
 rm -f /etc/krb5.keytab 
 ```
@@ -81,10 +81,10 @@ rm -f /etc/krb5.keytab
 **Test User:**
 
 ```
-kinit -kt /etc/krb5.keytab hulio
-getent passwd hulio
-id hulio
-login hulio
+kinit -kt /etc/krb5.keytab user
+getent passwd user
+id user
+login user
 ```
 
 ## ERRORS
