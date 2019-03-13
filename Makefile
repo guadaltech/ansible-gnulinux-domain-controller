@@ -11,7 +11,6 @@ destroy:
 	rm -rf ubuntu-*
 
 ansible:
-	ssh-keygen -f "/home/jmtorres/.ssh/known_hosts" -R [127.0.0.1]:2222
 	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory/local/hosts.ini --become --become-user=root ansible.yml -vvv --limit all
 
 deploy: up ansible
