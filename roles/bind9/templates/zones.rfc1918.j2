@@ -1,0 +1,5 @@
+{% for zone in zones_rfc1918 %}
+{% if (reverse_reverse_zone | regex_search("^[0-9]{1,3}") != zone) and (reverse_reverse_zone | regex_search("^[0-9]{1,3}\.[0-9]{1,3}") != zone) %}
+{{ zones_rfc1918[zone] }}
+{% endif %}
+{% endfor %}

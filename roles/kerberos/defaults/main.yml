@@ -1,0 +1,10 @@
+---
+
+realm_name: "{{ domain }}"
+kdc_port: 88
+kdc_conf_path: /etc/krb5kdc/kdc.conf
+kadm5_acl_path: /etc/krb5kdc/kadm5.acl
+
+units:
+  - krb5-kdc
+  - krb5-admin-server

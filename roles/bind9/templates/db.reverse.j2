@@ -1,0 +1,17 @@
+$TTL    604800
+@       IN      SOA     {{ domain }}. root.{{ domain }}. (
+                             21         ; Serial
+                         604820         ; Refresh
+                          864500        ; Retry
+                        2419270         ; Expire
+                         604880 )       ; Negative Cache TTL
+
+@ 	NS 	bind9.{{ domain }}.
+1 	PTR 	bind9.{{ domain }}.
+2 	PTR 	kerberos.{{ domain }}.
+3 	PTR 	ldap.{{ domain }}.
+4 	PTR 	sssd.{{ domain }}.
+{% for host in hostvars %}
+{{ loop.index + 4 }} 	PTR 	{{ host }}.{{ domain }}.
+{% endfor %}
+

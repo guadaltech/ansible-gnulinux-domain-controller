@@ -1,0 +1,24 @@
+---
+openldap_packages:
+  - slapd
+  - ldap-utils
+  - nslcd
+  - libnss-ldapd
+openldap_organizationalunits:  #defines OU's to populate
+  - People
+  - Groups
+openldap_populate: true  #defines if openldap DB should be populated with openldap_organizationalunits, openldap_posixgroups and openldap_users
+openldap_posixgroups:  #defines groups to create within OU's
+  - name: Workers
+    ou: Groups
+    gidNum: 5000  #start group numbers at 5000 and up
+openldap_users:
+  - FirstName: "{{ user_example }}"
+    LastName: "{{ user_example }}"
+    ou: Groups  #defines OU name
+    uidNum: 10000  #start user numbers at 10000 and up
+    gidNum: 5000  #defines gidNum from openldap_posixgroups
+    password: '"{{ password_example_user }}"'
+    loginShell: /bin/bash
+    homeDirectory: /home/{{ user_example }}
+pri_domain_name: '{{ openldap_org }}.{{ openldap_tld }}'

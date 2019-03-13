@@ -1,0 +1,25 @@
+---
+bind9_events_setup: false
+
+bind9_config_dir: "/etc/bind"
+
+zones_rfc1918: {
+  '10': 'zone "10.in-addr.arpa"      { type master; file "/etc/bind/db.empty"; };',
+  '168.192': 'zone "168.192.in-addr.arpa" { type master; file "/etc/bind/db.empty"; };',
+  '16.172': 'zone "16.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '17.172': 'zone "17.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '18.172': 'zone "18.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '19.172': 'zone "19.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '20.172': 'zone "20.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '21.172': 'zone "21.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '22.172': 'zone "22.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '23.172': 'zone "23.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '24.172': 'zone "24.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '25.172': 'zone "25.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '26.172': 'zone "26.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '27.172': 'zone "27.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '28.172': 'zone "28.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '29.172': 'zone "29.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '30.172': 'zone "30.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };',
+  '31.172': 'zone "31.172.in-addr.arpa"  { type master; file "/etc/bind/db.empty"; };'
+}

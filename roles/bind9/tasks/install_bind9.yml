@@ -1,0 +1,41 @@
+- name: Update apt and install Bind9
+  apt:
+    name: bind9
+    update_cache: yes
+
+- name: Create zone
+  template:
+    src: db.template.j2
+    dest: "{{ bind9_config_dir }}/db.{{ domain }}"
+
+- name: Create reverse zone
+  template:
+    src: db.reverse.j2
+    dest: "{{ bind9_config_dir }}/db.{{ reverse_zone }}"
+
+- name: Create named.conf.local
+  template:
+    src: named.conf.local.j2
+    dest: "{{ bind9_config_dir }}/named.conf.local"
+
+- name: Create named.conf.options
+  template:
+    src: named.conf.options.j2
+    dest: "{{ bind9_config_dir }}/named.conf.options"
+
+- name: Create zones.rfc1918
+  template:
+    src: zones.rfc1918.j2
+    dest: "{{ bind9_config_dir }}/zones.rfc1918"
+
+- name: Create /etc/hosts
+  template:
+    src: hosts.j2
+    dest: "/etc/hosts"
+  when: false
+  
+- name: Enable bind9
+  systemd:
+    name: bind9
+    state: restarted
+    enabled: yes

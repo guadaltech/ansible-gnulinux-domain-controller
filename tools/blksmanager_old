@@ -1,0 +1,64 @@
+#!/bin/bash
+# Source: https://www.openldap.org/lists/openldap-software/200110/msg00539.html
+
+set -xe
+
+function getMaxUid ()
+{
+n=0
+for i in $(ldapsearch -x -LLL $ldapsecret -w $ADMIN_PASS -D "cn=$ADMIN, $ldapDN" "(uidNumber=*)" uidNumber -S uidNumber | grep uidNumber | tail -n1 );
+do \
+ldaparry[$n]=$i
+let n+=1
+done
+
+    if [ "${ldaparry[0]}" == "uidNumber:" ]; then
+	echo $((${ldaparry[1]}+1))
+	return 0
+    else
+	return -1
+    fi
+}
+
+if test "$#" -ne 6; then
+    echo "[ERROR] Illegal number of parameters
+    EXECUTION: bash add_user.bash (ADMIN) (ADMIN_PASS) (USER) (USER_PASS) (GID) (DOMAIN)
+    EXAMPLE: bash add_user.bash admin admin hulio2 hulio2 5000 example.com
+    "
+else
+	ADMIN=$1
+	ADMIN_PASS=$2
+	USER=$3
+	USER_PASSWD=$4
+	GID=$5
+	DOMAIN=$6
+	UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+	DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+	DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+
+	ldapDN="dc=$DC1, dc=$DC2"
+
+	kadmin.local -q "addprinc -pw $USER_PASSWD $USER@$UPPER_DOMAIN"
+	#kadmin.local -q "xst -k /etc/$USER.keytab $USER@$UPPER_DOMAIN"
+	kadmin.local -q "ktadd -norandkey -k /etc/krb5.keytab $USER@$UPPER_DOMAIN"
+	chmod 0700 /etc/krb5.keytab
+
+	ldapadd -D "cn=$ADMIN, $ldapDN" -w $ADMIN_PASS << EOF
+dn: uid=$USER,ou=People,dc=$DC1,dc=$DC2
+objectClass: top
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: person
+uid: $USER
+sn: $USER
+givenName: $USER
+cn: $USER
+displayName: $USER
+uidNumber: $(getMaxUid)
+gidNumber: $GID
+gecos: $USER
+loginShell: /bin/bash
+homeDirectory: /home/$USER
+EOF
+
+fi

@@ -1,0 +1,11 @@
+options {
+        directory "/var/cache/bind";
+        auth-nxdomain no;    # conform to RFC1035
+     	// listen-on-v6 { any; };
+        listen-on port 53 { localhost; {{ hostvars[groups['bind9'][0]].ansible_all_ipv4_addresses[num_interface] }}; };
+        allow-query { localhost; any; };
+        forwarders { 8.8.8.8; };
+        recursion yes;
+        };
+
+

@@ -1,0 +1,30 @@
+$TTL    604800
+
+@       IN      SOA     bind9.{{ domain }}. root.{{ domain }}. (
+                              6         ; Serial
+                         604820         ; Refresh
+                          86600         ; Retry
+                        2419600         ; Expire
+                         604600 )       ; Negative Cache TTL
+
+;
+@           IN  NS  bind9
+{% for host in hostvars %}
+{{ host }} 			IN  A 		{{ hostvars[host].ansible_host }}
+{% endfor %}
+
+{% for group in groups %}
+{% if (group !='ungrouped') and (group !='all') %}
+{% if (group !='bind9') %}
+{{ group }} 			IN  CNAME 		{{ groups[group][0] }}
+{% else %}
+{{ group }} 			IN  A 		{{ hostvars[groups['bind9'][0]].ansible_all_ipv4_addresses[num_interface] }}
+{% endif %}
+{% endif %}
+{% endfor %}
+
+_kerberos   IN  TXT "{{ domain|upper }}"
+
+_kerberos._udp      IN  SRV 0 0 88 kerberos.{{ domain }}.
+_kerberos_adm._tcp  IN  SRV 0 0 749 kerberos.{{ domain }}.
+_ldap._tcp      IN  SRV 0 0 389 ldap.{{ domain }}.

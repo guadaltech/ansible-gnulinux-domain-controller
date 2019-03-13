@@ -1,0 +1,2 @@
+127.0.0.1 localhost bind9 {{ groups['bind9'][0] }}
+{{ hostvars[groups['bind9'][0]].ansible_all_ipv4_addresses[num_interface] }} bind9.{{ domain }} bind9

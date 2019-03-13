@@ -1,0 +1,4 @@
+*.log
+*.retry
+.vagrant
+vagrant_ansible_inventory

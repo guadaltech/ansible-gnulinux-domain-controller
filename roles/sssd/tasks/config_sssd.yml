@@ -1,0 +1,28 @@
+- name: config_sssd | configuring sssd
+  template:
+    src: "sssd.conf.j2"
+    dest: "/etc/sssd/sssd.conf"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Obfuscate pass
+  shell: "{{ command_obfuscate_ldap_pass }}"
+  when: obfuscate_pass_ldap == true
+
+- name: Disable nscd
+  systemd:
+    name: nscd
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+- name: config_sssd | restart sssd
+  service:
+    name: sssd
+    enabled: yes
+    daemon_reload: yes
+    state: restarted
+
+- name: Make home dir using PAM
+  shell: "echo 'session    required    pam_mkhomedir.so skel=/etc/skel/ umask=0022' >> /etc/pam.d/common-session"

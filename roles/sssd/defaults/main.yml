@@ -1,0 +1,15 @@
+---
+sssd_packages:
+  - sssd
+  - chrony
+  - sssd-common
+  - sssd-krb5
+  - sssd-krb5-common
+  - sssd-ldap
+  - sssd-tools
+
+obfuscate_pass_ldap: false
+
+command_obfuscate_ldap_pass: "sss_obfuscate --domain {{ domain }} --stdin << EOF
+4dm1n
+EOF"

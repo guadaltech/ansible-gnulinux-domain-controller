@@ -1,0 +1,42 @@
+[sssd]
+services = nss, pam, pac
+domains = {{ domain|upper }}
+config_file_version = 2
+
+[nss]
+
+[pam]
+
+[pac]
+
+[domain/{{ domain|upper }}]
+id_provider = ldap
+auth_provider = krb5
+
+# LDAP
+#ldap_tls_reqcert = never
+#ldap_id_use_start_tls = False
+#ldap_schema = rfc2307bis
+#ldap_group_name = people
+
+ldap_uri = ldap://ldap.{{ domain }}
+ldap_search_base = {{ openldap_base }}
+
+ldap_default_authtok_type = password
+ldap_default_bind_dn = {{ openldap_bind_id }}
+ldap_default_authtok = {{ openldap_admin_password }}
+
+# Kerberos
+krb5_realm = {{ domain|upper }}
+krb5_server = kerberos.{{ domain }}
+#krb5_kpasswd = kerberos.{{ domain }}
+
+krb5_store_password_if_offline = true
+cache_credentials = true
+
+# Bonus
+fallback_homedir = /home/%u
+default_shell = /bin/bash
+
+# Debug
+debug_level = 4

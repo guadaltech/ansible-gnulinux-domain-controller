@@ -1,0 +1,56 @@
+- name: Update apt and install Kerberos
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - krb5-kdc
+    - krb5-admin-server
+    - krb5-kdc-ldap
+    - krb5-config
+    - ldap-utils
+    - krb5-user
+
+- name: Copy KDC configuration file
+  template:
+    src: kdc.conf.j2
+    dest: "{{ kdc_conf_path }}"
+  notify:
+   - restart kerberos
+
+- name: Copy KDC ACL configuration file
+  template:
+    src: kadm5.acl.j2
+    dest: "{{ kadm5_acl_path }}"
+  notify:
+   - restart kerberos
+
+- name: Copy client configuration file
+  template:
+    src: krb5.conf.j2
+    dest: /etc/krb5.conf
+
+- name: Check Kerberos database
+  shell: ls /etc/krb5kdc/principal
+  register: motd_contents
+  ignore_errors: yes
+
+- name: Create initial Kerberos database
+  shell: kdb5_util -P {{ master_db_pass }} create -s
+  when: motd_contents.stdout.find('/etc/krb5kdc/principal') != 0
+
+- name: Start Kerberos units
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items: "{{ units }}"
+
+- name: Create an admin for administering Kerberos server
+  shell: kadmin.local -q "addprinc -pw {{ kadmin_pass }} {{ kadmin_user }}/admin"
+
+- name: Copy blksmanager
+  copy:
+    src: "{{ role_path }}/files/blksmanager"
+    dest: /usr/local/bin/blksmanager
+    mode: 0755

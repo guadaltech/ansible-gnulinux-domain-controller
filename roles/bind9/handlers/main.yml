@@ -1,0 +1,7 @@
+---
+- name: restart bind9
+  command: /bin/true
+  notify:
+    - bind9 | reload systemd
+    - reload bind9
+    - wait for bind9 up

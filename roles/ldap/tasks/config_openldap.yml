@@ -1,0 +1,37 @@
+- name: config_openldap | configuring ldap
+  template:
+    src: "ldap/ldap.conf.j2"
+    dest: "/etc/ldap/ldap.conf"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: config_openldap | creating database population config
+  template:
+    src: "ldap/slapd.d/populate_content.ldif.j2"
+    dest: "/etc/ldap/slapd.d/populate_content.ldif"
+    owner: root
+    group: root
+    mode: 0640
+
+- name: config_openldap | setting admin password
+  shell: slappasswd -s {{ openldap_admin_password }}
+  register: admin_password
+
+
+- name: config_openldap | restart slapd
+  service:
+    name: slapd
+    enabled: yes
+    #daemon_reload: yes
+    state: restarted
+  when: >
+    admin_password is defined and
+    admin_password
+
+- name: config_openldap | populating openLDAP
+  shell: 'ldapadd -x -D {{ openldap_bind_id }} -w {{ openldap_admin_password }} -f /etc/ldap/slapd.d/populate_content.ldif'
+  ignore_errors: yes  #set to get around erroring out that items already exist
+  when: >
+    openldap_populate is defined and
+    openldap_populate

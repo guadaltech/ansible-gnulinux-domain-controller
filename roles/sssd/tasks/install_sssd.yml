@@ -1,0 +1,8 @@
+- name: Install SSSD
+  apt:
+    name: "{{ sssd_packages }}"
+    update_cache: yes
+  tags:
+    - install_packages_sssd
+
+- include: config_sssd.yml

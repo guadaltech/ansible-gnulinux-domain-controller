@@ -1,0 +1,4 @@
+---
+- include_tasks: install_sssd.yml
+  when: sssd_setup == true
+

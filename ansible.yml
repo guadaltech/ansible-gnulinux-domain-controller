@@ -1,0 +1,24 @@
+---
+- hosts: bind9
+  gather_facts: true
+  roles:
+    - bind9
+    - common
+
+- hosts: ldap
+  gather_facts: true
+  roles:
+    - common
+    - ldap
+
+- hosts: kerberos
+  gather_facts: true
+  roles:
+    - common
+    - kerberos
+
+- hosts: sssd
+  gather_facts: true
+  roles:
+    - common
+    - sssd

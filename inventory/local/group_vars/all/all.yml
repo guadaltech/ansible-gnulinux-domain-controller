@@ -1,0 +1,11 @@
+---
+bind9_setup: true
+ldap_setup: true
+kerberos_setup: true
+sssd_setup: true
+
+domain: "example.com"
+
+# In virtualbox: 0 is internal, 1 private and 2 public IP
+# For more information see the Vagrantfile
+num_interface: 1

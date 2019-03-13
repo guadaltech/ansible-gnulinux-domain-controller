@@ -1,0 +1,167 @@
+#!/bin/bash
+# By: Tedezed
+
+function usage {
+cat <<EOF
+Usage ./blksmanager -m <MODE>
+Options:
+
+  -m <MODE> (add, delete)
+  -l <HOST LDAP>
+  -a <ADMIN LDAP>
+  -w <ADMIN LDAP PASSWORD>
+  -u <USERNAME>
+  -p <USERNAME PASSWD>
+  -g <GID>
+  -d <DOMAIN>
+  -k <KEYTAB FILE>
+
+Example Add:
+blksmanager -m add -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN)"
+
+Example Delete:
+blksmanager -m delete -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN)
+
+EOF
+exit 2
+}
+
+function error ()
+{
+ERROR_CODE=$1
+if [ $ERROR_CODE == 2000 ]; then
+    ERROR_MSG="Error in mode '$MODE'"
+elif [ $ERROR_CODE == 2001 ]; then
+    ERROR_MSG="Mode add need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN)"
+elif [ $ERROR_CODE == 2002 ]; then
+    ERROR_MSG="Mode delete need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN)"
+else
+    ERROR_CODE="2404"
+    ERROR_MSG="Error not found..."
+    usage
+fi
+cat <<EOF
+[ERROR $ERROR_CODE] $ERROR_MSG
+EOF
+}
+
+# Source: https://www.openldap.org/lists/openldap-software/200110/msg00539.html
+function getMaxUid ()
+{
+n=0
+for i in $(ldapsearch -x -LLL $ldapsecret -h $HOST_IP -w $ADMIN_PASS -D "cn=$ADMIN, $ldapDN" "(uidNumber=*)" uidNumber -S uidNumber | grep uidNumber | tail -n1 );
+do \
+ldaparry[$n]=$i
+let n+=1
+done
+
+    if [ "${ldaparry[0]}" == "uidNumber:" ]; then
+    echo $((${ldaparry[1]}+1))
+    return 0
+    else
+    return -1
+    fi
+}
+
+function add_to_ldap ()
+{
+ldapadd -h $HOST_IP -D "cn=$ADMIN, $ldapDN" -w $ADMIN_PASS << EOF
+dn: uid=$USERNAME,ou=People,dc=$DC1,dc=$DC2
+objectClass: top
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: person
+uid: $USERNAME
+sn: $USERNAME
+givenName: $USERNAME
+cn: $USERNAME
+displayName: $USERNAME
+uidNumber: $(getMaxUid)
+gidNumber: $GID
+gecos: $USERNAME
+loginShell: /bin/bash
+homeDirectory: /home/$USERNAME
+EOF
+}
+
+function add_kerberos ()
+{
+echo "Use keytab: $KEYTAB"
+kadmin.local -q "addprinc -pw $USERNAME_PASSWD $USERNAME@$UPPER_DOMAIN"
+kadmin.local -q "ktadd -norandkey -k $KEYTAB $USERNAME@$UPPER_DOMAIN"
+}
+
+function del_ldap_kerberos ()
+{
+ldapdelete -h $HOST_IP -x -D "cn=$ADMIN,dc=$DC1,dc=$DC2" 'uid=$USERNAME,ou=People,dc=$DC1,dc=$DC2' -w $ADMIN_PASS
+kadmin.local -q "delete_principal $USERNAME@$UPPER_DOMAIN"
+kdestroy
+}
+
+while getopts ":m:l:a:w:u:p:g:d:k:h" OPTIONS; do
+        case "${OPTIONS}" in
+                m) MODE=${OPTARG} ;;
+                l) HOST_IP=${OPTARG} ;;
+                a) ADMIN=${OPTARG} ;;
+                w) ADMIN_PASS=${OPTARG} ;;
+                u) USERNAME=${OPTARG} ;;
+                p) USERNAME_PASSWD=${OPTARG} ;;
+                g) GID=${OPTARG} ;;
+                d) DOMAIN=${OPTARG} ;;
+                k) KEYTAB=${OPTARG} ;;
+                h) usage ;;
+                *) usage ;;
+        esac
+done
+
+if [ -z "$KEYTAB" ]
+then
+    KEYTAB="/etc/krb5.keytab"
+fi
+
+if [ -z "$HOST_IP" ]
+then
+    HOST_IP="127.0.0.1"
+fi
+
+if [[ $MODE == "add" ]]
+then
+    if [ -z "$USERNAME" ] \
+        || [ -z "$USERNAME_PASSWD" ] \
+        || [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$GID" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2001
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+
+        ldapDN="dc=$DC1, dc=$DC2"
+
+        add_to_ldap
+        add_kerberos
+    fi
+elif [[ $MODE == "delete" ]]
+then
+    if [ -z "$USERNAME" ] \
+        || [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2002
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+
+        del_ldap_kerberos
+    fi
+else
+    error 2000
+    usage
+fi

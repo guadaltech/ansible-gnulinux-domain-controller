@@ -1,0 +1,12 @@
+galaxy_info:
+  author: Guadaltech
+  description: Universal Domain Controller (LDAP + Kerberos + SAMBA + SSSD)
+  license: license (GPLv2, CC-BY, etc)
+  min_ansible_version: 2.4
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+  galaxy_tags: ['kerberos', 'ldap', 'samba', 'sssd', 'domain', 'ubuntu']
+dependencies: []

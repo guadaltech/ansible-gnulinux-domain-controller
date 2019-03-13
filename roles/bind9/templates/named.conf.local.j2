@@ -1,0 +1,9 @@
+zone    "{{ domain }}" {
+    type master;
+    file "{{ bind9_config_dir }}/db.{{ domain }}";
+};
+
+zone    "{{ reverse_reverse_zone }}.in-addr.arpa" {
+    type master;
+    file "{{ bind9_config_dir }}/db.{{ reverse_zone}}";
+};

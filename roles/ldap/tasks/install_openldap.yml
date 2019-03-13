@@ -1,0 +1,35 @@
+---
+- name: Defining openldap install settings
+  debconf:
+    name: "slapd"
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
+  with_items:
+    - question: 'slapd/internal/generated_adminpw'
+      value: '{{ openldap_admin_password }}'
+      vtype: 'password'
+    - question: 'slapd/password2'
+      value: '{{ openldap_admin_password }}'
+      vtype: 'password'
+    - question: 'slapd/internal/adminpw'
+      value: '{{ openldap_admin_password }}'
+      vtype: 'password'
+    - question: 'slapd/password1'
+      value: '{{ openldap_admin_password }}'
+      vtype: 'password'
+    - question: "slapd/domain"
+      value: "{{ pri_domain_name }}"
+      vtype: 'string'
+    - question: "shared/organization"
+      value: "{{ openldap_org }}"
+      vtype: 'string'
+
+- name: Install LDAP client packages
+  apt:
+    name: "{{ openldap_packages }}"
+    update_cache: yes
+  tags:
+    - install_packages_ldap
+
+- include: config_openldap.yml
