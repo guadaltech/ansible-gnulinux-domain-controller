@@ -1,4 +1,5 @@
-# Universal Domain Controller - BLKS (Bind9/LDAP/Kerberos/SSSD)
+# Universal Domain Controller
+**BLKS (Bind9/LDAP/Kerberos/SSSD)**
 
 ## Usage
 
@@ -6,7 +7,7 @@
 
 Install all:
 ```
-make up
+make deploy
 ```
 
 Destroy all:
