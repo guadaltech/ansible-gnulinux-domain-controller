@@ -45,13 +45,13 @@ blksmanager -m delete -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (US
 **Add User:**
 
 ```
-blksmanager -m add -a admin -w 4dm1n -u user3 -p user3 -g 5000 -d example.com 
+blksmanager -m add -a admin -w admin_pass -u user3 -p user3 -g 5000 -d example.com 
 ```
 
 **Delete User:**
 
 ```
-blksmanager -m delete -a admin -w 4dm1n -u user3 -d example.com
+blksmanager -m delete -a admin -w admin_pass -u user3 -d example.com
 ```
 
 ### Manual
@@ -59,7 +59,7 @@ blksmanager -m delete -a admin -w 4dm1n -u user3 -d example.com
 **Add User:**
 
 ```
-ldapadd -D "cn=admin, dc=example,dc=com" -w 4dm1n << EOF
+ldapadd -D "cn=admin, dc=example,dc=com" -w admin_pass << EOF
 dn: uid=user,ou=People,dc=example,dc=com
 objectClass: top
 objectClass: posixAccount
@@ -104,7 +104,7 @@ login user
 **Delete User:**
 
 ```
-ldapdelete -x -D "cn=admin,dc=example,dc=com" 'uid=user,ou=People,dc=example,dc=com' -w 4dm1n
+ldapdelete -x -D "cn=admin,dc=example,dc=com" 'uid=user,ou=People,dc=example,dc=com' -w admin_pass
 kadmin.local -q "delete_principal user@EXAMPLE.COM"
 kdestroy
 rm -f /etc/krb5.keytab 
