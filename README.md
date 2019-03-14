@@ -17,18 +17,20 @@ make destroy
 
 ## Manage users
 
-### Script
+### Script blksmanager
+
+Script in node Kerberos
 
 **Add User:**
 
 ```
-./blksmanager -m add -a admin -w 4dm1n -u user3 -p user3 -g 5000 -d example.com
+blksmanager -m add -a admin -w 4dm1n -u user3 -p user3 -g 5000 -d example.com 
 ```
 
 **Delete User:**
 
 ```
-./blksmanager -m add -a admin -w 4dm1n -u user3 -p user3 -g 5000 -d example.com
+blksmanager -m delete -a admin -w 4dm1n -u user3 -d example.com
 ```
 
 ### Manual
@@ -69,15 +71,6 @@ Option 2:
 kadmin.local -q "xst -norandkey user@EXAMPLE.COM"
 ```
 
-**Delete User:**
-
-```
-ldapdelete -x -D "cn=admin,dc=example,dc=com" 'uid=user,ou=People,dc=example,dc=com' -w 4dm1n
-kadmin.local -q "delete_principal user@EXAMPLE.COM"
-kdestroy
-rm -f /etc/krb5.keytab 
-```
-
 **Test User:**
 
 ```
@@ -85,6 +78,15 @@ kinit -kt /etc/krb5.keytab user
 getent passwd user
 id user
 login user
+```
+
+**Delete User:**
+
+```
+ldapdelete -x -D "cn=admin,dc=example,dc=com" 'uid=user,ou=People,dc=example,dc=com' -w 4dm1n
+kadmin.local -q "delete_principal user@EXAMPLE.COM"
+kdestroy
+rm -f /etc/krb5.keytab 
 ```
 
 ## ERRORS
