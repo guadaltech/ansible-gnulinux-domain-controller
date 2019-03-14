@@ -3,24 +3,24 @@
 
 function usage {
 cat <<EOF
-Usage ./blksmanager -m <MODE>
+Usage BLKS Manager
 Options:
 
   -m <MODE> (add, delete)
-  -l <HOST LDAP>
+  -l [HOST LDAP]
   -a <ADMIN LDAP>
   -w <ADMIN LDAP PASSWORD>
   -u <USERNAME>
   -p <USERNAME PASSWD>
   -g <GID>
   -d <DOMAIN>
-  -k <KEYTAB FILE>
+  -k [KEYTAB FILE]
 
 Example Add:
-blksmanager -m add -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN)"
+blksmanager -m add -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN) -k [KEYTAB FILE]
 
 Example Delete:
-blksmanager -m delete -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN)
+blksmanager -m delete -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN) -k [KEYTAB FILE]
 
 EOF
 exit 2

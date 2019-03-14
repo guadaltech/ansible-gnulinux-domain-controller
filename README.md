@@ -21,6 +21,27 @@ make destroy
 
 Script in node Kerberos
 
+```
+Usage BLKS Manager
+Options:
+
+  -m <MODE> (add, delete)
+  -l [HOST LDAP]
+  -a <ADMIN LDAP>
+  -w <ADMIN LDAP PASSWORD>
+  -u <USERNAME>
+  -p <USERNAME PASSWD>
+  -g <GID>
+  -d <DOMAIN>
+  -k [KEYTAB FILE]
+
+Example Add:
+blksmanager -m add -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN) -k [KEYTAB FILE]
+
+Example Delete:
+blksmanager -m delete -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN) -k [KEYTAB FILE]
+```
+
 **Add User:**
 
 ```
