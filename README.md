@@ -151,5 +151,5 @@ ansible-playbook -i inventory/local/hosts.ini --become --become-user=root ansibl
 
 ## Authors
 
-[Juan Manuel Torres](https://github.com/tedezed)
-[Juan José López](https://github.com/juanjoselopezroldan)
+- [Juan Manuel Torres](https://github.com/tedezed)
+- [Juan José López](https://github.com/juanjoselopezroldan)
