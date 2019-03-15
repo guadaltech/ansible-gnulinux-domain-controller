@@ -146,5 +146,10 @@ Debug:
 Retry ansible:
 
 ```
-ansible-playbook -i inventory/local/hosts.ini --become --become-user=root ansible.yml -vvv --limit @$HOME/git/universal-domain-controller-git/ansible.retry
+ansible-playbook -i inventory/local/hosts.ini --become --become-user=root ansible.yml -vvv --limit all
 ```
+
+## Authors
+
+[Juan Manuel Torres](https://github.com/tedezed)
+[Juan José López](https://github.com/juanjoselopezroldan)
