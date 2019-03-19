@@ -6,6 +6,7 @@ up:
 	vagrant up
 
 destroy:
+	rm -rf ~/.ssh/known_hosts
 	rm -rf .vagrant/provisioners/ansible/inventory && vagrant destroy -f
 	rm -rf .vagrant/
 	rm -rf ubuntu-*
