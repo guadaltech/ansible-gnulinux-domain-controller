@@ -42,19 +42,19 @@ Example Delete:
 blksmanager -m delete -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN) -k [KEYTAB FILE]
 ```
 
-**Add User:**
+**Add user simple:**
 
 ```
 blksmanager -m add -a admin -w admin_pass -u user3 -p user3 -g 5000 -d example.com 
 ```
 
-**Add User with password [expire time](https://web.mit.edu/kerberos/krb5-1.12/doc/basic/date_format.html#getdate):**
+**Add user with password [expire time](https://web.mit.edu/kerberos/krb5-1.12/doc/basic/date_format.html#getdate):**
 
 ```
 blksmanager -m add -a admin -w admin_pass -u user3 -p user3 -g 5000 -e "300 sec" -d example.com 
 ```
 
-**Delete User:**
+**Delete user:**
 
 ```
 blksmanager -m delete -a admin -w admin_pass -u user3 -d example.com
