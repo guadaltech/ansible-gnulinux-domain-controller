@@ -1,13 +1,9 @@
 ---
 openldap_admin_user: 'admin'
-openldap_admin_password: 'admin_pass'
+openldap_admin_password: 'asd123'
 user_example: 'test'
-password_example_user: 'pass_user_test'
+password_example_user: 'asd123'
 
 # Internal
-openldap_org: '{{ domain.split(".")[0] | lower }}'
-openldap_tld: '{{ domain.split(".")[1] | lower }}'
-
-openldap_base: 'dc={{ openldap_org }},dc={{ openldap_tld }}'
-openldap_bind_id: 'cn={{ openldap_bind_user }},{{ openldap_base }}'
 openldap_bind_user: '{{ openldap_admin_user }}'
+openldap_bind_id: 'cn={{ openldap_bind_user }},{{ openldap_base }}'

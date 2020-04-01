@@ -29,6 +29,8 @@
   apt:
     name: "{{ openldap_packages }}"
     update_cache: yes
+  environment:
+    SUDO_FORCE_REMOVE: "yes"
   tags:
     - install_packages_ldap
 

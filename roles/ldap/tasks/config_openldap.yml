@@ -6,6 +6,10 @@
     group: root
     mode: 0644
 
+- name: Add module sudo | configuring sudo
+  shell: 'ldapadd -Y EXTERNAL -H ldapi:/// -f  /usr/share/doc/sudo-ldap/schema.olcSudo'
+  ignore_errors: yes
+
 - name: config_openldap | creating database population config
   template:
     src: "ldap/slapd.d/populate_content.ldif.j2"
@@ -14,10 +18,12 @@
     group: root
     mode: 0640
 
+- name: Add module sudo | configuring sudo
+  shell: 'if [[ $(cat /etc/pam.d/sudo | grep -o "pam_ldap.so") != "pam_ldap.so" ]]; then echo "auth      sufficient    pam_ldap.so" >> /etc/pam.d/sudo ; fi'
+
 - name: config_openldap | setting admin password
   shell: slappasswd -s {{ openldap_admin_password }}
   register: admin_password
-
 
 - name: config_openldap | restart slapd
   service:
@@ -35,3 +41,4 @@
   when: >
     openldap_populate is defined and
     openldap_populate
+

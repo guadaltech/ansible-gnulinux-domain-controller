@@ -6,6 +6,14 @@
     group: root
     mode: 0600
 
+- name: config_nsswitch | configuring nsswith for sudoers
+  template:
+    src: "nsswitch.conf.j2"
+    dest: "/etc/nsswitch.conf"
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Obfuscate pass
   shell: "{{ command_obfuscate_ldap_pass }}"
   when: obfuscate_pass_ldap == true
