@@ -14,10 +14,11 @@ Options:
   -p <USERNAME PASSWD>
   -g <GID>
   -d <DOMAIN>
+  -e [PWEXPIRE]
   -k [KEYTAB FILE]
 
 Example Add:
-blksmanager -m add -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN) -k [KEYTAB FILE]
+blksmanager -m add -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN) -e [PWEXPIRE] -k [KEYTAB FILE]
 
 Example Delete:
 blksmanager -m delete -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN) -k [KEYTAB FILE]
@@ -87,7 +88,11 @@ EOF
 function add_kerberos ()
 {
 echo "Use keytab: $KEYTAB"
-kadmin.local -q "addprinc -pw $USERNAME_PASSWD $USERNAME@$UPPER_DOMAIN"
+if [ -z "$PWEXPIRE" ]; then
+    kadmin.local -q "addprinc -pw $USERNAME_PASSWD $USERNAME@$UPPER_DOMAIN"
+else
+    kadmin.local -q "addprinc -pw $USERNAME_PASSWD -pwexpire \"$PWEXPIRE\" $USERNAME@$UPPER_DOMAIN"
+fi
 kadmin.local -q "ktadd -norandkey -k $KEYTAB $USERNAME@$UPPER_DOMAIN"
 }
 
@@ -98,7 +103,7 @@ kadmin.local -q "delete_principal $USERNAME@$UPPER_DOMAIN"
 kdestroy
 }
 
-while getopts ":m:l:a:w:u:p:g:d:k:h" OPTIONS; do
+while getopts ":m:l:a:w:u:p:g:d:e:k:h" OPTIONS; do
         case "${OPTIONS}" in
                 m) MODE=${OPTARG} ;;
                 l) HOST_IP=${OPTARG} ;;
@@ -108,6 +113,7 @@ while getopts ":m:l:a:w:u:p:g:d:k:h" OPTIONS; do
                 p) USERNAME_PASSWD=${OPTARG} ;;
                 g) GID=${OPTARG} ;;
                 d) DOMAIN=${OPTARG} ;;
+                e) PWEXPIRE=${OPTARG} ;;
                 k) KEYTAB=${OPTARG} ;;
                 h) usage ;;
                 *) usage ;;
