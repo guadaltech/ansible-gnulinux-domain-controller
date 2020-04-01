@@ -1,5 +1,5 @@
 [sssd]
-services = nss, pam, pac
+services = nss, pam, pac, sudo
 domains = {{ domain|upper }}
 config_file_version = 2
 
@@ -9,15 +9,14 @@ config_file_version = 2
 
 [pac]
 
+[sudo]
+
 [domain/{{ domain|upper }}]
 id_provider = ldap
 auth_provider = krb5
-
-# LDAP
-#ldap_tls_reqcert = never
-#ldap_id_use_start_tls = False
-#ldap_schema = rfc2307bis
-#ldap_group_name = people
+chpass_provider = krb5
+access_provider = krb5
+sudo_provider = ldap
 
 ldap_uri = ldap://ldap.{{ domain }}
 ldap_search_base = {{ openldap_base }}
@@ -25,6 +24,8 @@ ldap_search_base = {{ openldap_base }}
 ldap_default_authtok_type = password
 ldap_default_bind_dn = {{ openldap_bind_id }}
 ldap_default_authtok = {{ openldap_admin_password }}
+ldap_sudo_search_base = ou={{ sudoers }},{{ openldap_base }}
+
 
 # Kerberos
 krb5_realm = {{ domain|upper }}

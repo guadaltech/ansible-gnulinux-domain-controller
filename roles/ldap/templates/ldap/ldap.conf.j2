@@ -7,7 +7,11 @@
 
 BASE {{ openldap_base }}
 URI ldap://{{ ansible_fqdn }} ldap://{{ ansible_fqdn }}:666
+{% for item in openldap_organizationalunits %}
+SUDOERS_BASE ou={{ item.ou }},{{ openldap_base }}
+{% endfor %}
 
+#sudoers_debug 2
 #SIZELIMIT	12
 #TIMELIMIT	15
 #DEREF		never

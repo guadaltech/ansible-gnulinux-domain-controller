@@ -1,30 +1,46 @@
 {% for item in openldap_organizationalunits %}
-dn: ou={{ item }},{{ openldap_base }}
+dn: ou={{ item.name }},{{ openldap_base }}
 objectClass: organizationalUnit
+ou: {{ item.ou }}
+description: LDAP SUDOERS
 
+dn: cn=defaults,ou={{ item.name }},{{ openldap_base }}
+objectClass: top
+objectClass: sudoRole
+cn: defaults
+description: Opciones por defecto
+sudoOption: !visiblepw
+sudoOption: always_set_home
+sudoOption: match_group_by_gid
+sudoOption: always_query_group_plugin
+sudoOption: env_reset
+sudoOption: env_keep =  "COLORS DISPLAY HOSTNAME HISTSIZE KDEDIR LS_COLORS"
+sudoOption: env_keep += "MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE"
+sudoOption: env_keep += "LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES"
+sudoOption: env_keep += "LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE"
+sudoOption: env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"
+sudoOption: env_keep+=SSH_AUTH_SOCK
+sudoOption: secure_path = /sbin:/bin:/usr/sbin:/usr/bin
 {% endfor %}
 
 {% for item in openldap_posixgroups %}
 dn: cn={{ item.name }},ou={{ item.ou }},{{ openldap_base }}
+objectClass: top
 objectClass: posixGroup
 cn: {{ item.name }}
 gidNumber: {{ item.gidNum }}
 {% endfor %}
 
-{% for item in openldap_users %}
-dn: uid={{ item.FirstName|lower }},ou={{ item.ou }},{{ openldap_base }}
-objectClass: inetOrgPerson
-objectClass: posixAccount
-objectClass: shadowAccount
-uid: {{ item.FirstName|lower }}
-sn: {{ item.LastName }}
-givenName: {{ item.FirstName }}
-cn: {{ item.FirstName }} {{ item.LastName }}
-displayName: {{ item.FirstName }} {{ item.LastName }}
-uidNumber: {{ item.uidNum }}
-gidNumber: {{ item.gidNum }}
-userPassword: {{ item.password }}
-gecos: {{ item.FirstName }} {{ item.LastName }}
-loginShell: {{ item.loginShell }}
-homeDirectory: {{ item.homeDirectory }}
+
+{% for item in openldap_cn_sudoers %}
+dn: cn={{ item.name }},cn={{ item.cn }},ou={{ item.ou }},{{ openldap_base }}
+objectClass: sudoRole
+objectClass: top
+cn: {{ item.name }}
+sudoUser: {{ item.sudoUser }}
+sudoHost: ALL
+{% for item in openldap_command_sudoers %}
+sudoCommand: {{ item }}
+{% endfor %}
+sudoOrder: {{ item.sudoOrder }}
 {% endfor %}

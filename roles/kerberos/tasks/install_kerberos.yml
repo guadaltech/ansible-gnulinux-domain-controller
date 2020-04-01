@@ -38,6 +38,7 @@
 - name: Create initial Kerberos database
   shell: kdb5_util -P {{ master_db_pass }} create -s
   when: motd_contents.stdout.find('/etc/krb5kdc/principal') != 0
+  ignore_errors: yes
 
 - name: Start Kerberos units
   systemd:

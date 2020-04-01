@@ -4,21 +4,29 @@ openldap_packages:
   - ldap-utils
   - nslcd
   - libnss-ldapd
+  - sudo-ldap
 openldap_organizationalunits:  #defines OU's to populate
-  - People
-  - Groups
+  - name: "{{ sudoers }}"
+    ou: "{{ sudoers }}"
+    cn: Workers
 openldap_populate: true  #defines if openldap DB should be populated with openldap_organizationalunits, openldap_posixgroups and openldap_users
 openldap_posixgroups:  #defines groups to create within OU's
   - name: Workers
-    ou: Groups
+    ou: "{{ sudoers }}"
     gidNum: 5000  #start group numbers at 5000 and up
-openldap_users:
-  - FirstName: "{{ user_example }}"
-    LastName: "{{ user_example }}"
-    ou: Groups  #defines OU name
-    uidNum: 10000  #start user numbers at 10000 and up
-    gidNum: 5000  #defines gidNum from openldap_posixgroups
-    password: '"{{ password_example_user }}"'
-    loginShell: /bin/bash
-    homeDirectory: /home/{{ user_example }}
-pri_domain_name: '{{ openldap_org }}.{{ openldap_tld }}'
+openldap_cn_sudoers:
+  - name: sudobase
+    ou: "{{ sudoers }}"
+    cn: Workers
+    sudoUser: test
+    sudoOrder: 0
+openldap_command_sudoers:
+  - /usr/bin/apt
+  - /usr/bin/apt-*
+  - /usr/bin/pip
+  - /usr/bin/systemctl
+  - /usr/sbin/service
+  - /usr/bin/crontab
+  - /usr/sbin/dhclient
+
+pri_domain_name: '{{ openldap_linux }}.{{ openldap_org }}.{{ openldap_tld }}'
