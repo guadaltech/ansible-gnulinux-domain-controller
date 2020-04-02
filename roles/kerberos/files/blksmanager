@@ -60,14 +60,15 @@ done
     echo $((${ldaparry[1]}+1))
     return 0
     else
-    return -1
+    echo $(("2001"))
+    return 0
     fi
 }
 
 function add_to_ldap ()
 {
 ldapadd -h $HOST_IP -D "cn=$ADMIN, $ldapDN" -w $ADMIN_PASS << EOF
-dn: uid=$USERNAME,ou=People,dc=$DC1,dc=$DC2
+dn: uid=$USERNAME,cn=sudobase,cn=Workers,ou=SUDOers,dc=$DC1,dc=$DC2,dc=$DC3
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
@@ -98,7 +99,7 @@ kadmin.local -q "ktadd -norandkey -k $KEYTAB $USERNAME@$UPPER_DOMAIN"
 
 function del_ldap_kerberos ()
 {
-ldapdelete -h $HOST_IP -x -D "cn=$ADMIN,dc=$DC1,dc=$DC2" 'uid=$USERNAME,ou=People,dc=$DC1,dc=$DC2' -w $ADMIN_PASS
+ldapdelete -h $HOST_IP -x -D "cn=$ADMIN,dc=$DC1,dc=$DC2,dc=$DC3" "uid=$USERNAME,cn=sudobase,cn=Workers,ou=SUDOers,dc=$DC1,dc=$DC2,dc=$DC3" -w $ADMIN_PASS
 kadmin.local -q "delete_principal $USERNAME@$UPPER_DOMAIN"
 kdestroy
 }
@@ -145,8 +146,9 @@ then
         UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
         DC1=$(echo "$DOMAIN" | cut -d"." -f1)
         DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
 
-        ldapDN="dc=$DC1, dc=$DC2"
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
 
         add_to_ldap
         add_kerberos
@@ -164,6 +166,7 @@ then
         UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
         DC1=$(echo "$DOMAIN" | cut -d"." -f1)
         DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
 
         del_ldap_kerberos
     fi
