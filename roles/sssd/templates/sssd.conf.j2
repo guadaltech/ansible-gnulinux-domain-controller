@@ -35,6 +35,8 @@ krb5_server = kerberos.{{ domain }}
 krb5_store_password_if_offline = true
 cache_credentials = true
 
+ldap_pwd_policy = mit_kerberos
+
 # Bonus
 fallback_homedir = /home/%u
 default_shell = /bin/bash
