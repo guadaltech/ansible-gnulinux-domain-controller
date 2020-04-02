@@ -99,7 +99,6 @@ kadmin.local -q "ktadd -norandkey -k $KEYTAB $USERNAME@$UPPER_DOMAIN"
 
 function del_ldap_kerberos ()
 {
-echo "ldapdelete -h $HOST_IP -x -D cn=$ADMIN,dc=$DC1,dc=$DC2,dc=$DC3 uid=$USERNAME,cn=sudobase,cn=Workers,ou=SUDOers,dc=$DC1,dc=$DC2,dc=$DC3 -w $ADMIN_PASS"
 ldapdelete -h $HOST_IP -x -D "cn=$ADMIN,dc=$DC1,dc=$DC2,dc=$DC3" "uid=$USERNAME,cn=sudobase,cn=Workers,ou=SUDOers,dc=$DC1,dc=$DC2,dc=$DC3" -w $ADMIN_PASS
 kadmin.local -q "delete_principal $USERNAME@$UPPER_DOMAIN"
 kdestroy
