@@ -50,6 +50,9 @@
 - name: Create an admin for administering Kerberos server
   shell: kadmin.local -q "addprinc -pw {{ kadmin_pass }} {{ kadmin_user }}/admin"
 
+- name: Create default password policy
+  shell: kadmin.local -q "add_policy -maxlife \"{{ maxlife }}\" -minlife \"{{ minlife }}\" -minlength {{ minlength }} -minclasses {{ minclasses }} -history {{ history }} -maxfailure {{ maxfailure }} -failurecountinterval \"{{ failurecountinterval }}\" -lockoutduration \"{{ lockoutduration }}\" {{ policy_name }}"
+
 - name: Copy blksmanager
   copy:
     src: "{{ role_path }}/files/blksmanager"

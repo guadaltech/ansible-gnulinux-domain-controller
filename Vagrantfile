@@ -18,7 +18,7 @@ $vm_cpus = 1
 $vm_memory = 1024
 $vm_gui = false
 $exec_ansible = false
-$subnet_private = "10.45.10"
+$subnet_private = "192.168.33"
 $subnet_public = "10.80.1"
 $bridge = "enp2s0f1"
 
