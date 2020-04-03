@@ -67,8 +67,8 @@ done
 
 function add_to_ldap ()
 {
-ldapadd -h $HOST_IP -D "cn=$ADMIN, $ldapDN" -w $ADMIN_PASS << EOF
-dn: uid=$USERNAME,cn=sudobase,cn=Workers,ou=SUDOers,dc=$DC1,dc=$DC2,dc=$DC3
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: uid=$USERNAME,cn=sudobase,cn=Workers,ou=SUDOers,$ldapDN
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
@@ -83,6 +83,12 @@ gidNumber: $GID
 gecos: $USERNAME
 loginShell: /bin/bash
 homeDirectory: /home/$USERNAME
+EOF
+ldapmodify -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=sudobase,cn=Workers,ou=SUDOers,$ldapDN
+changetype: modify
+add: sudoUser
+sudoUser: $USERNAME
 EOF
 }
 
@@ -99,7 +105,15 @@ kadmin.local -q "ktadd -norandkey -k $KEYTAB $USERNAME@$UPPER_DOMAIN"
 
 function del_ldap_kerberos ()
 {
-ldapdelete -h $HOST_IP -x -D "cn=$ADMIN,dc=$DC1,dc=$DC2,dc=$DC3" "uid=$USERNAME,cn=sudobase,cn=Workers,ou=SUDOers,dc=$DC1,dc=$DC2,dc=$DC3" -w $ADMIN_PASS
+ldapdelete -h $HOST_IP -x -D "cn=$ADMIN,$ldapDN" "uid=$USERNAME,cn=sudobase,cn=Workers,ou=SUDOers,$ldapDN" -w $ADMIN_PASS
+
+ldapmodify -h $HOST_IP -D "cn=$ADMIN, $ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=sudobase,cn=Workers,ou=SUDOers,$ldapDN
+changetype: modify
+delete: sudoUser
+sudoUser: $USERNAME
+EOF
+
 kadmin.local -q "delete_principal $USERNAME@$UPPER_DOMAIN"
 kdestroy
 }
@@ -167,6 +181,8 @@ then
         DC1=$(echo "$DOMAIN" | cut -d"." -f1)
         DC2=$(echo "$DOMAIN" | cut -d"." -f2)
         DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
 
         del_ldap_kerberos
     fi
