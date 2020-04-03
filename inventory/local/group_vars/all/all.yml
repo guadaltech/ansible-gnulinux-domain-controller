@@ -4,7 +4,7 @@ ldap_setup: true
 kerberos_setup: true
 sssd_setup: true
 
-domain: "linux.example.local"
+domain: "linux.gstwdt.local"
 
 openldap_linux: '{{ domain.split(".")[0] | lower }}'
 openldap_org: '{{ domain.split(".")[1] | lower }}'
