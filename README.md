@@ -149,10 +149,28 @@ Debug:
 - https://docs.pagure.org/SSSD.sssd/users/troubleshooting.html
 - https://jfearn.fedorapeople.org/fdocs/en-US/Fedora_Draft_Documentation/0.1/html/System_Administrators_Guide/SSSD-Troubleshooting.html
 
-Retry ansible:
+### Ansible:
 
+Execution:
 ```
 ansible-playbook -i inventory/local/hosts.ini --become --become-user=root ansible.yml -vvv --limit all
+```
+
+Install vars:
+```
+main_setup: true
+bind9_setup: true
+ldap_setup: true
+kerberos_setup: true
+sssd_setup: true
+```
+
+Unistall vars:
+```
+main_uninstall: false
+bind9_uninstall: false
+ldap_uninstall: false
+kerberos_uninstall: false
 ```
 
 ## Authors

@@ -1,3 +1,6 @@
 ---
 - include_tasks: install_bind9.yml
   when: bind9_setup == true
+
+- include_tasks: uninstall_bind9.yml
+  when: bind9_uninstall == true

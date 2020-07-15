@@ -1,0 +1,31 @@
+- name: Update apt and uninstall Kerberos
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+    state: absent
+  vars:
+    packages:
+    - krb5-kdc
+    - krb5-admin-server
+    - krb5-kdc-ldap
+    - krb5-config
+    - ldap-utils
+    - krb5-user
+
+- name: Remove useless packages from the cache
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes
+  
+- name: Recursively remove directory
+  file:
+    path: /etc/krb5kdc
+    state: absent
+
+- name: Remove blksmanager
+  file:
+    path: /usr/local/bin/blksmanager
+    state: absent

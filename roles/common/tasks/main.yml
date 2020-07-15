@@ -1,5 +1,6 @@
 ---
-- name: Create /etc/resolv.conf
-  template:
-    src: resolv.conf.j2
-    dest: "/etc/resolv.conf"
+- include_tasks: main_install.yml
+  when: main_setup == true
+
+- include_tasks: main_uninstall.yml
+  when: main_uninstall == true

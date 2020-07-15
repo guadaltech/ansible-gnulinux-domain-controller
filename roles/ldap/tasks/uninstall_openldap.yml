@@ -1,0 +1,21 @@
+---
+- name: Uninstall LDAP client packages
+  apt:
+    name: "{{ openldap_packages }}"
+    update_cache: yes
+    state: absent
+  environment:
+    SUDO_FORCE_REMOVE: "yes"
+
+- name: Remove useless packages from the cache
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes
+  
+- name: Recursively remove directory
+  file:
+    path: /etc/ldap
+    state: absent

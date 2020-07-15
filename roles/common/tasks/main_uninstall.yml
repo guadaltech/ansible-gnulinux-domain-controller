@@ -1,0 +1,11 @@
+---
+- name: Copy resolv
+  copy:
+    src: "{{ role_path }}/files/resolv.conf"
+    dest: /etc/resolv.conf
+    mode: 0755
+
+- name: Install sudo
+  apt:
+    name: sudo
+    update_cache: yes

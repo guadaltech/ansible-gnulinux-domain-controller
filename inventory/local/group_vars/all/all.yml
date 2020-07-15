@@ -1,8 +1,16 @@
 ---
+main_setup: true
 bind9_setup: true
 ldap_setup: true
 kerberos_setup: true
 sssd_setup: true
+
+main_uninstall: false
+bind9_uninstall: false
+ldap_uninstall: false
+kerberos_uninstall: false
+# Do not use
+sssd_uninstall: false
 
 domain: "linux.gstwdt.local"
 

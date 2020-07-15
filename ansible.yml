@@ -2,8 +2,8 @@
 - hosts: bind9
   gather_facts: true
   roles:
-    - bind9
     - common
+    - bind9
 
 - hosts: ldap
   gather_facts: true
