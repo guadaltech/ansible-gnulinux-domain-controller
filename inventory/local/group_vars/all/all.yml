@@ -12,7 +12,7 @@ kerberos_uninstall: false
 # Do not use
 sssd_uninstall: false
 
-domain: "linux.gstwdt.local"
+domain: "blk.example.local"
 
 openldap_linux: '{{ domain.split(".")[0] | lower }}'
 openldap_org: '{{ domain.split(".")[1] | lower }}'
@@ -20,6 +20,10 @@ openldap_tld: '{{ domain.split(".")[2] | lower }}'
 
 openldap_base: 'dc={{ openldap_linux }},dc={{ openldap_org }},dc={{ openldap_tld }}'
 sudoers: "SUDOers"
+
 # In virtualbox: 0 is internal, 1 private and 2 public IP
 # For more information see the Vagrantfile
-num_interface: 1
+#num_interface: 1
+
+# In normal machine: 0 == eth0
+num_interface: 0

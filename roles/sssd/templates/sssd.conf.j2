@@ -22,8 +22,8 @@ ldap_uri = ldap://ldap.{{ domain }}
 ldap_search_base = {{ openldap_base }}
 
 ldap_default_authtok_type = password
-ldap_default_bind_dn = {{ openldap_bind_id }}
-ldap_default_authtok = {{ openldap_admin_password }}
+ldap_default_bind_dn = cn={{ read_only_user }},{{ openldap_base }}
+ldap_default_authtok = {{ password_read_only_user }}
 ldap_sudo_search_base = ou={{ sudoers }},{{ openldap_base }}
 
 

@@ -1,4 +1,4 @@
 ---
-master_db_pass: asd123
+master_db_pass: userpass
 kadmin_user: usuario
-kadmin_pass: asd123
+kadmin_pass: userpass

@@ -1,4 +1,8 @@
 ---
+- name: Interface IP
+  debug:
+    msg: "Interface IP: {{ hostvars[groups['bind9'][0]].ansible_all_ipv4_addresses[num_interface] }}"
+
 - name: Create /etc/resolv.conf
   template:
     src: resolv.conf.j2

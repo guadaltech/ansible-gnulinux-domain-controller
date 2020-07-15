@@ -51,13 +51,13 @@ blksmanager -m add -a admin -w admin_pass -u user3 -p user3 -g 5000 -d example.c
 **Add user with password [expire time](https://web.mit.edu/kerberos/krb5-1.12/doc/basic/date_format.html#getdate):**
 
 ```
-blksmanager -m add -a admin -w admin_pass -u user3 -p user3 -g 5000 -e "300 sec" -d example.com 
+blksmanager -m add -a admin -w admin_pass -u user1 -p User1234567890@ -g 5000 -e "300 sec" -d example.com 
 ```
 
 **Delete user:**
 
 ```
-blksmanager -m delete -a admin -w admin_pass -u user3 -d example.com
+blksmanager -m delete -a admin -w admin_pass -u user1 -d example.com
 ```
 
 ### Manual
@@ -136,20 +136,7 @@ kadmin.local -q "ktadd -norandkey username@EXAMPLE.COM"
 kinit username@EXAMPLE.COM
 ```
 
-## BONUS
-
-Guides:
-
-- https://aws.nz/best-practice/sssd-ldap/
-- https://calnus.com/2016/12/12/uniendo-gnu-linux-a-nuestro-active-directory-mediante-samba-y-sssd/
-- https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/
-
-Debug:
-
-- https://docs.pagure.org/SSSD.sssd/users/troubleshooting.html
-- https://jfearn.fedorapeople.org/fdocs/en-US/Fedora_Draft_Documentation/0.1/html/System_Administrators_Guide/SSSD-Troubleshooting.html
-
-### Ansible:
+## Ansible:
 
 Execution:
 ```
@@ -171,6 +158,40 @@ main_uninstall: false
 bind9_uninstall: false
 ldap_uninstall: false
 kerberos_uninstall: false
+```
+
+## BONUS
+
+Guides:
+
+- https://aws.nz/best-practice/sssd-ldap/
+- https://calnus.com/2016/12/12/uniendo-gnu-linux-a-nuestro-active-directory-mediante-samba-y-sssd/
+- https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/
+
+Debug:
+
+- https://docs.pagure.org/SSSD.sssd/users/troubleshooting.html
+- https://jfearn.fedorapeople.org/fdocs/en-US/Fedora_Draft_Documentation/0.1/html/System_Administrators_Guide/SSSD-Troubleshooting.html
+
+Clean manual:
+```
+apt-get remove -y bind9 --purge && rm -rf /etc/bind \
+&& apt-get remove -y \
+  krb5-kdc \
+  krb5-admin-server \
+  krb5-kdc-ldap \
+  krb5-config \
+  ldap-utils \
+  krb5-user --purge && rm -rf /etc/krb5kdc \
+&& apt-get remove -y \
+  slapd \
+  ldap-utils \
+  nslcd \
+  libnss-ldapd \
+  sudo-ldap --purge && rm -rf /etc/ldap && rm -rf /var/lib/ldap \
+&& apt-get autoremove -y \
+&& apt-get install sudo -y \
+&& echo 'nameserver 8.8.8.8' > /etc/resolv.conf
 ```
 
 ## Authors

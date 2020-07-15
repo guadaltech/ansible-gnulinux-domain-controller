@@ -8,8 +8,6 @@ sssd_packages:
   - sssd-ldap
   - sssd-tools
 
-obfuscate_pass_ldap: false
+obfuscate_pass_ldap: true
 
-command_obfuscate_ldap_pass: "sss_obfuscate --domain {{ domain }} --stdin << EOF
-4dm1n
-EOF"
+

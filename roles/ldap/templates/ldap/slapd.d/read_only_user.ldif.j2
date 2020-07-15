@@ -1,0 +1,5 @@
+dn: cn={{ read_only_user }},{{ openldap_base }}
+cn: {{ read_only_user }}
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+userPassword: {{ user_read_only_secret.stdout }}

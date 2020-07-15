@@ -35,3 +35,4 @@
     - install_packages_ldap
 
 - include: config_openldap.yml
+- include: read_only_openldap.yml

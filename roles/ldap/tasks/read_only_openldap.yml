@@ -1,0 +1,16 @@
+- name: Generate secret, read only user
+  shell: slappasswd -s {{ password_read_only_user }}
+  register: user_read_only_secret
+
+- name: Generate ldif, read only user
+  template:
+    src: "ldap/slapd.d/read_only_user.ldif.j2"
+    dest: "/etc/ldap/slapd.d/read_only_user.ldif"
+    owner: root
+    group: root
+    mode: 0640
+
+- name: Create user, read only user
+  shell: 'ldapadd -x -D {{ openldap_bind_id }} -w {{ openldap_admin_password }} -f /etc/ldap/slapd.d/read_only_user.ldif'
+  ignore_errors: yes
+  

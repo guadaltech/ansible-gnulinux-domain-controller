@@ -15,7 +15,7 @@
     mode: 0644
 
 - name: Obfuscate pass
-  shell: "{{ command_obfuscate_ldap_pass }}"
+  shell: "echo -n '{{ password_read_only_user }}' | sss_obfuscate --domain={{ domain|upper }} --stdin"
   when: obfuscate_pass_ldap == true
 
 - name: Disable nscd

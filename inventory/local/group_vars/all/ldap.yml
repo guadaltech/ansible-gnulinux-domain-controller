@@ -1,8 +1,8 @@
 ---
 openldap_admin_user: 'admin'
-openldap_admin_password: 'asd123'
-user_example: 'test'
-password_example_user: 'asd123'
+openldap_admin_password: 'adminpass'
+read_only_user: 'queryuser'
+password_read_only_user: 'queryuserpass'
 
 # Internal
 openldap_bind_user: '{{ openldap_admin_user }}'

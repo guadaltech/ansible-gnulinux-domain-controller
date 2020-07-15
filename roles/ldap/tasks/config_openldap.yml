@@ -6,8 +6,14 @@
     group: root
     mode: 0644
 
+- name: Copy schema.olcSudo
+  copy:
+    src: "{{ role_path }}/files/schema.olcSudo"
+    dest: /usr/share/doc/sudo-ldap/schema.olcSudo
+    mode: 0755
+
 - name: Add module sudo | configuring sudo
-  shell: 'ldapadd -Y EXTERNAL -H ldapi:/// -f  /usr/share/doc/sudo-ldap/schema.olcSudo'
+  shell: 'ldapadd -Y EXTERNAL -H ldapi:/// -f /usr/share/doc/sudo-ldap/schema.olcSudo'
   ignore_errors: yes
 
 - name: config_openldap | creating database population config
