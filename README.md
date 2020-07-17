@@ -190,6 +190,10 @@ kerberos_uninstall: false
 
 ## BONUS
 
+LDAP example tree:
+
+<img width="80" src="./tools/img/example_tree.png" />
+
 Guides:
 
 - https://aws.nz/best-practice/sssd-ldap/
