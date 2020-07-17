@@ -70,7 +70,7 @@ blksmanager -m add -a admin -w admin_pass -u user1 -p User1234567890@ -g 5000 -e
 
 **Add Host**
 
-Control of which users can log in to which computers:
+Control of which users can logging in to which computers: `inventory/local/group_vars/all/sssd.yml`
 - enable: `access_provider: ldap`
 - disable: `access_provider: krb5`
 ```
