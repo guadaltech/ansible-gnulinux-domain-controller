@@ -192,7 +192,7 @@ kerberos_uninstall: false
 
 LDAP example tree:
 
-<img width="80" src="./tools/img/example_tree.png" />
+<img src="./tools/img/example_tree.png" />
 
 Guides:
 
