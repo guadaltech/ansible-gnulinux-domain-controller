@@ -1,2 +1,5 @@
 ---
 # vars file for universal-domain-controller
+
+access_provider: krb5
+sssd_hostnames: ""

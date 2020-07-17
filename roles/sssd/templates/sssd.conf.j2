@@ -15,7 +15,12 @@ config_file_version = 2
 id_provider = ldap
 auth_provider = krb5
 chpass_provider = krb5
+{% if access_provider == 'krb5' %}
 access_provider = krb5
+{% else %}
+access_provider = ldap
+ldap_access_filter = memberOf=cn={{ hostvars[inventory_hostname].ansible_facts.hostname }},ou=Hostnames,{{ openldap_base }}
+{% endif %}
 sudo_provider = ldap
 
 ldap_uri = ldap://ldap.{{ domain }}
@@ -25,6 +30,10 @@ ldap_default_authtok_type = password
 ldap_default_bind_dn = cn={{ read_only_user }},{{ openldap_base }}
 ldap_default_authtok = {{ password_read_only_user }}
 ldap_sudo_search_base = ou={{ sudoers }},{{ openldap_base }}
+
+# New
+#ldap_group_search_base = ou=Workers,{{ openldap_base }}
+#ldap_group_member = memberUid
 
 
 # Kerberos

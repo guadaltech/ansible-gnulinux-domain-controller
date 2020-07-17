@@ -5,3 +5,9 @@
 #- include_tasks: uninstall_sssd.yml
 #  when: sssd_uninstall == true
 
+- name: Save Hostname
+  set_fact:
+    sssd_hostnames: '{{ sssd_hostnames }}blksmanager -m add_host -a {{ openldap_admin_user }} -w {{ openldap_admin_password }} -x {{ hostvars[inventory_hostname].ansible_facts.hostname }} -d {{ domain }}; '
+
+- local_action: copy content={{ sssd_hostnames }} dest=.create_hosts.sh
+  become: false

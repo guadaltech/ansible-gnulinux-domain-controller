@@ -25,33 +25,61 @@ Script in node Kerberos
 Usage BLKS Manager
 Options:
 
-  -m <MODE> (add, delete)
+  -m <MODE> (add_user, delete_user)
   -l [HOST LDAP]
   -a <ADMIN LDAP>
   -w <ADMIN LDAP PASSWORD>
-  -u <USERNAME>
-  -p <USERNAME PASSWD>
+  -x [HOSTNAME]
+  -u [USERNAME]
+  -p [USERNAME PASSWD]
   -g <GID>
   -d <DOMAIN>
+  -e [PWEXPIRE]
   -k [KEYTAB FILE]
 
-Example Add:
-blksmanager -m add -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN) -k [KEYTAB FILE]
+Example add User:
+blksmanager -m add_user -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN) -e [PWEXPIRE] -k [KEYTAB FILE]
 
-Example Delete:
-blksmanager -m delete -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN) -k [KEYTAB FILE]
+Example delete User:
+blksmanager -m delete_user -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN) -k [KEYTAB FILE]
+
+Example add Host:
+blksmanager -m add_host -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -d (DOMAIN)
+
+Example delete Host:
+blksmanager -m delete_host -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -d (DOMAIN)
+
+Example add user to Host:
+blksmanager -m add_user_to_host -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -u (USER) -d (DOMAIN)
+
+Example delete user to Host:
+blksmanager -m delete_user_to_host -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -u (USER) -d (DOMAIN)
 ```
 
 **Add user simple:**
 
 ```
-blksmanager -m add -a admin -w admin_pass -u user3 -p user3 -g 5000 -d example.com 
+blksmanager -m add -a admin -w admin_pass -u user1 -p user1 -g 5000 -d example.com 
 ```
 
 **Add user with password [expire time](https://web.mit.edu/kerberos/krb5-1.12/doc/basic/date_format.html#getdate):**
 
 ```
 blksmanager -m add -a admin -w admin_pass -u user1 -p User1234567890@ -g 5000 -e "300 sec" -d example.com 
+```
+
+**Add Host**
+
+Control of which users can log in to which computers:
+- enable: `access_provider: ldap`
+- disable: `access_provider: krb5`
+```
+blksmanager -m add_host -a admin -w admin_pass -x usuario-desk -d example.com
+```
+
+**Add User to host**
+```
+blksmanager -m add_user_to_host -a admin -w admin_pass -x usuario-desk -u user1 -d example.com
 ```
 
 **Delete user:**
@@ -140,7 +168,7 @@ kinit username@EXAMPLE.COM
 
 Execution:
 ```
-ansible-playbook -i inventory/local/hosts.ini --become --become-user=root ansible.yml -vvv --limit all
+ansible-playbook -i inventory/local/hosts.ini --become --become-user=root ansible.yml -v --limit all
 ```
 
 Install vars:

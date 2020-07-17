@@ -48,3 +48,37 @@
     openldap_populate is defined and
     openldap_populate
 
+- name: Install apt dependencies for slapdconf
+  apt: 
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+   - libnet-ldap-perl
+   - libauthen-sasl-perl
+   - libuuid-perl
+   - perl-doc
+
+- name: Clone tool slapdconf
+  git:
+    repo: 'https://github.com/Code-Mirror/slapdconf.git'
+    dest: /usr/lib/slapdconf
+
+- name: Make ln for slapdconf
+  file:
+    src: "/usr/lib/slapdconf/{{ item }}"
+    dest: "/usr/bin/{{ item }}"
+    state: link
+  with_items:
+    - ldapgenerate
+    - ldaptest
+    - schema2ldif
+    - slapdconf
+    - slapdadm
+
+- name: Install module ldap memberof and refint
+  command: "{{ item }}"
+  with_items:
+    - slapdconf add-module memberof
+    - slapdconf add-overlay dc=blk,dc=gstwdt,dc=local memberof
+    - slapdconf add-module refint
+    - slapdconf add-overlay dc=blk,dc=gstwdt,dc=local refint olcRefintConfig 'olcRefintAttribute:memberof member manager owner'

@@ -1,27 +1,40 @@
 #!/bin/bash
-# By: Tedezed
+# By: DevOps Guadaltech
 
 function usage {
 cat <<EOF
 Usage BLKS Manager
 Options:
 
-  -m <MODE> (add, delete)
+  -m <MODE> (add_user, delete_user)
   -l [HOST LDAP]
   -a <ADMIN LDAP>
   -w <ADMIN LDAP PASSWORD>
-  -u <USERNAME>
-  -p <USERNAME PASSWD>
+  -x [HOSTNAME]
+  -u [USERNAME]
+  -p [USERNAME PASSWD]
   -g <GID>
   -d <DOMAIN>
   -e [PWEXPIRE]
   -k [KEYTAB FILE]
 
-Example Add:
-blksmanager -m add -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN) -e [PWEXPIRE] -k [KEYTAB FILE]
+Example add User:
+blksmanager -m add_user -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN) -e [PWEXPIRE] -k [KEYTAB FILE]
 
-Example Delete:
-blksmanager -m delete -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN) -k [KEYTAB FILE]
+Example delete User:
+blksmanager -m delete_user -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN) -k [KEYTAB FILE]
+
+Example add Host:
+blksmanager -m add_host -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -d (DOMAIN)
+
+Example delete Host:
+blksmanager -m delete_host -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -d (DOMAIN)
+
+Example add user to Host:
+blksmanager -m add_user_to_host -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -u (USER) -d (DOMAIN)
+
+Example delete user to Host:
+blksmanager -m delete_user_to_host -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -u (USER) -d (DOMAIN)
 
 EOF
 exit 2
@@ -33,9 +46,17 @@ ERROR_CODE=$1
 if [ $ERROR_CODE == 2000 ]; then
     ERROR_MSG="Error in mode '$MODE'"
 elif [ $ERROR_CODE == 2001 ]; then
-    ERROR_MSG="Mode add need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN)"
+    ERROR_MSG="Mode add_user need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -p (USER_PASSWD) -g (USER_GID_LDAP) -d (DOMAIN)"
 elif [ $ERROR_CODE == 2002 ]; then
-    ERROR_MSG="Mode delete need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN)"
+    ERROR_MSG="Mode delete_user need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -u (USER) -d (DOMAIN)"
+elif [ $ERROR_CODE == 2003 ]; then
+    ERROR_MSG="Mode add_host need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -d (DOMAIN)"
+elif [ $ERROR_CODE == 2004 ]; then
+    ERROR_MSG="Mode delete_host need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -d (DOMAIN)"
+elif [ $ERROR_CODE == 2005 ]; then
+    ERROR_MSG="Mode add_user_to_host need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -u (USER) -d (DOMAIN)"
+elif [ $ERROR_CODE == 2006 ]; then
+    ERROR_MSG="Mode delete_user_to_host need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -u (USER) -d (DOMAIN)"
 else
     ERROR_CODE="2404"
     ERROR_MSG="Error not found..."
@@ -60,7 +81,25 @@ done
     echo $((${ldaparry[1]}+1))
     return 0
     else
-    echo $(("2001"))
+    echo 2001
+    return 0
+    fi
+}
+
+function getMaxGid ()
+{
+n=0
+for i in $(ldapsearch -x -LLL $ldapsecret -h $HOST_IP -w $ADMIN_PASS -D "cn=$ADMIN, $ldapDN" "(gidNumber=*)" gidNumber -S gidNumber | grep gidNumber | tail -n1 );
+do \
+ldaparry[$n]=$i
+let n+=1
+done
+
+    if [ "${ldaparry[0]}" == "gidNumber:" ]; then
+    echo $((${ldaparry[1]}+1))
+    return 0
+    else
+    echo 6001
     return 0
     fi
 }
@@ -68,7 +107,7 @@ done
 function add_to_ldap ()
 {
 ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
-dn: uid=$USERNAME,cn=sudobase,cn=Workers,ou=SUDOers,$ldapDN
+dn: uid=$USERNAME,ou=Workers,$ldapDN
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
@@ -85,10 +124,61 @@ loginShell: /bin/bash
 homeDirectory: /home/$USERNAME
 EOF
 ldapmodify -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
-dn: cn=sudobase,cn=Workers,ou=SUDOers,$ldapDN
+dn: cn=sudobase,ou=SUDOers,$ldapDN
 changetype: modify
 add: sudoUser
 sudoUser: $USERNAME
+EOF
+}
+
+function add_hostname_to_ldap ()
+{
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=$HOSTNAME,ou=Hostnames,$ldapDN
+objectClass: top
+objectClass: posixGroup
+gidNumber: $(getMaxGid)
+EOF
+}
+
+function add_user_to_hostname_to_ldap ()
+{
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=$HOSTNAME,ou=Hostnames,$ldapDN
+changetype: modify
+add: memberUid
+memberUid: $USERNAME
+EOF
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: uid=$USERNAME,ou=Workers,$ldapDN
+changetype: modify
+add: memberOf
+memberOf: cn=$HOSTNAME,ou=Hostnames,$ldapDN
+EOF
+
+}
+
+function del_hostname_to_ldap ()
+{
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=$HOSTNAME,ou=Hostnames,$ldapDN
+changetype: delete
+EOF
+}
+
+function del_user_to_hostname_to_ldap ()
+{
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=$HOSTNAME,ou=Hostnames,$ldapDN
+changetype: modify
+delete: memberUid
+memberUid: $USERNAME
+EOF
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: uid=$USERNAME,ou=Workers,$ldapDN
+changetype: modify
+delete: memberOf
+memberOf: cn=$HOSTNAME,ou=Hostnames,$ldapDN
 EOF
 }
 
@@ -105,10 +195,10 @@ kadmin.local -q "ktadd -norandkey -k $KEYTAB $USERNAME@$UPPER_DOMAIN"
 
 function del_ldap_kerberos ()
 {
-ldapdelete -h $HOST_IP -x -D "cn=$ADMIN,$ldapDN" "uid=$USERNAME,cn=sudobase,cn=Workers,ou=SUDOers,$ldapDN" -w $ADMIN_PASS
+ldapdelete -h $HOST_IP -x -D "cn=$ADMIN,$ldapDN" "uid=$USERNAME,ou=Workers,$ldapDN" -w $ADMIN_PASS
 
 ldapmodify -h $HOST_IP -D "cn=$ADMIN, $ldapDN" -w $ADMIN_PASS << EOF
-dn: cn=sudobase,cn=Workers,ou=SUDOers,$ldapDN
+dn: cn=sudobase,ou=SUDOers,$ldapDN
 changetype: modify
 delete: sudoUser
 sudoUser: $USERNAME
@@ -118,12 +208,13 @@ kadmin.local -q "delete_principal $USERNAME@$UPPER_DOMAIN"
 kdestroy
 }
 
-while getopts ":m:l:a:w:u:p:g:d:e:k:h" OPTIONS; do
+while getopts ":m:l:a:w:x:u:p:g:d:e:k:h" OPTIONS; do
         case "${OPTIONS}" in
                 m) MODE=${OPTARG} ;;
                 l) HOST_IP=${OPTARG} ;;
                 a) ADMIN=${OPTARG} ;;
                 w) ADMIN_PASS=${OPTARG} ;;
+                x) HOSTNAME=${OPTARG} ;;
                 u) USERNAME=${OPTARG} ;;
                 p) USERNAME_PASSWD=${OPTARG} ;;
                 g) GID=${OPTARG} ;;
@@ -145,7 +236,7 @@ then
     HOST_IP="127.0.0.1"
 fi
 
-if [[ $MODE == "add" ]]
+if [[ $MODE == "add_user" ]]
 then
     if [ -z "$USERNAME" ] \
         || [ -z "$USERNAME_PASSWD" ] \
@@ -167,7 +258,7 @@ then
         add_to_ldap
         add_kerberos
     fi
-elif [[ $MODE == "delete" ]]
+elif [[ $MODE == "delete_user" ]]
 then
     if [ -z "$USERNAME" ] \
         || [ -z "$ADMIN" ] \
@@ -185,6 +276,84 @@ then
         ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
 
         del_ldap_kerberos
+    fi
+elif [[ $MODE == "add_host" ]]
+then
+    if [ -z "$HOSTNAME" ] \
+        || [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2003
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
+
+        add_hostname_to_ldap
+    fi
+elif [[ $MODE == "delete_host" ]]
+then
+    if [ -z "$HOSTNAME" ] \
+        || [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2004
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
+
+        del_hostname_to_ldap
+    fi
+elif [[ $MODE == "add_user_to_host" ]]
+then
+    if [ -z "$HOSTNAME" ] \
+        || [ -z "$USERNAME" ] \
+        || [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2005
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
+
+        add_user_to_hostname_to_ldap
+    fi
+elif [[ $MODE == "delete_user_to_host" ]]
+then
+    if [ -z "$HOSTNAME" ] \
+        || [ -z "$USERNAME" ] \
+        || [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2006
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
+
+        del_user_from_hostname_to_ldap
     fi
 else
     error 2000

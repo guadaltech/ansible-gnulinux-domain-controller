@@ -10,4 +10,3 @@ sssd_packages:
 
 obfuscate_pass_ldap: true
 
-
