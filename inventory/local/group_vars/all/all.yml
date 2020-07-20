@@ -12,15 +12,6 @@ kerberos_uninstall: false
 # Do not use
 sssd_uninstall: false
 
-# domain: "blk.example.local"
-
-# openldap_linux: '{{ domain.split(".")[0] | lower }}'
-# openldap_org: '{{ domain.split(".")[1] | lower }}'
-# openldap_tld: '{{ domain.split(".")[2] | lower }}'
-
-# openldap_base: 'dc={{ openldap_linux }},dc={{ openldap_org }},dc={{ openldap_tld }}'
-
-
 domain: '{{ domainbase }}'
 openldap_org: '{{ organization }}'
 openldap_base: '{{ openldap_base }}'
