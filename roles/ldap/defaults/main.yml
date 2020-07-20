@@ -30,5 +30,5 @@ openldap_command_sudoers:
   - /usr/bin/crontab
   - /usr/sbin/dhclient
 
-pri_domain_name: '{{ openldap_linux }}.{{ openldap_org }}.{{ openldap_tld }}'
+pri_domain_name: '{{ domain }}'
 end_sssd: false
