@@ -2,8 +2,9 @@
 dn: ou={{ item.name }},{{ openldap_base }}
 objectClass: organizationalUnit
 ou: {{ item.ou }}
-description: LDAP SUDOERS
+description: LDAP {{ item.description }}
 
+{% if item.ou == sudoers %}
 dn: cn=defaults,ou={{ item.name }},{{ openldap_base }}
 objectClass: top
 objectClass: sudoRole
@@ -21,19 +22,12 @@ sudoOption: env_keep += "LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE"
 sudoOption: env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"
 sudoOption: env_keep+=SSH_AUTH_SOCK
 sudoOption: secure_path = /sbin:/bin:/usr/sbin:/usr/bin
-{% endfor %}
 
-{% for item in openldap_posixgroups %}
-dn: cn={{ item.name }},ou={{ item.ou }},{{ openldap_base }}
-objectClass: top
-objectClass: posixGroup
-cn: {{ item.name }}
-gidNumber: {{ item.gidNum }}
+{% endif %}
 {% endfor %}
-
 
 {% for item in openldap_cn_sudoers %}
-dn: cn={{ item.name }},cn={{ item.cn }},ou={{ item.ou }},{{ openldap_base }}
+dn: cn={{ item.name }},ou={{ item.ou }},{{ openldap_base }}
 objectClass: sudoRole
 objectClass: top
 cn: {{ item.name }}

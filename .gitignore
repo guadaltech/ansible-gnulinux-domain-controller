@@ -2,3 +2,5 @@
 *.retry
 .vagrant
 vagrant_ansible_inventory
+inventory-blk
+.create_hosts.sh

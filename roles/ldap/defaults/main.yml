@@ -6,18 +6,19 @@ openldap_packages:
   - libnss-ldapd
   - sudo-ldap
 openldap_organizationalunits:  #defines OU's to populate
+  - name: Workers
+    ou: Workers
+    description: Organizational Unit Workers
   - name: "{{ sudoers }}"
     ou: "{{ sudoers }}"
-    cn: Workers
+    description: Organizational Unit SUDOERS
+  - name: Hostnames
+    ou: Hostnames
+    description: Organizational Unit Hostnames
 openldap_populate: true  #defines if openldap DB should be populated with openldap_organizationalunits, openldap_posixgroups and openldap_users
-openldap_posixgroups:  #defines groups to create within OU's
-  - name: Workers
-    ou: "{{ sudoers }}"
-    gidNum: 5000  #start group numbers at 5000 and up
 openldap_cn_sudoers:
   - name: sudobase
     ou: "{{ sudoers }}"
-    cn: Workers
     sudoUser: test
     sudoOrder: 0
 openldap_command_sudoers:
@@ -30,3 +31,4 @@ openldap_command_sudoers:
   - /usr/sbin/dhclient
 
 pri_domain_name: '{{ openldap_linux }}.{{ openldap_org }}.{{ openldap_tld }}'
+end_sssd: false
