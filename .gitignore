@@ -4,3 +4,4 @@
 vagrant_ansible_inventory
 inventory-blk
 .create_hosts.sh
+tools/build_variable_domain

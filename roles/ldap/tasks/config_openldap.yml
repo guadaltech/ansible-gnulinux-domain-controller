@@ -75,10 +75,26 @@
     - slapdconf
     - slapdadm
 
-- name: Install module ldap memberof and refint
+- name: Check install module ldap memberof
+  shell: slapdconf list-modules | grep 'memberof'
+  register: active_memberof
+  ignore_errors: true
+
+- name: Install module ldap memberof
   command: "{{ item }}"
   with_items:
     - slapdconf add-module memberof
-    - slapdconf add-overlay dc=blk,dc=gstwdt,dc=local memberof
+    - slapdconf add-overlay {{ openldap_base }} memberof
+  when: active_memberof.rc == -1
+
+- name: Check install module ldap refint
+  shell: slapdconf list-modules | grep 'refint'
+  register: active_refint
+  ignore_errors: true
+
+- name: Install module ldap refint
+  command: "{{ item }}"
+  with_items:
     - slapdconf add-module refint
-    - slapdconf add-overlay dc=blk,dc=gstwdt,dc=local refint olcRefintConfig 'olcRefintAttribute:memberof member manager owner'
+    - slapdconf add-overlay {{ openldap_base }} refint olcRefintConfig 'olcRefintAttribute:memberof member manager owner'
+  when: active_refint.rc == -1
