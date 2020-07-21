@@ -35,7 +35,7 @@
   service:
     name: slapd
     enabled: yes
-    #daemon_reload: yes
+    daemon_reload: yes
     state: restarted
   when: >
     admin_password is defined and
