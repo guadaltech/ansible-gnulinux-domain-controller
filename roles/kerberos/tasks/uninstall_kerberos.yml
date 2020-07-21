@@ -2,6 +2,9 @@
   apt:
     name: "{{ packages }}"
     update_cache: yes
+    autoclean: yes
+    autoremove: yes
+    purge: yes
     state: absent
   vars:
     packages:
@@ -12,13 +15,6 @@
     - ldap-utils
     - krb5-user
 
-- name: Remove useless packages from the cache
-  apt:
-    autoclean: yes
-
-- name: Remove dependencies that are no longer required
-  apt:
-    autoremove: yes
   
 - name: Recursively remove directory
   file:
