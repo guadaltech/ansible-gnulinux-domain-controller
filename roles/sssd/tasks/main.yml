@@ -2,8 +2,8 @@
 - include_tasks: install_sssd.yml
   when: sssd_setup == true
 
-#- include_tasks: uninstall_sssd.yml
-#  when: sssd_uninstall == true
+- include_tasks: uninstall_sssd.yml
+  when: sssd_uninstall == true
 
 - name: Save Hostname
   set_fact:

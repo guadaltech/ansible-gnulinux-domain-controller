@@ -29,10 +29,24 @@
   apt:
     name: "{{ openldap_packages }}"
     update_cache: yes
+    state: present
   environment:
     SUDO_FORCE_REMOVE: "yes"
+  register: install_ldap_packages
+  ignore_errors: true
   tags:
     - install_packages_ldap
+
+- name: Validating correct install
+  apt:
+    name: "{{ openldap_packages }}"
+    update_cache: yes
+    state: present
+  environment:
+      SUDO_FORCE_REMOVE: "yes"
+  when: install_ldap_packages.stdout.find('Errors') != -1
+  tags:
+    - repairs_packages_ldap
 
 - include: config_openldap.yml
 - include: read_only_openldap.yml

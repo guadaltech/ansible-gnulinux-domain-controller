@@ -16,3 +16,6 @@
   file:
     path: /etc/sssd
     state: absent
+
+- name: Remove lines sss in file nsswtich for evit error in login with local users
+  shell: sed -i 's/sss//' /etc/nsswitch.conf
