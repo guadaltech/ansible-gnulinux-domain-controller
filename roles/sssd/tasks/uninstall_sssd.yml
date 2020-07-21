@@ -1,16 +1,11 @@
 - name: Install SSSD
   apt:
     name: "{{ sssd_packages }}"
+    autoclean: yes
+    autoremove: yes
+    purge: yes
     update_cache: yes
     state: absent
-
-- name: Remove useless packages from the cache
-  apt:
-    autoclean: yes
-
-- name: Remove dependencies that are no longer required
-  apt:
-    autoremove: yes
 
 - name: Recursively remove directory
   file:

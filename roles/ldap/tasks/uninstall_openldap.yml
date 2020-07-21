@@ -6,9 +6,11 @@
     state: absent
     autoclean: yes
     autoremove: yes
+    purge: yes
   environment:
     SUDO_FORCE_REMOVE: "yes"
-  
+  register: uninstall_ldap_packages
+
 - name: Recursively remove directory etc
   file:
     path: /etc/ldap
