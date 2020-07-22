@@ -7,12 +7,24 @@
 
 Install all:
 ```
-make deploy
+make vagrant-deploy
 ```
 
 Destroy all:
 ```
-make destroy
+make vagrant-destroy
+```
+
+### Install in production
+
+Install all:
+```
+make install
+```
+
+Uninstall all:
+```
+make uninstall
 ```
 
 ## Manage users
