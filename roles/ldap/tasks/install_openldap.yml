@@ -37,6 +37,9 @@
   tags:
     - install_packages_ldap
 
+- debug:
+    msg: '{{install_ldap_packages}}'
+
 - name: Validating correct install
   apt:
     name: "{{ openldap_packages }}"
@@ -44,7 +47,7 @@
     state: present
   environment:
       SUDO_FORCE_REMOVE: "yes"
-  when: install_ldap_packages.stdout.find('Errors') != -1
+  when: install_ldap_packages|failed
   tags:
     - repairs_packages_ldap
 
