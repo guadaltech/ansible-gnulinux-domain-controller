@@ -1,0 +1,7 @@
+/var/logs/kerberos_backup.log {
+    rotate 3
+    monthly
+    compress
+    missingok
+    notifempty
+}

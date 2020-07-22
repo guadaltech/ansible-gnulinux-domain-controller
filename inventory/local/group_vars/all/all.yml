@@ -1,24 +1,18 @@
 ---
-main_setup: true
-bind9_setup: true
-ldap_setup: true
-kerberos_setup: true
-sssd_setup: true
+main_setup: false
+bind9_setup: false
+ldap_setup: false
+kerberos_setup: false
+sssd_setup: false
 
-main_uninstall: false
-bind9_uninstall: false
-ldap_uninstall: false
-kerberos_uninstall: false
-sssd_uninstall: false
+main_uninstall: true
+bind9_uninstall: true
+ldap_uninstall: true
+kerberos_uninstall: true
+sssd_uninstall: true
 
 domain: '{{ domainbase }}'
 openldap_org: '{{ organization }}'
 openldap_base: '{{ openldap_base }}'
 sudoers: "SUDOers"
 
-# In virtualbox: 0 is internal, 1 private and 2 public IP
-# For more information see the Vagrantfile
-#num_interface: 1
-
-# In normal machine: 0 == eth0
-num_interface: 0

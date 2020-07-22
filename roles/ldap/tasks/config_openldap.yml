@@ -85,7 +85,7 @@
   with_items:
     - slapdconf add-module memberof
     - slapdconf add-overlay {{ openldap_base }} memberof
-  when: active_memberof|failed
+  when: active_memberof.failed
 
 - name: Check install module ldap refint
   shell: slapdconf list-modules | grep 'refint'
@@ -97,4 +97,4 @@
   with_items:
     - slapdconf add-module refint
     - slapdconf add-overlay {{ openldap_base }} refint olcRefintConfig 'olcRefintAttribute:memberof member manager owner'
-  when: active_refint|failed
+  when: active_refint.failed

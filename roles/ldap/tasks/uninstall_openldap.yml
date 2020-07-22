@@ -11,15 +11,20 @@
     SUDO_FORCE_REMOVE: "yes"
   register: uninstall_ldap_packages
 
-- name: Recursively remove directory etc
+- name: Remove extra dirs and files
   file:
-    path: /etc/ldap
+    path: "{{ item }}"
     state: absent
-
-- name: Recursively remove directory var
-  file:
-    path: /var/lib/ldap
-    state: absent
+  with_items:
+    - /etc/ldap
+    - /var/lib/ldap
+    - /etc/logrotate.d/logrotate_ldap_backup
 
 - name: Remove lines ldap in file nsswtich
   shell: sed -i '/^sudoers/d' /etc/nsswitch.conf
+
+- name : Delete cron for ldap_backup
+  cron :
+    name  : ansible_ldap_backup
+    cron_file: ansible_ldap_backup
+    state : absent

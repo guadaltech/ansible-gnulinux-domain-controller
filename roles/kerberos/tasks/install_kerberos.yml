@@ -53,8 +53,21 @@
 - name: Create default password policy
   shell: kadmin.local -q "add_policy -maxlife \"{{ maxlife }}\" -minlife \"{{ minlife }}\" -minlength {{ minlength }} -minclasses {{ minclasses }} -history {{ history }} -maxfailure {{ maxfailure }} -failurecountinterval \"{{ failurecountinterval }}\" -lockoutduration \"{{ lockoutduration }}\" {{ policy_name }}"
 
-- name: Copy blksmanager
-  copy:
-    src: "{{ role_path }}/files/blksmanager"
-    dest: /usr/local/bin/blksmanager
-    mode: 0755
+- name: Copy blksmanager, script backup and logrotate
+  copy: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: "{{ role_path }}/files/blksmanager", dest: "/usr/local/bin/blksmanager", mode: "0755" }
+    - { src: "{{ role_path }}/files/kerberos_backup", dest: "/usr/local/bin/kerberos_backup", mode: "0755" }
+    - { src: "{{ role_path }}/files/logrotate_kerberos_backup", dest: "/etc/logrotate.d/logrotate_kerberos_backup", mode: "0655" }
+
+- name: Configure cron for kerberos_backup
+  cron:
+    name: ansible_kerberos_backup
+    user: root
+    cron_file: ansible_kerberos_backup
+    minute: "0"
+    hour: "2"
+    job: "/usr/local/bin/kerberos_backup >> /var/logs/kerberos_backup.log"
