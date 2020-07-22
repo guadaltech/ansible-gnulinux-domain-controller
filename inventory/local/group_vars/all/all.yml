@@ -1,5 +1,5 @@
 ---
-main_setup: false
+main_setup: true
 bind9_setup: true
 ldap_setup: true
 kerberos_setup: true
@@ -21,4 +21,4 @@ sudoers: "SUDOers"
 #num_interface: 1
 
 # In normal machine: 0 == eth0
-num_interface: 1
+num_interface: 0

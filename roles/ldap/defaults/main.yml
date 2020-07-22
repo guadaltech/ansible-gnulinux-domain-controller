@@ -26,6 +26,7 @@ openldap_command_sudoers:
   - /usr/bin/apt-*
   - /usr/bin/pip
   - /usr/bin/systemctl
+  - /bin/systemctl
   - /usr/sbin/service
   - /usr/bin/crontab
   - /usr/sbin/dhclient
