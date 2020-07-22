@@ -176,7 +176,9 @@ kadmin.local -q "ktadd -norandkey username@EXAMPLE.COM"
 kinit username@EXAMPLE.COM
 ```
 
-## Ansible:
+## Ansible
+
+Do not use, automated in makefile.
 
 Execution:
 ```
