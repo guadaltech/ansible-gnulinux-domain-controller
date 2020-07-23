@@ -37,19 +37,39 @@
   tags:
     - install_packages_ldap
 
-- debug:
+- name: Debug install_ldap_packages
+  debug:
     msg: '{{install_ldap_packages}}'
 
 - name: Validating correct install
   apt:
     name: "{{ openldap_packages }}"
-    update_cache: yes
+    update_cache: "yes"
     state: present
   environment:
       SUDO_FORCE_REMOVE: "yes"
-  when: install_ldap_packages|failed
+  when: install_ldap_packages.failed
   tags:
     - repairs_packages_ldap
 
 - include: config_openldap.yml
 - include: read_only_openldap.yml
+
+- name: Copy script backup and logrotate
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: "{{ role_path }}/files/ldap_restore", dest: "/usr/local/bin/ldap_restore", mode: "0755" }
+    - { src: "{{ role_path }}/files/ldap_backup", dest: "/usr/local/bin/ldap_backup", mode: "0755" }
+    - { src: "{{ role_path }}/files/logrotate_ldap_backup", dest: "/etc/logrotate.d/logrotate_ldap_backup", mode: "0655" }
+
+- name: Configure cron for ldap_backup
+  cron:
+    name: ansible_ldap_backup
+    user: root
+    cron_file: ansible_ldap_backup
+    minute: "{{ backup_minute }}"
+    hour: "{{ backup_hour }}"
+    job: "/usr/local/bin/ldap_backup {{ backup_days_to_delete }} >> /var/log/ldap_backup.log"

@@ -18,7 +18,7 @@ $TTL    604800
 {% if (group !='bind9') %}
 {{ group }} 			IN  CNAME 		{{ groups[group][0] }}
 {% else %}
-{{ group }} 			IN  A 		{{ hostvars[groups['bind9'][0]].ansible_all_ipv4_addresses[num_interface] }}
+{{ group }} 			IN  A 		{{ hostvars[groups['bind9'][0]].ansible_host }}
 {% endif %}
 {% endif %}
 {% endfor %}

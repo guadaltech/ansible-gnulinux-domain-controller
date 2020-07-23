@@ -1,0 +1,18 @@
+#!/bin/bash
+
+DAYS_DELETE="$1"
+echo "[INFO] Days to delete $DAYS_DELETE"
+DATE_NOW=$(date +%d-%m-%Y)
+BACKUP_PATH=/mnt/backups/ldap
+
+mkdir -p ${BACKUP_PATH}
+cd ${BACKUP_PATH}
+
+/usr/sbin/slapcat -n 0 > config_${DATE_NOW}.ldif
+/usr/sbin/slapcat -n 1 > domain_${DATE_NOW}.ldif
+
+tar -czf ldap_etc_${DATE_NOW}.tar.gz /etc/ldap
+tar -czf ldap_var_${DATE_NOW}.tar.gz /var/lib/ldap
+
+find ${BACKUP_PATH} -mtime  +$DAYS_DELETE -iname "*.ldif" -exec rm -f {} \;
+find ${BACKUP_PATH} -mtime  +$DAYS_DELETE -iname "*.tar.gz" -exec rm -f {} \;

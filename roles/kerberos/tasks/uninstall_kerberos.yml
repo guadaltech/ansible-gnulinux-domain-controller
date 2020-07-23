@@ -15,13 +15,17 @@
     - ldap-utils
     - krb5-user
 
-  
-- name: Recursively remove directory
+- name: Remove extra dirs and files
   file:
-    path: /etc/krb5kdc
+    path: "{{ item }}"
     state: absent
+  with_items:
+    - /etc/krb5kdc
+    - /usr/local/bin/blksmanager
+    - /etc/logrotate.d/logrotate_kerberos_backup
 
-- name: Remove blksmanager
-  file:
-    path: /usr/local/bin/blksmanager
-    state: absent
+- name : Delete cron for kerberos_backup
+  cron :
+    name  : ansible_kerberos_backup
+    cron_file: ansible_kerberos_backup
+    state : absent

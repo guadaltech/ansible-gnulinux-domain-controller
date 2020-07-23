@@ -7,7 +7,16 @@
     state: absent
     update_cache: yes
 
-- name: Recursively remove directory
+- name: Remove extra dirs and files
   file:
-    path: /etc/bind
+    path: "{{ item }}"
     state: absent
+  with_items:
+    - /etc/bind
+    - /etc/logrotate.d/logrotate_bind_backup
+
+- name : Delete cron for bind_backup
+  cron :
+    name  : ansible_bind_backup
+    cron_file: ansible_bind_backup
+    state : absent

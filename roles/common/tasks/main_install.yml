@@ -2,7 +2,7 @@
 - name: Interface IP
   debug:
     msg: 
-      - "Interface IP: {{ hostvars[groups['bind9'][0]].ansible_all_ipv4_addresses[num_interface] }}"
+      - "Interface IP: {{ hostvars[groups['bind9'][0]].ansible_host }}"
 
 - name: Create /etc/resolv.conf
   template:

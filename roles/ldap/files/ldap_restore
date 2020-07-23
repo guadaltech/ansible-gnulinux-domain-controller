@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+function check_file {
+	if [ -f "$1" ]; then
+		echo "[INFO] $1 exists."
+	else
+		echo "[ERROR] File $1"
+		exit 1
+	fi
+}
+
+RESTORE_DAY="$1"
+DATE_NOW=$(date +%d-%m-%Y)
+BACKUP_PATH=/mnt/backups/ldap
+
+cd ${BACKUP_PATH}
+
+check_file "config_${RESTORE_DAY}.ldif"
+check_file "domain_${RESTORE_DAY}.ldif"
+check_file "ldap_etc_${RESTORE_DAY}.tar.gz"
+check_file "ldap_var_${RESTORE_DAY}.tar.gz"
+
+/usr/sbin/slapcat -n 0 > config_${DATE_NOW}_manual.ldif
+/usr/sbin/slapcat -n 1 > domain_${DATE_NOW}_manual.ldif
+tar -czf ldap_etc_${DATE_NOW}_manual.tar.gz /etc/ldap
+tar -czf ldap_var_${DATE_NOW}_manual.tar.gz /var/lib/ldap
+
+systemctl stop slapd
+rm -rf /etc/ldap/*
+rm -rf /var/lib/ldap/*
+tar -xzf ldap_etc_${RESTORE_DAY}.tar.gz -C /
+tar -xzf ldap_var_${RESTORE_DAY}.tar.gz -C /
+chown -R openldap:openldap /etc/ldap/slapd.d/ /var/lib/ldap/
+systemctl start slapd
+slapadd -F /etc/ldap/slapd.d -n 0 -l config_${RESTORE_DAY}.ldif
+slapadd -F /etc/ldap/slapd.d -n 1 -l domain_${RESTORE_DAY}.ldif

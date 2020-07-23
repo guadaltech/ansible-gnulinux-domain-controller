@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DAYS_DELETE="$1"
+echo "[INFO] Days to delete $DAYS_DELETE"
+DATE_NOW=$(date +%d-%m-%Y)
+BACKUP_PATH=/mnt/backups/bind
+
+mkdir -p ${BACKUP_PATH}
+cd ${BACKUP_PATH}
+
+tar -czf bind_etc_${DATE_NOW}.tar.gz /etc/bind
+
+find ${BACKUP_PATH} -mtime  +$DAYS_DELETE -iname "*.tar.gz" -exec rm -f {} \;

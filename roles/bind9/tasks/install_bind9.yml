@@ -39,3 +39,22 @@
     name: bind9
     state: restarted
     enabled: yes
+
+- name: Copy script backup and logrotate
+  copy: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: "{{ role_path }}/files/bind_backup", dest: "/usr/local/bin/bind_backup", mode: "0755" }
+    - { src: "{{ role_path }}/files/bind_restore", dest: "/usr/local/bin/bind_restore", mode: "0755" }
+    - { src: "{{ role_path }}/files/logrotate_bind_backup", dest: "/etc/logrotate.d/logrotate_bind_backup", mode: "0655" }
+
+- name: Configure cron for bind_backup
+  cron:
+    name: "ansible_bind_backup"
+    user: root
+    cron_file: "ansible_bind_backup"
+    minute: "{{ backup_minute }}"
+    hour: "{{ backup_hour }}"
+    job: "/usr/local/bin/bind_backup {{ backup_days_to_delete }} >> /var/log/bind_backup.log"
