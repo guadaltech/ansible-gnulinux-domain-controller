@@ -56,4 +56,4 @@
     cron_file: "ansible_bind_backup"
     minute: "0"
     hour: "1"
-    job: "/usr/local/bin/bind_backup >> /var/logs/bind_backup.log"
+    job: "/usr/local/bin/bind_backup >> /var/log/bind_backup.log"

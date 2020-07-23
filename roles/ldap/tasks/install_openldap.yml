@@ -71,4 +71,4 @@
     cron_file: ansible_ldap_backup
     minute: "30"
     hour: "1"
-    job: "/usr/local/bin/ldap_backup >> /var/logs/ldap_backup.log"
+    job: "/usr/local/bin/ldap_backup >> /var/log/ldap_backup.log"

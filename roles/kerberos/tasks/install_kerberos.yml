@@ -70,4 +70,4 @@
     cron_file: ansible_kerberos_backup
     minute: "0"
     hour: "2"
-    job: "/usr/local/bin/kerberos_backup >> /var/logs/kerberos_backup.log"
+    job: "/usr/local/bin/kerberos_backup >> /var/log/kerberos_backup.log"
