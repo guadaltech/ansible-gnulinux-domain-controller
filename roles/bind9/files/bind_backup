@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DAYS_DELETE="10"
+DAYS_DELETE="$1"
+echo "[INFO] Days to delete $DAYS_DELETE"
 DATE_NOW=$(date +%d-%m-%Y)
 BACKUP_PATH=/mnt/backups/bind
 

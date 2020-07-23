@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+function check_file {
+	if [ -f "$1" ]; then
+		echo "[INFO] $1 exists."
+	else
+		echo "[ERROR] File $1"
+		exit 1
+	fi
+} 
+
+RESTORE_DAY="$1"
+DATE_NOW=$(date +%d-%m-%Y)
+BACKUP_PATH=/mnt/backups/bind
+
+cd ${BACKUP_PATH}
+
+check_file "bind_etc_${RESTORE_DAY}.tar.gz"
+
+systemctl stop bind9
+tar -czf bind_etc_${DATE_NOW}_manual.tar.gz /etc/bind
+rm -rf /etc/bind/*
+tar -xzf bind_etc_${RESTORE_DAY}.tar.gz -C /
+chown -R bind:bind /etc/ldap/slapd.d/ /var/lib/ldap/
+systemctl start bind9

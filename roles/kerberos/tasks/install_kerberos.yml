@@ -60,6 +60,7 @@
     mode: "{{ item.mode }}"
   with_items:
     - { src: "{{ role_path }}/files/blksmanager", dest: "/usr/local/bin/blksmanager", mode: "0755" }
+    - { src: "{{ role_path }}/files/kerberos_restore", dest: "/usr/local/bin/kerberos_restore", mode: "0755" }
     - { src: "{{ role_path }}/files/kerberos_backup", dest: "/usr/local/bin/kerberos_backup", mode: "0755" }
     - { src: "{{ role_path }}/files/logrotate_kerberos_backup", dest: "/etc/logrotate.d/logrotate_kerberos_backup", mode: "0655" }
 
@@ -68,6 +69,6 @@
     name: ansible_kerberos_backup
     user: root
     cron_file: ansible_kerberos_backup
-    minute: "0"
-    hour: "2"
-    job: "/usr/local/bin/kerberos_backup >> /var/log/kerberos_backup.log"
+    minute: "{{ backup_minute }}"
+    hour: "{{ backup_hour }}"
+    job: "/usr/local/bin/kerberos_backup {{ backup_days_to_delete }} >> /var/log/kerberos_backup.log"

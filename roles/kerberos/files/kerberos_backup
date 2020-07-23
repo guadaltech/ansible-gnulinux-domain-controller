@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DAYS_DELETE="10"
+DAYS_DELETE="$1"
+echo "[INFO] Days to delete $DAYS_DELETE"
 DATE_NOW=$(date +%d-%m-%Y)
 BACKUP_PATH=/mnt/backups/kerberos
 
@@ -9,8 +10,8 @@ cd ${BACKUP_PATH}
 
 /usr/sbin/kdb5_util dump kdb5_${DATE_NOW}.dump
 
-cp /etc/krb5.conf /etc/krb5_${DATE_NOW}.conf
-cp /etc/krb5.keytab /etc/krb5_${DATE_NOW}.conf
+cp /etc/krb5.conf ${BACKUP_PATH}/krb5_${DATE_NOW}.conf
+cp /etc/krb5.keytab ${BACKUP_PATH}/krb5_${DATE_NOW}.keytab
 
 tar -czf krb5kdc_etc_${DATE_NOW}.tar.gz /etc/krb5kdc
 tar -czf krb5kdc_var_${DATE_NOW}.tar.gz /var/lib/krb5kdc

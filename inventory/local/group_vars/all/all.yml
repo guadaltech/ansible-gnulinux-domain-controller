@@ -16,3 +16,6 @@ openldap_org: '{{ organization }}'
 openldap_base: '{{ openldap_base }}'
 sudoers: "SUDOers"
 
+backup_hour: 1
+backup_minute: 24
+backup_days_to_delete: 10

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+
+function check_file {
+	if [ -f "$1" ]; then
+		echo "[INFO] $1 exists."
+	else
+		echo "[ERROR] File $1"
+		exit 1
+	fi
+}
+
+RESTORE_DAY="$1"
+DATE_NOW=$(date +%d-%m-%Y)
+BACKUP_PATH=/mnt/backups/kerberos
+
+cd ${BACKUP_PATH}
+
+check_file "kdb5_${RESTORE_DAY}.dump"
+check_file "${BACKUP_PATH}/krb5_${RESTORE_DAY}.conf"
+check_file "${BACKUP_PATH}/krb5_${RESTORE_DAY}.keytab"
+check_file "krb5kdc_etc_${RESTORE_DAY}.tar.gz"
+check_file "krb5kdc_var_${RESTORE_DAY}.tar.gz"
+
+/usr/sbin/kdb5_util dump kdb5_${DATE_NOW}_manual.dump
+cp /etc/krb5.conf ${BACKUP_PATH}/krb5_${DATE_NOW}_manual.conf
+cp /etc/krb5.keytab ${BACKUP_PATH}/krb5_${DATE_NOW}_manual.keytab
+tar -czf krb5kdc_etc_${DATE_NOW}_manual.tar.gz /etc/krb5kdc
+tar -czf krb5kdc_var_${DATE_NOW}_manual.tar.gz /var/lib/krb5kdc
+
+systemctl stop krb5-admin-server
+systemctl stop krb5-kdc
+rm -rf /etc/krb5kdc/*
+rm -rf /var/lib/krb5kdc/*
+cp ${BACKUP_PATH}/krb5_${RESTORE_DAY}.conf /etc/krb5.conf
+cp ${BACKUP_PATH}/krb5_${RESTORE_DAY}.keytab /etc/krb5.keytab
+tar -xzf krb5kdc_etc_${RESTORE_DAY}.tar.gz -C /
+tar -xzf krb5kdc_var_${RESTORE_DAY}.tar.gz -C /
+systemctl start krb5-admin-server
+systemctl start krb5-kdc
+/usr/sbin/kdb5_util load kdb5_${RESTORE_DAY}.dump
