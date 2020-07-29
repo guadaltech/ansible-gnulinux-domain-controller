@@ -24,6 +24,14 @@
     group: root
     mode: 0640
 
+- name: config_openldap | creating linux groups config
+  template:
+    src: "ldap/slapd.d/linux_groups.ldif.j2"
+    dest: "/etc/ldap/slapd.d/linux_groups.ldif"
+    owner: root
+    group: root
+    mode: 0640
+
 - name: Add module sudo | configuring sudo
   shell: 'if [[ $(cat /etc/pam.d/sudo | grep -o "pam_ldap.so") != "pam_ldap.so" ]]; then echo "auth      sufficient    pam_ldap.so" >> /etc/pam.d/sudo ; fi'
 
@@ -47,6 +55,13 @@
   when: >
     openldap_populate is defined and
     openldap_populate
+
+- name: config_openldap | Define Linux groups openLDAP
+  shell: 'ldapadd -x -D {{ openldap_bind_id }} -w {{ openldap_admin_password }} -f /etc/ldap/slapd.d/linux_groups.ldif'
+  ignore_errors: yes  #set to get around erroring out that items already exist
+  when: >
+    openldap_linux_groups is defined and
+    update_openldap_linux_groups
 
 - name: Install apt dependencies for slapdconf
   apt: 

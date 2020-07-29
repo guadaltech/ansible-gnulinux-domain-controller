@@ -36,6 +36,12 @@ blksmanager -m add_user_to_host -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LD
 Example delete user to Host:
 blksmanager -m delete_user_to_host -l [HOST LDAP] -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -u (USER) -d (DOMAIN)
 
+Example add user to Group:
+blksmanager -m add_user_to_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)
+
+Example delete user to Group:
+blksmanager -m delete_user_to_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)
+
 EOF
 exit 2
 }
@@ -57,6 +63,10 @@ elif [ $ERROR_CODE == 2005 ]; then
     ERROR_MSG="Mode add_user_to_host need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -u (USER) -d (DOMAIN)"
 elif [ $ERROR_CODE == 2006 ]; then
     ERROR_MSG="Mode delete_user_to_host need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -x (HOSTNAME) -u (USER) -d (DOMAIN)"
+elif [ $ERROR_CODE == 2007 ]; then
+    ERROR_MSG="Mode add_user_to_group need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)"
+elif [ $ERROR_CODE == 2008 ]; then
+    ERROR_MSG="Mode delete_user_to_group need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)"
 else
     ERROR_CODE="2404"
     ERROR_MSG="Error not found..."
@@ -144,7 +154,7 @@ EOF
 function add_user_to_hostname_to_ldap ()
 {
 ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
-dn: cn=$HOSTNAME,ou=Hostnames,$ldapDN
+dn: cn=$1,ou=Hostnames,$ldapDN
 changetype: modify
 add: memberUid
 memberUid: $USERNAME
@@ -153,7 +163,24 @@ ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
 dn: uid=$USERNAME,ou=Workers,$ldapDN
 changetype: modify
 add: memberOf
-memberOf: cn=$HOSTNAME,ou=Hostnames,$ldapDN
+memberOf: cn=$1,ou=Hostnames,$ldapDN
+EOF
+
+}
+
+function add_user_group ()
+{
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=$1,ou=Groups,$ldapDN
+changetype: modify
+add: memberUid
+memberUid: $USERNAME
+EOF
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: uid=$USERNAME,ou=Workers,$ldapDN
+changetype: modify
+add: memberOf
+memberOf: cn=$1,ou=Groups,$ldapDN
 EOF
 
 }
@@ -169,7 +196,7 @@ EOF
 function del_user_to_hostname_to_ldap ()
 {
 ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
-dn: cn=$HOSTNAME,ou=Hostnames,$ldapDN
+dn: cn=$1,ou=Hostnames,$ldapDN
 changetype: modify
 delete: memberUid
 memberUid: $USERNAME
@@ -178,7 +205,23 @@ ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
 dn: uid=$USERNAME,ou=Workers,$ldapDN
 changetype: modify
 delete: memberOf
-memberOf: cn=$HOSTNAME,ou=Hostnames,$ldapDN
+memberOf: cn=$1,ou=Hostnames,$ldapDN
+EOF
+}
+
+function del_user_group ()
+{
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=$1,ou=Groups,$ldapDN
+changetype: modify
+delete: memberUid
+memberUid: $USERNAME
+EOF
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: uid=$USERNAME,ou=Workers,$ldapDN
+changetype: modify
+delete: memberOf
+memberOf: cn=$1,ou=Groups,$ldapDN
 EOF
 }
 
@@ -208,7 +251,7 @@ kadmin.local -q "delete_principal $USERNAME@$UPPER_DOMAIN"
 kdestroy
 }
 
-while getopts ":m:l:a:w:x:u:p:g:d:e:k:h" OPTIONS; do
+while getopts ":m:l:a:w:x:u:p:G:g:d:e:k:h" OPTIONS; do
         case "${OPTIONS}" in
                 m) MODE=${OPTARG} ;;
                 l) HOST_IP=${OPTARG} ;;
@@ -217,6 +260,7 @@ while getopts ":m:l:a:w:x:u:p:g:d:e:k:h" OPTIONS; do
                 x) HOSTNAME=${OPTARG} ;;
                 u) USERNAME=${OPTARG} ;;
                 p) USERNAME_PASSWD=${OPTARG} ;;
+                G) GROUPNAME=${OPTARG} ;;
                 g) GID=${OPTARG} ;;
                 d) DOMAIN=${OPTARG} ;;
                 e) PWEXPIRE=${OPTARG} ;;
@@ -333,7 +377,9 @@ then
 
         ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
 
-        add_user_to_hostname_to_ldap
+        for TRHOSTNAME in $(echo $HOSTNAME | tr ',' ' '); do
+            add_user_to_hostname_to_ldap $TRHOSTNAME
+        done
     fi
 elif [[ $MODE == "delete_user_to_host" ]]
 then
@@ -353,7 +399,54 @@ then
 
         ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
 
-        del_user_from_hostname_to_ldap
+        for TRHOSTNAME in $(echo $HOSTNAME | tr ',' ' '); do
+            del_user_to_hostname_to_ldap $TRHOSTNAME
+        done
+    fi
+elif [[ $MODE == "add_user_to_group" ]]
+then
+    if [ -z "$GROUPNAME" ] \
+        || [ -z "$USERNAME" ] \
+        || [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2007
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
+
+        echo $GROUPNAME
+        for TRGROUPNAME in $(echo $GROUPNAME | tr ',' ' '); do
+            add_user_group $TRGROUPNAME
+        done
+    fi
+elif [[ $MODE == "delete_user_to_group" ]]
+then
+    if [ -z "$GROUPNAME" ] \
+        || [ -z "$USERNAME" ] \
+        || [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2008
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
+
+        for TRGROUPNAME in $(echo $GROUPNAME | tr ',' ' '); do
+            del_user_group $TRGROUPNAME
+        done
     fi
 else
     error 2000
