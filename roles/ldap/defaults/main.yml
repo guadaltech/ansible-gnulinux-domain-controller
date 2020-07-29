@@ -18,6 +18,9 @@ openldap_organizationalunits:  #defines OU's to populate
   - name: Hostnames
     ou: Hostnames
     description: Organizational Unit Hostnames
+  - name: Idmap
+    ou: Idmap
+    description: Organizational Unit Idmap
 openldap_populate: true  #defines if openldap DB should be populated with openldap_organizationalunits, openldap_posixgroups and openldap_users
 openldap_cn_sudoers:
   - name: sudobase
