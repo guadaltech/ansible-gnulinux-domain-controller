@@ -33,8 +33,8 @@ objectClass: top
 cn: {{ item.name }}
 sudoUser: {{ item.sudoUser }}
 sudoHost: ALL
-{% for item in openldap_command_sudoers %}
-sudoCommand: {{ item }}
+{% for command in item.openldap_command_sudoers %}
+sudoCommand: {{ command }}
 {% endfor %}
 sudoOrder: {{ item.sudoOrder }}
 {% endfor %}

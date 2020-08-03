@@ -6,7 +6,7 @@ function check_file {
 	if [ -f "$1" ]; then
 		echo "[INFO] $1 exists."
 	else
-		echo "[ERROR] File $1"
+		echo -e "[ERROR] File $1 not found\nExample: script_restore 22-12-20"
 		exit 1
 	fi
 }

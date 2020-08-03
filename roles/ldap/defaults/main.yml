@@ -9,27 +9,219 @@ openldap_organizationalunits:  #defines OU's to populate
   - name: Workers
     ou: Workers
     description: Organizational Unit Workers
+  - name: Groups
+    ou: Groups
+    description: Organizational Unit Groups
   - name: "{{ sudoers }}"
     ou: "{{ sudoers }}"
     description: Organizational Unit SUDOERS
   - name: Hostnames
     ou: Hostnames
     description: Organizational Unit Hostnames
+  - name: Idmap
+    ou: Idmap
+    description: Organizational Unit Idmap
 openldap_populate: true  #defines if openldap DB should be populated with openldap_organizationalunits, openldap_posixgroups and openldap_users
 openldap_cn_sudoers:
   - name: sudobase
     ou: "{{ sudoers }}"
     sudoUser: test
     sudoOrder: 0
-openldap_command_sudoers:
-  - /usr/bin/apt
-  - /usr/bin/apt-*
-  - /usr/bin/pip
-  - /usr/bin/systemctl
-  - /bin/systemctl
-  - /usr/sbin/service
-  - /usr/bin/crontab
-  - /usr/sbin/dhclient
+    openldap_command_sudoers:
+      - apt
+      - pip
+      - systemctl
+      - service
+      - crontab
+      - dhclient
+      - /usr/bin/apt
+      - /usr/bin/apt-*
+      - /usr/bin/pip
+      - /usr/bin/systemctl
+      - /bin/systemctl
+      - /usr/sbin/service
+      - /usr/bin/crontab
+      - /usr/sbin/dhclient
+  - name: sudoadmin
+    ou: "{{ sudoers }}"
+    sudoUser: test
+    sudoOrder: 0
+    openldap_command_sudoers:
+      - su
+update_openldap_linux_groups: true
+openldap_linux_groups:
+  - name: blkusers
+    gid: 5000
+  - name: root
+    gid: 0
+  - name: daemon
+    gid: 1
+  - name: bin
+    gid: 2
+  - name: sys
+    gid: 3
+  - name: adm
+    gid: 4
+  - name: tty
+    gid: 5
+  - name: disk
+    gid: 6
+  - name: lp
+    gid: 7
+  - name: mail
+    gid: 8
+  - name: news
+    gid: 9
+  - name: uucp
+    gid: 10
+  - name: man
+    gid: 12
+  - name: proxy
+    gid: 13
+  - name: kmem
+    gid: 15
+  - name: dialout
+    gid: 20
+  - name: fax
+    gid: 21
+  - name: voice
+    gid: 22
+  - name: cdrom
+    gid: 24
+  - name: floppy
+    gid: 25
+  - name: tape
+    gid: 26
+  - name: sudo
+    gid: 27
+  - name: audio
+    gid: 29
+  - name: dip
+    gid: 30
+  - name: www-data
+    gid: 33
+  - name: backup
+    gid: 34
+  - name: operator
+    gid: 37
+  - name: list
+    gid: 38
+  - name: irc
+    gid: 39
+  - name: src
+    gid: 40
+  - name: gnats
+    gid: 41
+  - name: shadow
+    gid: 42
+  - name: utmp
+    gid: 43
+  - name: video
+    gid: 44
+  - name: sasl
+    gid: 45
+  - name: plugdev
+    gid: 46
+  - name: staff
+    gid: 50
+  - name: games
+    gid: 60
+  - name: users
+    gid: 100
+  - name: nogroup
+    gid: 65534
+  - name: systemd-journal
+    gid: 101
+  - name: systemd-timesync
+    gid: 102
+  - name: systemd-network
+    gid: 103
+  - name: systemd-resolve
+    gid: 104
+  - name: systemd-bus-proxy
+    gid: 105
+  - name: input
+    gid: 106
+  - name: crontab
+    gid: 107
+  - name: syslog
+    gid: 108
+  - name: netdev
+    gid: 109
+  - name: messagebus
+    gid: 110
+  - name: uuidd
+    gid: 111
+  - name: ssl-cert
+    gid: 112
+  - name: lpadmin
+    gid: 113
+  - name: lightdm
+    gid: 114
+  - name: nopasswdlogin
+    gid: 115
+  - name: ssh
+    gid: 116
+  - name: whoopsie
+    gid: 117
+  - name: mlocate
+    gid: 118
+  - name: avahi-autoipd
+    gid: 119
+  - name: avahi
+    gid: 120
+  - name: bluetooth
+    gid: 121
+  - name: scanner
+    gid: 122
+  - name: colord
+    gid: 123
+  - name: pulse
+    gid: 124
+  - name: pulse-access
+    gid: 125
+  - name: rtkit
+    gid: 126
+  - name: saned
+    gid: 127
+  - name: sambashare
+    gid: 128
+  - name: usermetrics
+    gid: 129
+  - name: clickpkg
+    gid: 130
+  - name: nm-openvpn
+    gid: 131
+  - name: docker
+    gid: 999
+  - name: weston-launch
+    gid: 132
+  - name: postgres
+    gid: 133
+  - name: vboxusers
+    gid: 134
+  - name: snort
+    gid: 135
+  - name: wireshark
+    gid: 136
+  - name: kvm
+    gid: 137
+  - name: libvirtd
+    gid: 138
+  - name: lxd
+    gid: 1001
+  - name: netdata
+    gid: 998
+  - name: glances
+    gid: 139
+  - name: mongodb
+    gid: 140
+  - name: mysql
+    gid: 141
+  - name: no-internet
+    gid: 1003
+  - name: debian-tor
+    gid: 142
 
 pri_domain_name: '{{ domain }}'
 end_sssd: false

@@ -1,0 +1,7 @@
+{% for item in openldap_linux_groups %}
+dn: cn={{ item.name }},ou=Groups,{{ openldap_base }}
+objectClass: top
+objectClass: posixGroup
+gidNumber: {{ item.gid }}
+
+{% endfor %}

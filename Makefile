@@ -18,6 +18,7 @@ domain:
 	source tools/generated_domain.sh
 
 install: domain
+	echo "" > .create_hosts.sh
 	echo "[INFO] Using dir ${INVENTORY_DIR}"
 	sed -i 's/_setup: false/_setup: true/' ${INVENTORY_DIR}/local/group_vars/all/all.yml
 	sed -i 's/_uninstall: true/_uninstall: false/' ${INVENTORY_DIR}/local/group_vars/all/all.yml
