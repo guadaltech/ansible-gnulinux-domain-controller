@@ -1,0 +1,75 @@
+# AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.
+# CRC32 4886a89f
+dn: cn={5}samba
+objectClass: olcSchemaConfig
+cn: {5}samba
+olcAttributeTypes: {0}( 1.3.6.1.4.1.7165.2.1.1 NAME 'lmPassword' DESC 'LanMa
+ nager Passwd' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5SubstringsMat
+ ch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {1}( 1.3.6.1.4.1.7165.2.1.2 NAME 'ntPassword' DESC 'NT Pa
+ sswd' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5SubstringsMatch SYNTA
+ X 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {2}( 1.3.6.1.4.1.7165.2.1.4 NAME 'acctFlags' DESC 'Accoun
+ t Flags' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5SubstringsMatch SY
+ NTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {3}( 1.3.6.1.4.1.7165.2.1.3 NAME 'pwdLastSet' DESC 'NT pw
+ dLastSet' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE
+ -VALUE )
+olcAttributeTypes: {4}( 1.3.6.1.4.1.7165.2.1.5 NAME 'logonTime' DESC 'NT log
+ onTime' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-V
+ ALUE )
+olcAttributeTypes: {5}( 1.3.6.1.4.1.7165.2.1.6 NAME 'logoffTime' DESC 'NT lo
+ goffTime' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE
+ -VALUE )
+olcAttributeTypes: {6}( 1.3.6.1.4.1.7165.2.1.7 NAME 'kickoffTime' DESC 'NT k
+ ickoffTime' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SING
+ LE-VALUE )
+olcAttributeTypes: {7}( 1.3.6.1.4.1.7165.2.1.8 NAME 'pwdCanChange' DESC 'NT 
+ pwdCanChange' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SI
+ NGLE-VALUE )
+olcAttributeTypes: {8}( 1.3.6.1.4.1.7165.2.1.9 NAME 'pwdMustChange' DESC 'NT
+  pwdMustChange' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 
+ SINGLE-VALUE )
+olcAttributeTypes: {9}( 1.3.6.1.4.1.7165.2.1.10 NAME 'homeDrive' DESC 'NT ho
+ meDrive' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5SubstringsMatch SY
+ NTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {10}( 1.3.6.1.4.1.7165.2.1.11 NAME 'scriptPath' DESC 'NT 
+ scriptPath' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTA
+ X 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {11}( 1.3.6.1.4.1.7165.2.1.12 NAME 'profilePath' DESC 'NT
+  profilePath' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYN
+ TAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {12}( 1.3.6.1.4.1.7165.2.1.13 NAME 'userWorkstations' DES
+ C 'userWorkstations' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMa
+ tch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {13}( 1.3.6.1.4.1.7165.2.1.17 NAME 'smbHome' DESC 'smbHom
+ e' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1
+ .4.1.1466.115.121.1.15 )
+olcAttributeTypes: {14}( 1.3.6.1.4.1.7165.2.1.18 NAME 'domain' DESC 'Windows
+  NT domain to which the user belongs' EQUALITY caseIgnoreIA5Match SUBSTR ca
+ seIgnoreIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {15}( 1.3.6.1.4.1.7165.2.1.14 NAME 'rid' DESC 'NT rid' EQ
+ UALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {16}( 1.3.6.1.4.1.7165.2.1.15 NAME 'primaryGroupID' DESC 
+ 'NT Group RID' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 S
+ INGLE-VALUE )
+olcAttributeTypes: {17}( 1.3.6.1.4.1.7165.2.1.20 NAME 'sambaSID' DESC 'Secur
+ ity ID' EQUALITY caseIgnoreIA5Match SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{64
+ } SINGLE-VALUE )
+olcAttributeTypes: {18}( 1.3.6.1.4.1.7165.2.1.23 NAME 'sambaPrimaryGroupSID'
+  DESC 'Primary Group Security ID' EQUALITY caseIgnoreIA5Match SYNTAX 1.3.6.
+ 1.4.1.1466.115.121.1.26{64} SINGLE-VALUE )
+olcObjectClasses: {0}( 1.3.6.1.4.1.7165.2.2.3 NAME 'sambaAccount' DESC 'Samb
+ a Auxilary Account' SUP top AUXILIARY MUST ( uid $ rid ) MAY ( cn $ lmPassw
+ ord $ ntPassword $ pwdLastSet $ logonTime $ logoffTime $ kickoffTime $ pwdC
+ anChange $ pwdMustChange $ acctFlags $ displayName $ smbHome $ homeDrive $ 
+ scriptPath $ profilePath $ description $ userWorkstations $ primaryGroupID 
+ $ domain ) )
+structuralObjectClass: olcSchemaConfig
+entryUUID: 11903f10-74bf-103a-9e18-73119b940511
+creatorsName: cn=config
+createTimestamp: 20200817102050Z
+entryCSN: 20200817102050.643306Z#000000#000#000000
+modifiersName: cn=config
+modifyTimestamp: 20200817102050Z
+
