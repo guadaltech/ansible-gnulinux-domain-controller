@@ -1,0 +1,22 @@
+---
+- name: Copy ldif for Apple
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "openldap"
+    group: "openldap"
+  with_items:
+    - { src: "{{ role_path }}/files/apple/cn={5}samba.ldif", dest: "/etc/ldap/slapd.d/cn=config/cn=schema/cn={5}samba.ldif", mode: "0600" }
+    - { src: "{{ role_path }}/files/apple/cn={6}apple_auxillary.ldif", dest: "/etc/ldap/slapd.d/cn=config/cn=schema/cn={6}apple_auxillary.ldif", mode: "0600" }
+    - { src: "{{ role_path }}/files/apple/cn={7}apple.ldif", dest: "/etc/ldap/slapd.d/cn=config/cn=schema/cn={7}apple.ldif", mode: "0600" }
+
+- name: config_openldap | restart slapd
+  service:
+    name: slapd
+    enabled: yes
+    daemon_reload: yes
+    state: restarted
+  when: >
+    admin_password is defined and
+    admin_password

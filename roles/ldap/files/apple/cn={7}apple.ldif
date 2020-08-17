@@ -1,0 +1,589 @@
+# AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.
+# CRC32 627fc2af
+dn: cn={7}apple
+objectClass: olcSchemaConfig
+cn: {7}apple
+olcAttributeTypes: {0}( 1.3.6.1.4.1.63.1000.1.1.2.16.1 NAME 'authAuthority' 
+ DESC 'password server authentication authority' EQUALITY caseExactIA5Match 
+ SUBSTR caseExactIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {1}( 1.3.6.1.4.1.250.1.60 NAME 'ttl' EQUALITY integerMatc
+ h SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {2}( 1.3.6.1.4.1.63.1000.1.1.1.1.6 NAME 'apple-user-homeu
+ rl' DESC 'home directory URL' EQUALITY caseExactIA5Match SUBSTR caseExactIA
+ 5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {3}( 1.3.6.1.4.1.63.1000.1.1.1.1.7 NAME 'apple-user-class
+ ' DESC 'user class' EQUALITY caseExactIA5Match SUBSTR caseExactIA5Substring
+ sMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {4}( 1.3.6.1.4.1.63.1000.1.1.1.1.8 NAME 'apple-user-homeq
+ uota' DESC 'home directory quota' EQUALITY caseExactIA5Match SUBSTR caseExa
+ ctIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {5}( 1.3.6.1.4.1.63.1000.1.1.1.1.9 NAME 'apple-user-maila
+ ttribute' DESC 'mail attribute' EQUALITY caseExactMatch SUBSTR caseExactSub
+ stringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {6}( 1.3.6.1.4.1.63.1000.1.1.1.1.10 NAME 'apple-mcxflags'
+  DESC 'mcx flags' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch S
+ YNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {7}( 1.3.6.1.4.1.63.1000.1.1.1.1.16 NAME ( 'apple-mcxsett
+ ings' 'apple-mcxsettings2' ) DESC 'mcx settings' EQUALITY caseExactMatch SU
+ BSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {8}( 1.3.6.1.4.1.63.1000.1.1.1.1.12 NAME 'apple-user-pict
+ ure' DESC 'picture' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {9}( 1.3.6.1.4.1.63.1000.1.1.1.1.13 NAME 'apple-user-prin
+ tattribute' DESC 'print attribute' EQUALITY caseExactMatch SUBSTR caseExact
+ SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {10}( 1.3.6.1.4.1.63.1000.1.1.1.1.14 NAME 'apple-user-adm
+ inlimits' DESC 'admin limits' EQUALITY caseExactMatch SUBSTR caseExactSubst
+ ringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {11}( 1.3.6.1.4.1.63.1000.1.1.1.1.15 NAME 'apple-user-aut
+ henticationhint' DESC 'password hint' EQUALITY caseExactMatch SUBSTR caseEx
+ actSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {12}( 1.3.6.1.4.1.63.1000.1.1.1.1.17 NAME 'apple-user-hom
+ esoftquota' DESC 'home directory soft quota' EQUALITY caseExactIA5Match SUB
+ STR caseExactIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE
+ -VALUE )
+olcAttributeTypes: {13}( 1.3.6.1.4.1.63.1000.1.1.1.1.18 NAME 'apple-user-pas
+ swordpolicy' DESC 'password policy options' EQUALITY caseExactMatch SUBSTR 
+ caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE 
+ )
+olcAttributeTypes: {14}( 1.3.6.1.4.1.63.1000.1.1.1.1.19 NAME 'apple-keyword'
+  DESC 'keywords' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch SY
+ NTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {15}( 1.3.6.1.4.1.63.1000.1.1.1.1.20 NAME 'apple-generate
+ duid' DESC 'generated unique ID' EQUALITY caseExactMatch SUBSTR caseExactSu
+ bstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {16}( 1.3.6.1.4.1.63.1000.1.1.1.1.21 NAME 'apple-imhandle
+ ' DESC 'IM handle (service:account name)' EQUALITY caseExactMatch SUBSTR ca
+ seExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {17}( 1.3.6.1.4.1.63.1000.1.1.1.1.22 NAME 'apple-weblogur
+ i' DESC 'Weblog URI' EQUALITY caseIgnoreMatch SUBSTR caseExactSubstringsMat
+ ch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {18}( 1.3.6.1.4.1.63.1000.1.1.1.1.23 NAME 'apple-mapcoord
+ inates' DESC 'Map Coordinates' EQUALITY caseExactIA5Match SUBSTR caseExactI
+ A5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {19}( 1.3.6.1.4.1.63.1000.1.1.1.1.24 NAME 'apple-postalad
+ dresses' DESC 'Postal Addresses' EQUALITY caseExactIA5Match SUBSTR caseExac
+ tIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {20}( 1.3.6.1.4.1.63.1000.1.1.1.1.25 NAME 'apple-phonecon
+ tacts' DESC 'Phone Contacts' EQUALITY caseExactIA5Match SUBSTR caseExactIA5
+ SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {21}( 1.3.6.1.4.1.63.1000.1.1.1.1.26 NAME 'apple-emailcon
+ tacts' DESC 'EMail Contacts' EQUALITY caseExactIA5Match SUBSTR caseExactIA5
+ SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {22}( 1.3.6.1.4.1.63.1000.1.1.1.1.27 NAME 'apple-birthday
+ ' DESC 'Birthday' EQUALITY generalizedTimeMatch SUBSTR caseExactIA5Substrin
+ gsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE )
+olcAttributeTypes: {23}( 1.3.6.1.4.1.63.1000.1.1.1.1.28 NAME 'apple-relation
+ ships' DESC 'Relationships' EQUALITY caseExactMatch SUBSTR caseExactSubstri
+ ngsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {24}( 1.3.6.1.4.1.63.1000.1.1.1.1.29 NAME 'apple-company'
+  DESC 'company' EQUALITY caseIgnoreMatch SUBSTR caseExactSubstringsMatch SY
+ NTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {25}( 1.3.6.1.4.1.63.1000.1.1.1.1.30 NAME 'apple-nickname
+ ' DESC 'nickname' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch S
+ YNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {26}( 1.3.6.1.4.1.63.1000.1.1.1.1.31 NAME 'apple-mapuri' 
+ DESC 'Map URI' EQUALITY caseExactIA5Match SUBSTR caseExactIA5SubstringsMatc
+ h SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {27}( 1.3.6.1.4.1.63.1000.1.1.1.1.32 NAME 'apple-mapguid'
+  DESC 'map GUID' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch SY
+ NTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {28}( 1.3.6.1.4.1.63.1000.1.1.1.1.33 NAME 'apple-services
+ locator' DESC 'Calendar Principal URI' EQUALITY caseExactMatch SUBSTR caseE
+ xactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {29}( 1.3.6.1.4.1.63.1000.1.1.1.1.34 NAME 'apple-organiza
+ tioninfo' DESC 'Originization Info data' EQUALITY caseExactMatch SUBSTR cas
+ eExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {30}( 1.3.6.1.4.1.63.1000.1.1.1.1.35 NAME 'apple-namesuff
+ ix' DESC 'namesuffix' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMat
+ ch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {31}( 1.3.6.1.4.1.63.1000.1.1.1.1.36 NAME 'apple-primaryc
+ omputerlist' DESC 'primary computer list' EQUALITY caseExactMatch SUBSTR ca
+ seExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {32}( 1.3.6.1.4.1.63.1000.1.1.1.1.37 NAME 'apple-user-pas
+ swordpolicy-effective' DESC 'password effective policy options' EQUALITY ca
+ seExactMatch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.12
+ 1.1.15 SINGLE-VALUE )
+olcAttributeTypes: {33}( 1.3.6.1.4.1.63.1000.1.1.1.1.100 NAME 'apple-user-ho
+ meDirectory' DESC 'The absolute path to the home directory' EQUALITY caseEx
+ actIA5Match SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {34}( 1.3.6.1.4.1.63.1000.1.1.1.14.1 NAME 'apple-group-ho
+ meurl' DESC 'group home url' EQUALITY caseExactIA5Match SUBSTR caseExactIA5
+ SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {35}( 1.3.6.1.4.1.63.1000.1.1.1.14.2 NAME 'apple-group-ho
+ meowner' DESC 'group home owner settings' EQUALITY caseExactIA5Match SUBSTR
+  caseExactIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VA
+ LUE )
+olcAttributeTypes: {36}( 1.3.6.1.4.1.63.1000.1.1.1.14.5 NAME 'apple-group-re
+ alname' DESC 'group real name' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSu
+ bstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {37}( 1.3.6.1.4.1.63.1000.1.1.1.14.6 NAME 'apple-group-ne
+ stedgroup' DESC 'group real name' EQUALITY caseExactMatch SUBSTR caseExactS
+ ubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {38}( 1.3.6.1.4.1.63.1000.1.1.1.14.7 NAME 'apple-group-me
+ mberguid' DESC 'group real name' EQUALITY caseExactMatch SUBSTR caseExactSu
+ bstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {39}( 1.3.6.1.4.1.63.1000.1.1.1.14.8 NAME 'apple-group-se
+ rvices' DESC 'group services' EQUALITY caseExactMatch SUBSTR caseExactSubst
+ ringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {40}( 1.3.6.1.4.1.63.1000.1.1.1.14.9 NAME 'apple-contactg
+ uid' DESC 'contact GUID' EQUALITY caseExactMatch SUBSTR caseExactSubstrings
+ Match SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {41}( 1.3.6.1.4.1.63.1000.1.1.1.14.10 NAME 'apple-ownergu
+ id' DESC 'owner GUID' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMat
+ ch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {42}( 1.3.6.1.4.1.63.1000.1.1.1.14.11 NAME 'apple-primary
+ computerguid' DESC 'primary computer GUID' EQUALITY caseExactMatch SUBSTR c
+ aseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {43}( 1.3.6.1.4.1.63.1000.1.1.1.14.12 NAME 'apple-group-e
+ xpandednestedgroup' DESC 'expanded nested group list' EQUALITY caseExactMat
+ ch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {44}( 1.3.6.1.4.1.63.1000.1.1.1.14.13 NAME 'apple-selfwri
+ te' DESC 'selfwrite flag' EQUALITY caseExactMatch SUBSTR caseExactSubstring
+ sMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {45}( 1.3.6.1.4.1.63.1000.1.1.1.14.14 NAME 'apple-locale-
+ relay' DESC 'designated locale relay server for replication' EQUALITY caseE
+ xactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {46}( 1.3.6.1.4.1.63.1000.1.1.1.14.15 NAME 'apple-locale-
+ subnets' DESC 'subnets associated with a locale' EQUALITY caseExactMatch SY
+ NTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {47}( 1.3.6.1.4.1.63.1000.1.1.1.3.8 NAME 'apple-machine-s
+ oftware' DESC 'installed system software' EQUALITY caseIgnoreIA5Match SUBST
+ R caseIgnoreIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {48}( 1.3.6.1.4.1.63.1000.1.1.1.3.9 NAME 'apple-machine-h
+ ardware' DESC 'system hardware description' EQUALITY caseIgnoreIA5Match SUB
+ STR caseIgnoreIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {49}( 1.3.6.1.4.1.63.1000.1.1.1.3.10 NAME 'apple-machine-
+ serves' DESC 'NetInfo Domain Server Binding' EQUALITY caseExactIA5Match SUB
+ STR caseExactIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {50}( 1.3.6.1.4.1.63.1000.1.1.1.3.11 NAME 'apple-machine-
+ suffix' DESC 'DIT suffix' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstri
+ ngsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {51}( 1.3.6.1.4.1.63.1000.1.1.1.3.12 NAME 'apple-machine-
+ contactperson' DESC 'Name of contact person/owner of this machine' EQUALITY
+  caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.1
+ 15.121.1.15 )
+olcAttributeTypes: {52}( 1.3.6.1.4.1.63.1000.1.1.1.22.1 NAME 'attributeTypes
+ Config' DESC 'RFC2252: attribute types' EQUALITY caseExactMatch SUBSTR case
+ ExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {53}( 1.3.6.1.4.1.63.1000.1.1.1.22.2 NAME 'objectClassesC
+ onfig' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6
+ .1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {54}( 1.3.6.1.4.1.63.1000.1.1.1.8.1 NAME 'mountDirectory'
+  DESC 'mount path' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch 
+ SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {55}( 1.3.6.1.4.1.63.1000.1.1.1.8.2 NAME 'mountType' DESC
+  'mount VFS type' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5Substring
+ sMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {56}( 1.3.6.1.4.1.63.1000.1.1.1.8.3 NAME 'mountOption' DE
+ SC 'mount options' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5Substrin
+ gsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {57}( 1.3.6.1.4.1.63.1000.1.1.1.8.4 NAME 'mountDumpFreque
+ ncy' DESC 'mount dump frequency' EQUALITY caseIgnoreIA5Match SUBSTR caseIgn
+ oreIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {58}( 1.3.6.1.4.1.63.1000.1.1.1.8.5 NAME 'mountPassNo' DE
+ SC 'mount passno' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5Substring
+ sMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {59}( 1.3.6.1.4.1.63.1000.1.1.1.9.1 NAME 'apple-printer-a
+ ttributes' DESC 'printer attributes in /etc/printcap format' EQUALITY caseI
+ gnoreIA5Match SUBSTR caseIgnoreIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.1
+ 15.121.1.26 )
+olcAttributeTypes: {60}( 1.3.6.1.4.1.63.1000.1.1.1.9.2 NAME 'apple-printer-l
+ prhost' DESC 'printer LPR host name' EQUALITY caseIgnoreMatch SUBSTR caseIg
+ noreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {61}( 1.3.6.1.4.1.63.1000.1.1.1.9.3 NAME 'apple-printer-l
+ prqueue' DESC 'printer LPR queue' EQUALITY caseIgnoreMatch SUBSTR caseIgnor
+ eSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {62}( 1.3.6.1.4.1.63.1000.1.1.1.9.4 NAME 'apple-printer-t
+ ype' DESC 'printer type' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstrin
+ gsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {63}( 1.3.6.1.4.1.63.1000.1.1.1.9.5 NAME 'apple-printer-n
+ ote' DESC 'printer note' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstrin
+ gsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {64}( 1.3.6.1.4.1.63.1000.1.1.1.10.2 NAME 'apple-realname
+ ' DESC 'real name' EQUALITY caseIgnoreMatch SUBSTR caseExactSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {65}( 1.3.6.1.4.1.63.1000.1.1.1.10.3 NAME 'apple-networkv
+ iew' DESC 'Network view for the computer' EQUALITY caseExactMatch SUBSTR ca
+ seExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {66}( 1.3.6.1.4.1.63.1000.1.1.1.10.4 NAME 'apple-category
+ ' DESC 'Category for the computer or neighborhood' EQUALITY caseExactMatch 
+ SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {67}( 1.3.6.1.4.1.63.1000.1.1.1.10.5 NAME 'apple-srv' DES
+ C 'List of services to advertize via srv records' EQUALITY caseExactMatch S
+ UBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {68}( 1.3.6.1.4.1.63.1000.1.1.1.10.6 NAME 'apple-primary-
+ locale' DESC 'primary locale for replication' EQUALITY caseExactMatch SYNTA
+ X 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {69}( 1.3.6.1.4.1.63.1000.1.1.1.10.7 NAME 'apple-parentlo
+ cales' DESC 'parent locale' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466
+ .115.121.1.15 )
+olcAttributeTypes: {70}( 1.3.6.1.4.1.63.1000.1.1.1.10.8 NAME 'apple-networki
+ nterfaces' DESC 'list of available network interfaces' EQUALITY caseExactMa
+ tch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {71}( 1.3.6.1.4.1.63.1000.1.1.1.11.3 NAME 'apple-computer
+ s' DESC 'computers' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {72}( 1.3.6.1.4.1.63.1000.1.1.1.11.4 NAME 'apple-computer
+ -list-groups' DESC 'groups' EQUALITY caseExactMatch SUBSTR caseExactSubstri
+ ngsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {73}( 1.3.6.1.4.1.63.1000.1.1.1.17.1 NAME 'apple-xmlplist
+ ' DESC 'XML plist data' EQUALITY caseExactMatch SUBSTR caseExactSubstringsM
+ atch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {74}( 1.3.6.1.4.1.63.1000.1.1.1.19.2 NAME 'apple-service-
+ url' DESC 'URL of service' EQUALITY caseExactIA5Match SUBSTR caseExactIA5Su
+ bstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {75}( 1.3.6.1.4.1.63.1000.1.1.1.19.6 NAME 'apple-servicei
+ nfo' DESC 'service related information' EQUALITY caseExactMatch SUBSTR case
+ ExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {76}( 1.3.6.1.4.1.63.1000.1.1.1.19.7 NAME 'apple-hwuuid' 
+ DESC 'Hardware uuid of computer' EQUALITY caseExactMatch SUBSTR caseExactSu
+ bstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {77}( 1.3.6.1.4.1.63.1000.1.1.1.19.8 NAME 'apple-ldap-ser
+ verid' DESC 'ID used by LDAP' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466
+ .115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {78}( 1.3.6.1.4.1.63.1000.1.1.1.12.1 NAME 'apple-password
+ -server-location' DESC 'password server location' EQUALITY caseExactIA5Matc
+ h SUBSTR caseExactIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 S
+ INGLE-VALUE )
+olcAttributeTypes: {79}( 1.3.6.1.4.1.63.1000.1.1.1.12.2 NAME 'apple-data-sta
+ mp' DESC 'data stamp' EQUALITY caseExactIA5Match SUBSTR caseExactIA5Substri
+ ngsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {80}( 1.3.6.1.4.1.63.1000.1.1.1.12.3 NAME 'apple-config-r
+ ealname' DESC 'config real name' EQUALITY caseExactIA5Match SUBSTR caseExac
+ tIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {81}( 1.3.6.1.4.1.63.1000.1.1.1.12.4 NAME 'apple-password
+ -server-list' DESC 'password server replication plist' EQUALITY caseExactMa
+ tch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SI
+ NGLE-VALUE )
+olcAttributeTypes: {82}( 1.3.6.1.4.1.63.1000.1.1.1.12.5 NAME 'apple-ldap-rep
+ lica' DESC 'LDAP replication list' EQUALITY caseExactMatch SUBSTR caseExact
+ SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {83}( 1.3.6.1.4.1.63.1000.1.1.1.12.6 NAME 'apple-ldap-wri
+ table-replica' DESC 'LDAP writable replication list' EQUALITY caseExactMatc
+ h SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {84}( 1.3.6.1.4.1.63.1000.1.1.1.12.7 NAME 'apple-kdc-auth
+ key' DESC 'KDC master key RSA encrypted with realm public key' EQUALITY cas
+ eExactMatch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121
+ .1.15 )
+olcAttributeTypes: {85}( 1.3.6.1.4.1.63.1000.1.1.1.12.8 NAME 'apple-kdc-conf
+ igdata' DESC 'Contents of the kdc.conf file' EQUALITY caseExactMatch SUBSTR
+  caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE
+  )
+olcAttributeTypes: {86}( 1.3.6.1.4.1.63.1000.1.1.1.12.9 NAME 'apple-last-ser
+ verid' DESC 'Last serverID used' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1
+ 466.115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {87}( 1.3.6.1.4.1.63.1000.1.1.1.15.1 NAME 'apple-preset-u
+ ser-is-admin' DESC 'flag indicating whether the preset user is an administr
+ ator' EQUALITY caseExactIA5Match SUBSTR caseExactIA5SubstringsMatch SYNTAX 
+ 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {88}( 1.3.6.1.4.1.63.1000.1.1.1.18.1 NAME 'apple-dns-doma
+ in' DESC 'DNS domain' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMat
+ ch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {89}( 1.3.6.1.4.1.63.1000.1.1.1.18.2 NAME 'apple-dns-name
+ server' DESC 'DNS name server list' EQUALITY caseExactMatch SUBSTR caseExac
+ tSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {90}( 1.3.6.1.4.1.63.1000.1.1.1.19.1 NAME 'apple-service-
+ type' DESC 'type of service' EQUALITY caseExactIA5Match SUBSTR caseExactIA5
+ SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {91}( 1.3.6.1.4.1.63.1000.1.1.1.19.3 NAME 'apple-service-
+ port' DESC 'Service port number' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1
+ 466.115.121.1.27 )
+olcAttributeTypes: {92}( 1.3.6.1.4.1.63.1000.1.1.1.19.4 NAME 'apple-dnsname'
+  DESC 'DNS name' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch SY
+ NTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {93}( 1.3.6.1.4.1.63.1000.1.1.1.19.5 NAME 'apple-service-
+ location' DESC 'Service location' EQUALITY caseExactMatch SUBSTR caseExactS
+ ubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {94}( 1.3.6.1.4.1.63.1000.1.1.1.20.1 NAME 'apple-nodepath
+ xml' DESC 'XML plist of directory node path' EQUALITY caseExactMatch SUBSTR
+  caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {95}( 1.3.6.1.4.1.63.1000.1.1.1.20.2 NAME 'apple-neighbor
+ hoodalias' DESC 'XML plist referring to another neighborhood record' EQUALI
+ TY caseExactMatch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.1
+ 15.121.1.15 )
+olcAttributeTypes: {96}( 1.3.6.1.4.1.63.1000.1.1.1.20.3 NAME 'apple-computer
+ alias' DESC 'XML plist referring to a computer record' EQUALITY caseExactMa
+ tch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {97}( 1.3.6.1.4.1.63.1000.1.1.1.21.1 NAME 'apple-acl-entr
+ y' DESC 'acl entry' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {98}( 1.3.6.1.4.1.63.1000.1.1.1.23.1 NAME 'apple-resource
+ -type' DESC 'resource type' EQUALITY caseExactIA5Match SUBSTR caseExactIA5S
+ ubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: {99}( 1.3.6.1.4.1.63.1000.1.1.1.23.2 NAME 'apple-resource
+ -info' DESC 'resource info' EQUALITY caseExactMatch SUBSTR caseExactSubstri
+ ngsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {100}( 1.3.6.1.4.1.63.1000.1.1.1.23.3 NAME 'apple-capacit
+ y' DESC 'capacity' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.
+ 27 SINGLE-VALUE )
+olcAttributeTypes: {101}( 1.3.6.1.1.1.1.31 NAME 'automountMapName' DESC 'aut
+ omount Map Name' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.
+ 15 SINGLE-VALUE )
+olcAttributeTypes: {102}( 1.3.6.1.1.1.1.32 NAME 'automountKey' DESC 'Automou
+ nt Key value' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 
+ SINGLE-VALUE )
+olcAttributeTypes: {103}( 1.3.6.1.1.1.1.33 NAME 'automountInformation' DESC 
+ 'Automount information' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115
+ .121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {104}( 1.3.6.1.1.1.1.35 NAME 'lastLoginTime' EQUALITY gen
+ eralizedTimeMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE )
+olcAttributeTypes: {105}( 1.3.6.1.1.1.1.36 NAME 'passwordModDate' EQUALITY g
+ eneralizedTimeMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE )
+olcAttributeTypes: {106}( 1.3.6.1.1.1.1.37 NAME 'authGUID' EQUALITY caseIgno
+ reMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.
+ 15 SINGLE-VALUE )
+olcAttributeTypes: {107}( 1.3.6.1.1.1.1.38 NAME 'loginFailedAttempts' EQUALI
+ TY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {108}( 1.3.6.1.1.1.1.39 NAME 'userLinkage' EQUALITY caseI
+ gnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121
+ .1.15 SINGLE-VALUE )
+olcAttributeTypes: {109}( 1.3.6.1.1.1.1.40 NAME 'disableReason' EQUALITY cas
+ eIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {110}( 1.3.6.1.1.1.1.42 NAME 'cmusaslsecretSMBNT' EQUALIT
+ Y octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+olcAttributeTypes: {111}( 1.3.6.1.1.1.1.43 NAME 'cmusaslsecretSMBLM' EQUALIT
+ Y octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+olcAttributeTypes: {112}( 1.3.6.1.1.1.1.44 NAME 'cmusaslsecretDIGEST-MD5' EQ
+ UALITY octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+olcAttributeTypes: {113}( 1.3.6.1.1.1.1.45 NAME 'cmusaslsecretCRAM-MD5' EQUA
+ LITY octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+olcAttributeTypes: {114}( 1.3.6.1.1.1.1.46 NAME 'cmusaslsecretPPS' EQUALITY 
+ octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+olcAttributeTypes: {115}( 1.3.6.1.1.1.1.47 NAME 'KerberosRealmName' EQUALITY
+  caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {116}( 1.3.6.1.1.1.1.48 NAME 'KerberosPrincName' EQUALITY
+  caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {117}( 1.3.6.1.1.1.1.49 NAME 'password' EQUALITY octetStr
+ ingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+olcAttributeTypes: {118}( 1.3.6.1.1.1.1.50 NAME 'adminGroups' SYNTAX 1.3.6.1
+ .4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {119}( 1.3.6.1.1.1.1.51 NAME 'cmusaslsecretDIGEST-UMD5' E
+ QUALITY octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE 
+ )
+olcAttributeTypes: {120}( 1.3.6.1.1.1.1.55 NAME 'creationDate' EQUALITY gene
+ ralizedTimeMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE )
+olcAttributeTypes: {121}( 1.3.6.1.1.1.1.56 NAME 'historyData' EQUALITY octet
+ StringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+olcAttributeTypes: {122}( 1.3.6.1.1.1.1.86 NAME 'draft-krbPrincipalName' DES
+ C 'Canonical principal name' EQUALITY caseExactIA5Match SUBSTR caseExactSub
+ stringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+olcAttributeTypes: {123}( 1.3.6.1.1.1.1.87 NAME 'draft-krbRealmName' EQUALIT
+ Y octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+olcAttributeTypes: {124}( 1.3.6.1.1.1.1.88 NAME 'draft-krbPrincipalAliases' 
+ SUP draft-krbPrincipalName )
+olcAttributeTypes: {125}( 1.3.6.1.1.1.1.89 NAME 'draft-krbTicketMaxLife' EQU
+ ALITY integerMatch ORDERING integerOrderingMatch SYNTAX 1.3.6.1.4.1.1466.11
+ 5.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {126}( 1.3.6.1.1.1.1.90 NAME 'draft-krbTicketMaxRenewal' 
+ EQUALITY integerMatch ORDERING integerOrderingMatch SYNTAX 1.3.6.1.4.1.1466
+ .115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {127}( 1.3.6.1.1.1.1.91 NAME 'draft-krbEncSaltTypes' EQUA
+ LITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {128}( 1.3.6.1.1.1.1.92 NAME 'draft-krbKeySet' EQUALITY o
+ ctetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+olcAttributeTypes: {129}( 1.3.6.1.1.1.1.93 NAME 'draft-krbKeyVersion' EQUALI
+ TY integerMatch ORDERING integerOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.1
+ 21.1.27 SINGLE-VALUE )
+olcAttributeTypes: {130}( 1.3.6.1.1.1.1.94 NAME 'draft-krbPrincipalRealm' DE
+ SC 'DN of krbRealm entry' SUP distinguishedName )
+olcAttributeTypes: {131}( 1.3.6.1.1.1.1.95 NAME 'draft-krbTicketPolicy' EQUA
+ LITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {132}( 1.3.6.1.1.1.1.96 NAME 'draft-krbExtraData' EQUALIT
+ Y octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+olcAttributeTypes: {133}( 1.3.6.1.1.1.1.98 NAME 'draft-krbPrincipalACL' EQUA
+ LITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {134}( 1.3.6.1.1.1.1.97 NAME 'crschallenge' EQUALITY case
+ IgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {135}( 1.3.6.1.1.1.1.103 NAME 'ownerGUIDList' DESC 'compu
+ ter account owner GUID' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.11
+ 5.121.1.15 )
+olcAttributeTypes: {136}( 1.3.6.1.1.1.1.76 NAME 'weakAuthMethod' EQUALITY ca
+ seIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcAttributeTypes: {137}( 1.3.6.1.1.1.1.77 NAME 'PWSPrivateKey' EQUALITY oct
+ etStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+olcAttributeTypes: {138}( 1.3.6.1.1.1.1.78 NAME 'PWSPublicKey' EQUALITY case
+ IgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {139}( 1.3.6.1.1.1.1.79 NAME 'apple-transactionID' EQUALI
+ TY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {140}( 1.3.6.1.1.1.1.80 NAME 'apple-pkiStatus' EQUALITY i
+ ntegerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {141}( 1.3.6.1.1.1.1.81 NAME 'apple-failInfo' EQUALITY in
+ tegerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {142}( 1.3.6.1.1.1.1.82 NAME 'apple-certificateSigningReq
+ uest' EQUALITY certificateExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.8 SI
+ NGLE-VALUE )
+olcAttributeTypes: {143}( 1.3.6.1.1.1.1.83 NAME 'apple-device-guid' EQUALITY
+  caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {144}( 1.3.6.1.1.1.1.84 NAME 'apple-issuer' EQUALITY case
+ IgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {145}( 1.3.6.1.1.1.1.85 NAME 'apple-serialNumber' EQUALIT
+ Y caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {146}( 1.3.6.1.1.1.1.99 NAME 'apple-revocationReason' EQU
+ ALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+olcAttributeTypes: {147}( 1.3.6.1.1.1.1.100 NAME 'apple-revocationDate' EQUA
+ LITY generalizedTimeMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE
+  )
+olcAttributeTypes: {148}( 1.3.6.1.1.1.1.101 NAME 'apple-validNotBefore' EQUA
+ LITY generalizedTimeMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE
+  )
+olcAttributeTypes: {149}( 1.3.6.1.1.1.1.102 NAME 'apple-validNotAfter' EQUAL
+ ITY generalizedTimeMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE 
+ )
+olcAttributeTypes: {150}( 1.3.6.1.1.1.1.104 NAME 'apple-enabled-auth-mech' D
+ ESC 'Enabled auth mechs' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.1
+ 15.121.1.15 )
+olcAttributeTypes: {151}( 1.3.6.1.1.1.1.105 NAME 'apple-disabled-auth-mech' 
+ DESC 'Disabled auth mechs' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466
+ .115.121.1.15 )
+olcObjectClasses: {0}( 1.2.840.113556.1.3.23 NAME 'container' SUP top STRUCT
+ URAL MUST cn )
+olcObjectClasses: {1}( 1.3.6.1.4.1.250.3.18 NAME 'cacheObject' DESC 'Auxilia
+ ry object class to hold TTL caching information' SUP top AUXILIARY MAY ttl 
+ )
+olcObjectClasses: {2}( 1.3.6.1.4.1.63.1000.1.1.2.1 NAME 'apple-user' DESC 'a
+ pple user account' SUP top AUXILIARY MAY ( apple-user-homeurl $ apple-user-
+ class $ apple-user-homequota $ apple-user-mailattribute $ apple-user-printa
+ ttribute $ apple-mcxflags $ apple-mcxsettings $ apple-user-adminlimits $ ap
+ ple-user-picture $ apple-user-authenticationhint $ apple-user-homesoftquota
+  $ apple-user-passwordpolicy $ apple-keyword $ apple-generateduid $ apple-i
+ mhandle $ apple-webloguri $ authAuthority $ acctFlags $ pwdLastSet $ logonT
+ ime $ logoffTime $ kickoffTime $ homeDrive $ scriptPath $ profilePath $ use
+ rWorkstations $ smbHome $ rid $ primaryGroupID $ sambaSID $ sambaPrimaryGro
+ upSID $ userCertificate $ userPKCS12 $ jpegPhoto $ apple-nickname $ apple-n
+ amesuffix $ apple-birthday $ apple-relationships $ apple-organizationinfo $
+  apple-phonecontacts $ apple-emailcontacts $ apple-postaladdresses $ apple-
+ mapcoordinates $ apple-mapuri $ apple-mapguid $ apple-serviceslocator $ alt
+ SecurityIdentities ) )
+olcObjectClasses: {3}( 1.3.6.1.4.1.63.1000.1.1.2.14 NAME 'apple-group' DESC 
+ 'group account' SUP top AUXILIARY MAY ( apple-group-homeurl $ apple-group-h
+ omeowner $ apple-mcxflags $ apple-mcxsettings $ apple-group-realname $ appl
+ e-user-picture $ apple-keyword $ apple-generateduid $ apple-group-nestedgro
+ up $ apple-group-memberguid $ mail $ rid $ sambaSID $ ttl $ jpegPhoto $ app
+ le-group-services $ apple-contactguid $ apple-ownerguid $ labeledURI $ appl
+ e-locale-relay $ apple-locale-subnets $ apple-serviceslocator ) )
+olcObjectClasses: {4}( 1.3.6.1.4.1.63.1000.1.1.2.3 NAME 'apple-machine' SUP 
+ top AUXILIARY MAY ( apple-machine-software $ apple-machine-hardware $ apple
+ -machine-serves $ apple-machine-suffix $ apple-machine-contactperson ) )
+olcObjectClasses: {5}( 1.3.6.1.4.1.63.1000.1.1.2.8 NAME 'mount' SUP top STRU
+ CTURAL MUST cn MAY ( mountDirectory $ mountType $ mountOption $ mountDumpFr
+ equency $ mountPassNo ) )
+olcObjectClasses: {6}( 1.3.6.1.4.1.63.1000.1.1.2.9 NAME 'apple-printer' SUP 
+ top STRUCTURAL MUST cn MAY ( apple-printer-attributes $ apple-printer-lprho
+ st $ apple-printer-lprqueue $ apple-printer-type $ apple-printer-note ) )
+olcObjectClasses: {7}( 1.3.6.1.4.1.63.1000.1.1.2.10 NAME 'apple-computer' DE
+ SC 'computer' SUP top STRUCTURAL MUST cn MAY ( apple-realname $ description
+  $ macAddress $ apple-category $ apple-computer-list-groups $ apple-keyword
+  $ apple-mcxflags $ apple-mcxsettings $ apple-networkview $ apple-xmlplist 
+ $ apple-service-url $ apple-serviceinfo $ apple-serviceslocator $ apple-pri
+ marycomputerlist $ apple-ldap-serverid $ authAuthority $ uidNumber $ gidNum
+ ber $ apple-generateduid $ ttl $ acctFlags $ pwdLastSet $ logonTime $ logof
+ fTime $ kickoffTime $ rid $ primaryGroupID $ sambaSID $ sambaPrimaryGroupSI
+ D $ owner $ apple-ownerguid $ apple-contactguid $ ipHostNumber $ bootFile $
+  apple-hwuuid $ apple-srv $ apple-primary-locale $ apple-parentlocales $ ap
+ ple-networkinterfaces $ userCertificate $ userPKCS12 ) )
+olcObjectClasses: {8}( 1.3.6.1.4.1.63.1000.1.1.2.11 NAME 'apple-computer-lis
+ t' DESC 'computer list' SUP top STRUCTURAL MUST cn MAY ( apple-mcxflags $ a
+ pple-mcxsettings $ apple-computer-list-groups $ apple-computers $ apple-gen
+ erateduid $ apple-keyword ) )
+olcObjectClasses: {9}( 1.3.6.1.4.1.63.1000.1.1.2.12 NAME 'apple-configuratio
+ n' DESC 'configuration' SUP top STRUCTURAL MAY ( cn $ apple-config-realname
+  $ apple-data-stamp $ apple-password-server-location $ apple-password-serve
+ r-list $ apple-ldap-replica $ apple-ldap-writable-replica $ apple-keyword $
+  apple-kdc-authkey $ apple-kdc-configdata $ apple-xmlplist $ ttl $ apple-la
+ st-serverid ) )
+olcObjectClasses: {10}( 1.3.6.1.4.1.63.1000.1.1.2.13 NAME 'apple-preset-comp
+ uter-list' DESC 'preset computer list' SUP top STRUCTURAL MUST cn MAY ( app
+ le-mcxflags $ apple-mcxsettings $ apple-computer-list-groups $ apple-keywor
+ d ) )
+olcObjectClasses: {11}( 1.3.6.1.4.1.63.1000.1.1.2.25 NAME 'apple-preset-comp
+ uter' DESC 'preset computer' SUP top STRUCTURAL MUST cn MAY ( apple-mcxflag
+ s $ apple-mcxsettings $ apple-computer-list-groups $ apple-primarycomputerl
+ ist $ description $ apple-networkview $ apple-keyword ) )
+olcObjectClasses: {12}( 1.3.6.1.4.1.63.1000.1.1.2.26 NAME 'apple-preset-comp
+ uter-group' DESC 'preset computer group' SUP top STRUCTURAL MUST cn MAY ( g
+ idNumber $ memberUID $ apple-mcxflags $ apple-mcxsettings $ apple-group-nes
+ tedgroup $ description $ jpegPhoto $ apple-keyword ) )
+olcObjectClasses: {13}( 1.3.6.1.4.1.63.1000.1.1.3.14 NAME 'apple-preset-grou
+ p' DESC 'preset group' SUP top STRUCTURAL MUST cn MAY ( memberUid $ gidNumb
+ er $ description $ apple-group-homeurl $ apple-group-homeowner $ apple-mcxf
+ lags $ apple-mcxsettings $ apple-group-realname $ apple-keyword $ apple-gro
+ up-nestedgroup $ apple-group-memberguid $ ttl $ jpegPhoto $ apple-group-ser
+ vices $ labeledURI $ apple-serviceslocator ) )
+olcObjectClasses: {14}( 1.3.6.1.4.1.63.1000.1.1.2.15 NAME 'apple-preset-user
+ ' DESC 'preset user' SUP top STRUCTURAL MUST cn MAY ( uid $ memberUid $ gid
+ Number $ homeDirectory $ apple-user-homeurl $ apple-user-homequota $ apple-
+ user-homesoftquota $ apple-user-mailattribute $ apple-user-printattribute $
+  apple-mcxflags $ apple-mcxsettings $ apple-user-adminlimits $ apple-user-p
+ asswordpolicy $ userPassword $ apple-user-picture $ apple-keyword $ loginSh
+ ell $ description $ shadowLastChange $ shadowExpire $ authAuthority $ homeD
+ rive $ scriptPath $ profilePath $ smbHome $ apple-preset-user-is-admin $ jp
+ egPhoto $ apple-relationships $ apple-phonecontacts $ apple-emailcontacts $
+  apple-postaladdresses $ apple-mapcoordinates $ apple-serviceslocator ) )
+olcObjectClasses: {15}( 1.3.6.1.4.1.63.1000.1.1.2.16 NAME 'authAuthorityObje
+ ct' SUP top AUXILIARY MAY authAuthority )
+olcObjectClasses: {16}( 1.3.6.1.4.1.63.1000.1.1.2.17 NAME 'apple-serverassis
+ tant-config' SUP top STRUCTURAL MUST cn MAY apple-xmlplist )
+olcObjectClasses: {17}( 1.3.6.1.4.1.63.1000.1.1.2.18 NAME 'apple-location' S
+ UP top AUXILIARY MUST cn MAY ( apple-dns-domain $ apple-dns-nameserver ) )
+olcObjectClasses: {18}( 1.3.6.1.4.1.63.1000.1.1.2.19 NAME 'apple-service' SU
+ P top STRUCTURAL MUST ( cn $ apple-service-type ) MAY ( ipHostNumber $ desc
+ ription $ apple-service-location $ apple-service-url $ apple-service-port $
+  apple-dnsname $ apple-keyword ) )
+olcObjectClasses: {19}( 1.3.6.1.4.1.63.1000.1.1.2.20 NAME 'apple-neighborhoo
+ d' SUP top STRUCTURAL MUST cn MAY ( description $ apple-generateduid $ appl
+ e-category $ apple-nodepathxml $ apple-neighborhoodalias $ apple-computeral
+ ias $ apple-keyword $ apple-realname $ apple-xmlplist $ ttl ) )
+olcObjectClasses: {20}( 1.3.6.1.4.1.63.1000.1.1.2.21 NAME 'apple-acl' SUP to
+ p STRUCTURAL MUST ( cn $ apple-acl-entry ) )
+olcObjectClasses: {21}( 1.3.6.1.4.1.63.1000.1.1.2.23 NAME 'apple-resource' S
+ UP top STRUCTURAL MUST cn MAY ( apple-realname $ description $ jpegPhoto $ 
+ apple-keyword $ apple-generateduid $ apple-contactguid $ apple-ownerguid $ 
+ apple-resource-info $ apple-resource-type $ apple-capacity $ labeledURI $ a
+ pple-mapuri $ apple-serviceslocator $ apple-phonecontacts $ c $ apple-mapgu
+ id $ apple-mapcoordinates $ apple-xmlplist ) )
+olcObjectClasses: {22}( 1.3.6.1.4.1.63.1000.1.1.2.24 NAME 'apple-augment' SU
+ P top STRUCTURAL MUST cn )
+olcObjectClasses: {23}( 1.3.6.1.1.1.2.16 NAME 'automountMap' SUP top STRUCTU
+ RAL MUST automountMapName MAY description )
+olcObjectClasses: {24}( 1.3.6.1.1.1.2.17 NAME 'automount' DESC 'Automount' S
+ UP top STRUCTURAL MUST ( automountKey $ automountInformation ) MAY descript
+ ion )
+olcObjectClasses: {25}( 1.3.6.1.4.1.63.1000.1.1.2.27 NAME 'apple-user-info' 
+ SUP top STRUCTURAL MAY ( apple-namesuffix $ apple-phonecontacts $ apple-ema
+ ilcontacts $ apple-postaladdresses $ telephoneNumber $ mobile $ facsimileTe
+ lephoneNumber $ pager $ l $ st $ c $ postalCode $ postalAddress $ street $ 
+ apple-imhandle $ loginShell $ jpegPhoto $ apple-user-picture $ description 
+ $ userCertificate $ userPKCS12 ) )
+olcObjectClasses: {26}( 1.3.6.1.4.1.63.1000.1.1.2.31 NAME 'apple-computer-in
+ fo' SUP top STRUCTURAL MAY ( apple-serviceinfo $ apple-serviceslocator $ ap
+ ple-keyword $ userCertificate $ userPKCS12 ) )
+olcObjectClasses: {27}( 1.3.6.1.4.1.63.1000.1.1.2.28 NAME 'pwsAuthdata' STRU
+ CTURAL MUST authGUID MAY ( uid $ authGUID $ passwordModDate $ lastLoginTime
+  $ loginFailedAttempts $ disableReason $ apple-user-passwordpolicy $ adminG
+ roups $ cmusaslsecretSMBNT $ cmusaslsecretSMBLM $ cmusaslsecretDIGEST-MD5 $
+  cmusaslsecretCRAM-MD5 $ cmusaslsecretPPS $ KerberosRealmName $ KerberosPri
+ ncName $ password $ creationDate $ historyData $ draft-krbPrincipalName $ d
+ raft-krbRealmName $ draft-krbPrincipalAliases $ draft-krbTicketMaxLife $ dr
+ aft-krbTicketMaxRenewal $ draft-krbEncSaltTypes $ draft-krbKeySet $ draft-k
+ rbKeyVersion $ draft-krbPrincipalRealm $ draft-krbTicketPolicy $ draft-krbE
+ xtraData $ draft-krbPrincipalACL $ crschallenge $ userLinkage $ cmusaslsecr
+ etDIGEST-UMD5 $ ownerGUIDList ) )
+olcObjectClasses: {28}( 1.3.6.1.4.1.63.1000.1.1.2.29 NAME 'pwPolicy' STRUCTU
+ RAL MUST cn MAY ( apple-user-passwordpolicy $ weakAuthMethod ) )
+olcObjectClasses: {29}( 1.3.6.1.4.1.63.1000.1.1.2.30 NAME 'pwAuthData' SUP c
+ ontainer STRUCTURAL MAY ( PWSPrivateKey $ PWSPublicKey ) )
+olcObjectClasses: {30}( 1.3.6.1.4.1.63.1000.1.1.2.33 NAME 'apple-certificate
+ RequestInfo' SUP top STRUCTURAL MUST ( apple-transactionID $ apple-pkiStatu
+ s ) MAY ( apple-failInfo $ apple-issuer $ apple-serialNumber $ userCertific
+ ate $ apple-certificateSigningRequest $ apple-device-guid $ apple-xmlplist 
+ $ apple-revocationReason $ apple-revocationDate $ apple-validNotBefore $ ap
+ ple-validNotAfter ) )
+structuralObjectClass: olcSchemaConfig
+entryUUID: 11905ac2-74bf-103a-9e1a-73119b940511
+creatorsName: cn=config
+createTimestamp: 20200817102050Z
+entryCSN: 20200817102050.643306Z#000000#000#000000
+modifiersName: cn=config
+modifyTimestamp: 20200817102050Z
+
