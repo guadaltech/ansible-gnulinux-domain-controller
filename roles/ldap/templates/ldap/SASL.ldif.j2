@@ -1,0 +1,6 @@
+olcSaslHost: kerberos.{{ domain }}
+olcSaslRealm: {{ domain|upper() }}
+olcSaslSecProps: noanonymous,noplain,minssf=56
+olcAuthzRegexp: {0}"uid=admin,cn=[^,]*,cn=auth" "cn=admin,{{ openldap_base }}"
+olcAuthzRegexp: {1}"uid=ldap/admin,{{ openldap_base }},cn=gssapi,cn=auth" "cn=admin,cn=config"
+olcAuthzRegexp: {2}"uid=([^,]*),cn=[^,]*,cn=auth" "uid=$1,ou=Workers,{{ openldap_base }}"

@@ -11,6 +11,70 @@
     - { src: "{{ role_path }}/files/apple/cn={6}apple_auxillary.ldif", dest: "/etc/ldap/slapd.d/cn=config/cn=schema/cn={6}apple_auxillary.ldif", mode: "0600" }
     - { src: "{{ role_path }}/files/apple/cn={7}apple.ldif", dest: "/etc/ldap/slapd.d/cn=config/cn=schema/cn={7}apple.ldif", mode: "0600" }
 
+- name: Define KRB5_KTNAME
+  lineinfile:
+    path: /etc/default/slapd
+    regexp: 'KRB5_KTNAME='
+    line: export KRB5_KTNAME=/etc/krb5.keytab.ldap
+
+# SOLUTION FOR ERROR: kernel: [XXXX] audit: type=1400 audit(XXXXX): apparmor="DENIED" operation="open" profile="/usr/sbin/slapd" name="/etc/krb5.keytab.ldap" pid=15690 comm="slapd" requested_mask="r" denied_mask="r" fsuid=XXX ouid=XXX 
+- name: Del /etc/krb5.keytab.ldap to Apparmor
+  lineinfile:
+    path: /etc/apparmor.d/usr.sbin.slapd
+    regexp: 'krb5.keytab.ldap'
+    state: absent
+
+- name: Add /etc/krb5.keytab.ldap to Apparmor
+  lineinfile:
+    path: /etc/apparmor.d/usr.sbin.slapd
+    insertafter: '/etc/krb5.keytab kr,'
+    line: '  /etc/krb5.keytab.ldap kr,'
+
+- name: Delprinc node LDAP
+  command: kadmin.local delete_principal ldap/ldap.blk.gstwdt.local
+  ignore_errors: true
+
+- name: Remove /etc/krb5.keytab.ldap
+  file:
+    path: /etc/krb5.keytab.ldap
+    state: absent
+
+- name: Addprinc node LDAP
+  command: kadmin.local addprinc -randkey ldap/ldap.blk.gstwdt.local
+
+- name: Create /etc/krb5.keytab.ldap
+  command: kadmin.local ktadd -k /etc/krb5.keytab.ldap ldap/ldap.blk.gstwdt.local
+
+- name: Change file ownership, group and permissions
+  file:
+    path: /etc/krb5.keytab.ldap
+    owner: openldap
+    group: openldap
+    mode: 0640
+
+- name: Apparmor parser slapd
+  command: apparmor_parser -r /etc/apparmor.d/usr.sbin.slapd
+  notify:
+  - restart slapd
+
+- name: Copy ldapmodifymultiple
+  copy:
+    src: "{{ role_path }}/files/ldapmodifymultiple"
+    dest: /usr/local/bin/ldapmodifymultiple
+    mode: 0755
+
+- name: Custom ldif for SASL
+  template:
+    src: "ldap/SASL.ldif.j2"
+    dest: "/tmp/SASL.ldif"
+    owner: openldap
+    group: openldap
+    mode: 0640
+
+- name: ldapmodifymultiple SASL
+  command: ldapmodifymultiple cn=config /tmp/SASL.ldif
+  ignore_errors: true
+
 - name: config_openldap | restart slapd
   service:
     name: slapd

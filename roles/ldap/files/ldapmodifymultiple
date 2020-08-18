@@ -1,0 +1,32 @@
+#!/bin/bash
+# Example:
+# ldapmodifymultiple uid=userX,ou=Workers,dc=blk,dc=gstwdt,dc=local user.ldif
+# nano user.ldif
+# objectClass: top
+# objectClass: posixAccount
+# objectClass: inetOrgPerson
+# objectClass: person
+# uid: user3
+# sn: user3
+
+set -x
+
+MODIFY_DN=$1
+FILE_LDIF=$2
+
+modify_eof="$(cat $FILE_LDIF | sed 's/ /{32-space}/g')"
+
+function modify_multiple_ldap {
+    for insert in $(echo $modify_eof | sed 's/: /:/g'); do
+        complete_intert=$(echo $insert | sed 's/:/: /g' | sed 's/{32-space}/ /g')
+        type_insert=$(echo $insert | cut -d ':' -f1)
+        ldapmodify -Q -Y EXTERNAL -H ldapi:/// << EOF
+dn: $MODIFY_DN
+changetype: modify
+add: $type_insert
+$complete_intert
+EOF
+    done
+}
+
+modify_multiple_ldap
