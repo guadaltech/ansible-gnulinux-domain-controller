@@ -1,6 +1,6 @@
 SHELL:=/bin/bash
-#INVENTORY_DIR:=inventory
-INVENTORY_DIR:=inventory-blk
+INVENTORY_DIR:=inventory
+#INVENTORY_DIR:=inventory-blk
 
 vagrant_up:
 	#export VAGRANTFILE_API_VERSION="2"

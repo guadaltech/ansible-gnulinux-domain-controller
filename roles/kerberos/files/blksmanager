@@ -121,6 +121,7 @@ dn: uid=$USERNAME,ou=Workers,$ldapDN
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
+objectClass: apple-user
 objectClass: person
 uid: $USERNAME
 sn: $USERNAME
@@ -146,6 +147,7 @@ function add_hostname_to_ldap ()
 ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
 dn: cn=$HOSTNAME,ou=Hostnames,$ldapDN
 objectClass: top
+objectClass: apple-group
 objectClass: posixGroup
 gidNumber: $(getMaxGid)
 EOF
