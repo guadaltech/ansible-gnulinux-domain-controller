@@ -10,6 +10,7 @@ openldap_packages:
   - libsasl2-2
   - libsasl2-modules
   - libsasl2-modules-gssapi-mit
+  - libarchive-zip-perl
 openldap_organizationalunits:  #defines OU's to populate
   - name: Workers
     ou: Workers

@@ -1,5 +1,3 @@
-# AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.
-# CRC32 ecfb75e9
 dn: cn={6}apple_auxillary
 objectClass: olcSchemaConfig
 cn: {6}apple_auxillary
