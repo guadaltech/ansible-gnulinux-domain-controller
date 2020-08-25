@@ -5,17 +5,17 @@
     - bind9
     - common
 
-- hosts: ldap
-  gather_facts: true
-  roles:
-    - common
-    - ldap
-
 - hosts: kerberos
   gather_facts: true
   roles:
     - common
     - kerberos
+
+- hosts: ldap
+  gather_facts: true
+  roles:
+    - common
+    - ldap
 
 - hosts: sssd
   gather_facts: true

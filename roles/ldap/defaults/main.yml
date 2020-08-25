@@ -1,10 +1,15 @@
 ---
 openldap_packages:
+  - git
   - slapd
   - ldap-utils
   - nslcd
   - libnss-ldapd
   - sudo-ldap
+  - sasl2-bin
+  - libsasl2-2
+  - libsasl2-modules
+  - libsasl2-modules-gssapi-mit
 openldap_organizationalunits:  #defines OU's to populate
   - name: Workers
     ou: Workers

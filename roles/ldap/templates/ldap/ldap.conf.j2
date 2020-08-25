@@ -7,6 +7,10 @@
 
 BASE {{ openldap_base }}
 URI ldap://{{ ansible_fqdn }} ldap://{{ ansible_fqdn }}:666
+
+SASL_MECH GSSAPI
+SASL_REALM {{ domain|upper() }}
+
 {% for item in openldap_organizationalunits %}
 SUDOERS_BASE ou={{ item.ou }},{{ openldap_base }}
 {% endfor %}

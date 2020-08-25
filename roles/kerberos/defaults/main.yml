@@ -22,3 +22,6 @@ policy_name: "default"
 units:
   - krb5-kdc
   - krb5-admin-server
+
+# TEMPORAL SOLUTION ERROR: Failure: GSSAPI Error: Unspecified GSS failure.  Minor code may provide more information (Request ticket server ldap/xxxxxxxx@XXXXXX found in keytab but does not match server principal ldap/xxxxxxxxxx@)
+ignore_acceptor_hostname: true

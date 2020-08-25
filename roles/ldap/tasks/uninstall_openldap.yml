@@ -19,7 +19,8 @@
     - /etc/ldap
     - /var/lib/ldap
     - /etc/logrotate.d/logrotate_ldap_backup
-
+  ignore_errors: true
+  
 - name: Remove lines ldap in file nsswtich
   shell: sed -i '/^sudoers/d' /etc/nsswitch.conf
 
