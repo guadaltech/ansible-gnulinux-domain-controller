@@ -1,0 +1,7 @@
+# authorization: auth account
+auth       optional       use_first_pass use_kcminit
+auth       optional       pam_ntlm.so use_first_pass
+auth       required       pam_opendirectory.so use_first_pass nullok
+account    required       pam_opendirectory.so
+
+

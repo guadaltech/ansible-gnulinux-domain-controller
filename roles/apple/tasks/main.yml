@@ -1,0 +1,6 @@
+---
+- include_tasks: install_apple_blk.yml
+  when: apple_blk_setup == true
+
+- include_tasks: uninstall_apple_blk.yml
+  when: apple_blk_uninstall == true

@@ -1,0 +1,14 @@
+[libdefaults]
+default_realm = {{ domainbase|upper() }}
+ticket_lifetime = {{ ticket_lifetime }}
+dns_fallback = {{ dns_fallback }}
+
+[realms]
+{{ domainbase|upper() }} = {
+kdc = kerberos.{{ domainbase|lower() }}
+admin_server = kerberos.{{ domainbase|lower() }}
+}
+
+[domain_realm]
+.{{ domainbase|lower() }}={{ domainbase|upper() }}
+{{ domainbase|lower() }}={{ domainbase|upper() }}

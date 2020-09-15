@@ -1,0 +1,114 @@
+---
+# BLK Apple Install
+
+- name: Copy krb5 configuration file
+  template:
+    src: krb5.conf.j2
+    dest: "{{ item }}"
+  with_items:
+    - /etc/krb5.conf
+    - /Library/Preferences/edu.mit.Kerberos
+
+- name: Disable auto_home
+  command: "sed -i '' 's%/home%#/home%g' /etc/auto_master"
+  when: auto_home == "false"
+
+- name: Backup files pam.d
+  command: "cp {{ item }} {{ item }}_old"
+  with_items:
+    - /etc/pam.d/authorization
+    - /etc/pam.d/screensaver
+    - /etc/pam.d/sudo
+
+- name: Del pam_krb5
+  command: "sed -i '' 's%pam_krb5.so %%g' {{ item }}"
+  with_items:
+    - /etc/pam.d/authorization
+    - /etc/pam.d/screensaver
+    - /etc/pam.d/sudo
+
+- name: Add pam_krb5 optional
+  command: "sed -i '' 's%auth[ ]*optional[ ]*use_first_pass%auth       optional       pam_krb5.so use_first_pass%g' {{ item }}"
+  with_items:
+    - /etc/pam.d/authorization
+    - /etc/pam.d/screensaver
+
+- name: Add pam_krb5 sufficient
+  command: "sed -i '' 's%auth[ ]*sufficient[ ]*use_first_pass%auth       optional       pam_krb5.so use_first_pass%g' {{ item }}"
+  with_items:
+    - /etc/pam.d/authorization
+    - /etc/pam.d/sudo
+
+- name: Add pam_krb5 sudo sufficient
+  command: "sed -i '' 's%auth[ ]*sufficient[ ]*pam_smartcard.so%auth       optional       pam_krb5.so pam_smartcard.so%g' {{ item }}"
+  with_items:
+    - /etc/pam.d/authorization
+
+- name: Clean using dsconfigldap
+  command: "dsconfigldap -r ldap.{{ domainbase|lower() }} -n BLK -v"
+  ignore_errors: true
+
+- name: Create LDAP configuration
+  command: "dsconfigldap -a ldap.{{ domainbase|lower() }} -n BLK -v"
+
+- name: Apple/ldap configure - RFC2307
+  command: |
+    plutil -replace "mappings" -json '{ "template": "RFC2307" }' 
+      /Library/Preferences/OpenDirectory/Configurations/LDAPv3/ldap.{{ domainbase|lower() }}.plist -o /tmp/ldap.{{ domainbase|lower() }}.plist
+
+- name: Apple/ldap configure - Search Base
+  command: |
+    plutil -replace "module options" -json '{
+        "AppleODClient": { 
+            "Server Mappings": 0 
+        }, 
+        "ldap": { 
+            "Denied SASL Methods": 
+            [ "DIGEST-MD5" ], 
+            "LDAP Referrals": 0, 
+            "Template Search Base Suffix": "{{ openldap_base }}", 
+            "Use DNS replicas": 0 } 
+        }' /tmp/ldap.{{ domainbase|lower() }}.plist
+
+- name: Apple/ldap configure - options
+  command: |
+    plutil -replace "options" -json '{
+        "connection idle disconnect": 60,
+        "connection setup timeout": 10,
+        "destination": {
+          "host": "ldap.{{ domainbase|lower() }}",
+          "other": "ldap",
+          "port": 389,
+        },
+        "man-in-the-middle": 0,
+        "no cleartext authentication": 0,
+        "packet encryption": 1,
+        "packet signing": 1,
+        "query timeout": 30
+      }' /tmp/ldap.{{ domainbase|lower() }}.plist
+
+- name: Apple/ldap configure - template
+  command: |
+    plutil -replace 'template' -json '"LDAPv3"' 
+      /tmp/ldap.{{ domainbase|lower() }}.plist
+
+- name: Apple/ldap configure - trusttype
+  command: |
+    plutil -replace 'trusttype' -json '"anonymous"' 
+      /tmp/ldap.{{ domainbase|lower() }}.plist
+
+
+- name: Copy LDAPv3 conf
+  command: "cp /tmp/ldap.{{ domainbase|lower() }}.plist 
+    /Library/Preferences/OpenDirectory/Configurations/LDAPv3/ldap.{{ domainbase|lower() }}.plist "
+    
+- name: Apple/ldap check configuration
+  command: |
+    plutil -lint 
+      /Library/Preferences/OpenDirectory/Configurations/LDAPv3/ldap.{{ domainbase|lower() }}.plist 
+    && dscl -q localhost -read /LDAPv3/ldap.{{ domainbase|lower() }}
+
+- name: Restart opendirectoryd
+  command: |
+    'launchctl stop opendirectoryd 
+      && launchctl start opendirectoryd'
