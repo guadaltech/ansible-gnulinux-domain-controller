@@ -1,5 +1,12 @@
-# Universal Domain Controller
-**BLKS (Bind9/LDAP/Kerberos/SSSD)**
+# BLK Domain Controller
+
+##### Server
+- BLK (Bind9/LDAP/Kerberos)
+
+##### Client
+- [x] GNU/Linux (SSSD)
+- [x] Mac OS
+- [ ] Windows
 
 ## Usage
 

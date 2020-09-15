@@ -1,6 +1,6 @@
 galaxy_info:
   author: Guadaltech
-  description: Universal Domain Controller (LDAP + Kerberos + SAMBA + SSSD)
+  description: BLK (Bind9 + LDAP + Kerberos)
   license: license (GPLv2, CC-BY, etc)
   min_ansible_version: 2.4
   platforms:

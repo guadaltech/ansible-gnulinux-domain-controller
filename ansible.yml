@@ -22,3 +22,8 @@
   roles:
     - common
     - sssd
+
+- hosts: apple
+  gather_facts: true
+  roles:
+    - apple

@@ -1,0 +1,9 @@
+---
+# BLK Apple
+
+# Kerberos
+ticket_lifetime: 600
+dns_fallback: no
+
+# Mac
+auto_home: false

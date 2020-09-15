@@ -31,7 +31,7 @@
     line: '  /etc/krb5.keytab.ldap kr,'
 
 - name: Delprinc node LDAP
-  command: kadmin.local delete_principal ldap/ldap.blk.gstwdt.local
+  command: "kadmin.local delete_principal ldap/ldap.{{ domainbase|lower() }}"
   ignore_errors: true
 
 - name: Remove /etc/krb5.keytab.ldap
@@ -40,10 +40,10 @@
     state: absent
 
 - name: Addprinc node LDAP
-  command: kadmin.local addprinc -randkey ldap/ldap.blk.gstwdt.local
+  command: "kadmin.local addprinc -randkey ldap/ldap.{{ domainbase|lower() }}"
 
 - name: Create /etc/krb5.keytab.ldap
-  command: kadmin.local ktadd -k /etc/krb5.keytab.ldap ldap/ldap.blk.gstwdt.local
+  command: "kadmin.local ktadd -k /etc/krb5.keytab.ldap ldap/ldap.{{ domainbase|lower() }}"
 
 - name: Change file ownership, group and permissions
   file:

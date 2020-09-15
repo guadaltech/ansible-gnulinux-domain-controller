@@ -8,5 +8,5 @@ galaxy_info:
       versions:
         - trusty
         - xenial
-  galaxy_tags: ['kerberos', 'ldap', 'samba', 'sssd', 'domain', 'ubuntu']
+  galaxy_tags: ['kerberos', 'ldap', 'samba', 'sssd', 'domain', 'ubuntu', 'apple']
 dependencies: []
