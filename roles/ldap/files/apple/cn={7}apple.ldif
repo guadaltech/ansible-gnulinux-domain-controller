@@ -1,5 +1,3 @@
-# AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.
-# CRC32 627fc2af
 dn: cn={7}apple
 objectClass: olcSchemaConfig
 cn: {7}apple

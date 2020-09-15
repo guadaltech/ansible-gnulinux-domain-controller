@@ -11,6 +11,27 @@
     - { src: "{{ role_path }}/files/apple/cn={6}apple_auxillary.ldif", dest: "/etc/ldap/slapd.d/cn=config/cn=schema/cn={6}apple_auxillary.ldif", mode: "0600" }
     - { src: "{{ role_path }}/files/apple/cn={7}apple.ldif", dest: "/etc/ldap/slapd.d/cn=config/cn=schema/cn={7}apple.ldif", mode: "0600" }
 
+- name: Generate new checksum samba
+  shell: crc32 /etc/ldap/slapd.d/cn=config/cn=schema/cn={5}samba.ldif
+  register: output_checksum_samba
+
+- name: Insert new checksum samba
+  shell: sed -i "1 i\# AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.\n# CRC32 {{ output_checksum_samba.stdout }}" /etc/ldap/slapd.d/cn=config/cn=schema/cn={5}samba.ldif
+
+- name: Generate new checksum apple_auxillary
+  shell: crc32 /etc/ldap/slapd.d/cn=config/cn=schema/cn={6}apple_auxillary.ldif
+  register: output_checksum_apple_auxillary
+
+- name: Insert new checksum apple_auxillary
+  shell: sed -i "1 i\# AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.\n# CRC32 {{ output_checksum_apple_auxillary.stdout }}" /etc/ldap/slapd.d/cn=config/cn=schema/cn={6}apple_auxillary.ldif
+
+- name: Generate new checksum apple
+  shell: crc32 /etc/ldap/slapd.d/cn=config/cn=schema/cn={7}apple.ldif
+  register: output_checksum_apple
+
+- name: Insert new checksum apple
+  shell: sed -i "1 i\# AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.\n# CRC32 {{ output_checksum_apple.stdout }}" /etc/ldap/slapd.d/cn=config/cn=schema/cn={7}apple.ldif
+
 - name: Define KRB5_KTNAME
   lineinfile:
     path: /etc/default/slapd
