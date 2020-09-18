@@ -21,6 +21,7 @@
     - /etc/pam.d/sudo
 
 - name: Del pam_krb5
+  ignore_errors: true
   command: "sed -i '' 's%pam_krb5.so %%g' {{ item }}"
   with_items:
     - /etc/pam.d/authorization
@@ -102,13 +103,19 @@
   command: "cp /tmp/ldap.{{ domainbase|lower() }}.plist 
     /Library/Preferences/OpenDirectory/Configurations/LDAPv3/ldap.{{ domainbase|lower() }}.plist "
     
-- name: Apple/ldap check configuration
+- name: Apple/ldap check configuration plutil
   command: |
     plutil -lint 
       /Library/Preferences/OpenDirectory/Configurations/LDAPv3/ldap.{{ domainbase|lower() }}.plist 
-    && dscl -q localhost -read /LDAPv3/ldap.{{ domainbase|lower() }}
 
-- name: Restart opendirectoryd
-  command: |
-    'launchctl stop opendirectoryd 
-      && launchctl start opendirectoryd'
+- name: Apple/ldap check configuration dscl
+  command: dscl -q localhost -read /LDAPv3/ldap.{{ domainbase|lower() }}
+  
+- name: Stop opendirectoryd
+  command: launchctl stop opendirectoryd
+  ignore_errors: true
+
+    
+- name: Start opendirectoryd
+  command: launchctl start opendirectoryd
+  ignore_errors: true

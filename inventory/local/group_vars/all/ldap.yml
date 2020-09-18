@@ -1,6 +1,6 @@
 ---
 openldap_admin_user: 'admin'
-openldap_admin_password: 'adminpass'
+openldap_admin_password: 'Byb8ue4byuhbhufgv76tGYH'
 read_only_user: 'queryuser'
 password_read_only_user: 'queryuserpass'
 

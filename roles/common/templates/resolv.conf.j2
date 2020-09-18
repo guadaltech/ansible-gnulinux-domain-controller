@@ -1,4 +1,4 @@
 domain {{ domain }}
 search bind9.{{ domain }}
-nameserver {{ hostvars[groups['bind9'][0]].ansible_host }}
+nameserver {{ hostvars['node-1'].ansible_host }}
 
