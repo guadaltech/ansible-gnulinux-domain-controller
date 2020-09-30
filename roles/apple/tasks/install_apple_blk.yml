@@ -29,7 +29,7 @@
     - /etc/pam.d/sudo
 
 - name: Add pam_krb5 optional
-  command: "sed -i '' 's%auth[ ]*optional[ ]*use_first_pass%auth       optional       pam_krb5.so use_first_pass%g' {{ item }}"
+  command: "sed -i '' 's%auth[ ]*optional[ ]*use_first_pass%auth       optional       pam_krb5.so use_first_pass use_kcminit%g' {{ item }}"
   with_items:
     - /etc/pam.d/authorization
     - /etc/pam.d/screensaver
@@ -46,16 +46,16 @@
     - /etc/pam.d/authorization
 
 - name: Clean using dsconfigldap
-  command: "dsconfigldap -r ldap.{{ domainbase|lower() }} -n BLK -v"
+  command: "dsconfigldap -r {{ domainbase|lower() }} -n GSTWDT -v"
   ignore_errors: true
 
 - name: Create LDAP configuration
-  command: "dsconfigldap -a ldap.{{ domainbase|lower() }} -n BLK -v"
+  command: "dsconfigldap -a {{ domainbase|lower() }} -n GSTWDT -v"
 
 - name: Apple/ldap configure - RFC2307
   command: |
     plutil -replace "mappings" -json '{ "template": "RFC2307" }' 
-      /Library/Preferences/OpenDirectory/Configurations/LDAPv3/ldap.{{ domainbase|lower() }}.plist -o /tmp/ldap.{{ domainbase|lower() }}.plist
+      /Library/Preferences/OpenDirectory/Configurations/LDAPv3/{{ domainbase|lower() }}.plist -o /tmp/{{ domainbase|lower() }}.plist
 
 - name: Apple/ldap configure - Search Base
   command: |
@@ -69,7 +69,7 @@
             "LDAP Referrals": 0, 
             "Template Search Base Suffix": "{{ openldap_base }}", 
             "Use DNS replicas": 0 } 
-        }' /tmp/ldap.{{ domainbase|lower() }}.plist
+        }' /tmp/{{ domainbase|lower() }}.plist
 
 - name: Apple/ldap configure - options
   command: |
@@ -77,7 +77,7 @@
         "connection idle disconnect": 60,
         "connection setup timeout": 10,
         "destination": {
-          "host": "ldap.{{ domainbase|lower() }}",
+          "host": "{{ domainbase|lower() }}",
           "other": "ldap",
           "port": 389,
         },
@@ -86,30 +86,30 @@
         "packet encryption": 1,
         "packet signing": 1,
         "query timeout": 30
-      }' /tmp/ldap.{{ domainbase|lower() }}.plist
+      }' /tmp/{{ domainbase|lower() }}.plist
 
 - name: Apple/ldap configure - template
   command: |
     plutil -replace 'template' -json '"LDAPv3"' 
-      /tmp/ldap.{{ domainbase|lower() }}.plist
+      /tmp/{{ domainbase|lower() }}.plist
 
 - name: Apple/ldap configure - trusttype
   command: |
     plutil -replace 'trusttype' -json '"anonymous"' 
-      /tmp/ldap.{{ domainbase|lower() }}.plist
+      /tmp/{{ domainbase|lower() }}.plist
 
 
 - name: Copy LDAPv3 conf
-  command: "cp /tmp/ldap.{{ domainbase|lower() }}.plist 
-    /Library/Preferences/OpenDirectory/Configurations/LDAPv3/ldap.{{ domainbase|lower() }}.plist "
+  command: "cp /tmp/{{ domainbase|lower() }}.plist 
+    /Library/Preferences/OpenDirectory/Configurations/LDAPv3/{{ domainbase|lower() }}.plist "
     
 - name: Apple/ldap check configuration plutil
   command: |
     plutil -lint 
-      /Library/Preferences/OpenDirectory/Configurations/LDAPv3/ldap.{{ domainbase|lower() }}.plist 
+      /Library/Preferences/OpenDirectory/Configurations/LDAPv3/{{ domainbase|lower() }}.plist 
 
 - name: Apple/ldap check configuration dscl
-  command: dscl -q localhost -read /LDAPv3/ldap.{{ domainbase|lower() }}
+  command: dscl -q localhost -read /LDAPv3/{{ domainbase|lower() }}
   
 - name: Stop opendirectoryd
   command: launchctl stop opendirectoryd

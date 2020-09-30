@@ -48,6 +48,8 @@ openldap_cn_sudoers:
       - /usr/sbin/service
       - /usr/bin/crontab
       - /usr/sbin/dhclient
+      - /sbin/poweroff
+      - /sbin/reboot
   - name: sudoadmin
     ou: "{{ sudoers }}"
     sudoUser: test
