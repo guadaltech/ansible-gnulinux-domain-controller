@@ -46,11 +46,11 @@
     - /etc/pam.d/authorization
 
 - name: Clean using dsconfigldap
-  command: "dsconfigldap -r {{ domainbase|lower() }} -n GSTWDT -v"
+  command: "dsconfigldap -r {{ domainbase|lower() }} -n BLK -v"
   ignore_errors: true
 
 - name: Create LDAP configuration
-  command: "dsconfigldap -a {{ domainbase|lower() }} -n GSTWDT -v"
+  command: "dsconfigldap -a {{ domainbase|lower() }} -n BLK -v"
 
 - name: Apple/ldap configure - RFC2307
   command: |
