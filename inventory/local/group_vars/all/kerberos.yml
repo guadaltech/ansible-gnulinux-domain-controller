@@ -1,4 +1,4 @@
 ---
-master_db_pass: userpass
+master_db_pass: usuario
 kadmin_user: usuario
-kadmin_pass: userpass
+kadmin_pass: usuario
