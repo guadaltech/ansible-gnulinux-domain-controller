@@ -13,6 +13,7 @@ Options:
   -x [HOSTNAME]
   -u [USERNAME]
   -p [USERNAME PASSWD]
+  -P [PERMISSION]
   -g <GID>
   -d <DOMAIN>
   -e [PWEXPIRE]
@@ -42,6 +43,15 @@ blksmanager -m add_user_to_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPN
 Example delete user to Group:
 blksmanager -m delete_user_to_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)
 
+Example delete user to Group:
+blksmanager -m delete_user_to_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)
+
+Example add permission to Group:
+blksmanager -m add_command_to_sudo -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -P (PERMISSION)
+
+Example delete permission to Group:
+blksmanager -m delete_command_to_sudo -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -P (PERMISSION)
+
 EOF
 exit 2
 }
@@ -67,6 +77,10 @@ elif [ $ERROR_CODE == 2007 ]; then
     ERROR_MSG="Mode add_user_to_group need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)"
 elif [ $ERROR_CODE == 2008 ]; then
     ERROR_MSG="Mode delete_user_to_group need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)"
+elif [ $ERROR_CODE == 2009 ]; then
+    ERROR_MSG="Mode add_command_to_sudo need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -P (PERMISSION)"
+elif [ $ERROR_CODE == 2010 ]; then
+    ERROR_MSG="Mode delete_command_to_sudo need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -P (PERMISSION)"
 else
     ERROR_CODE="2404"
     ERROR_MSG="Error not found..."
@@ -141,7 +155,27 @@ add: sudoUser
 sudoUser: $USERNAME
 EOF
 }
+#############################################
+function add_command_to_sudo ()
+{
+ldapmodify -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=sudobase,ou=SUDOers,$ldapDN
+changetype: modify
+add: sudoCommand
+sudoCommand: $1
+EOF
+}
 
+function delete_command_to_sudo ()
+{
+ldapmodify -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=sudobase,ou=SUDOers,$ldapDN
+changetype: modify
+delete: sudoCommand
+sudoCommand: $1
+EOF
+}
+#################################################
 function add_hostname_to_ldap ()
 {
 ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
@@ -253,7 +287,7 @@ kadmin.local -q "delete_principal $USERNAME@$UPPER_DOMAIN"
 kdestroy
 }
 
-while getopts ":m:l:a:w:x:u:p:G:g:d:e:k:h" OPTIONS; do
+while getopts ":m:l:a:w:x:u:p:P:G:g:d:e:k:h" OPTIONS; do
         case "${OPTIONS}" in
                 m) MODE=${OPTARG} ;;
                 l) HOST_IP=${OPTARG} ;;
@@ -262,6 +296,7 @@ while getopts ":m:l:a:w:x:u:p:G:g:d:e:k:h" OPTIONS; do
                 x) HOSTNAME=${OPTARG} ;;
                 u) USERNAME=${OPTARG} ;;
                 p) USERNAME_PASSWD=${OPTARG} ;;
+                P) PERMISSION=${OPTARG} ;;                
                 G) GROUPNAME=${OPTARG} ;;
                 g) GID=${OPTARG} ;;
                 d) DOMAIN=${OPTARG} ;;
@@ -448,6 +483,51 @@ then
 
         for TRGROUPNAME in $(echo $GROUPNAME | tr ',' ' '); do
             del_user_group $TRGROUPNAME
+        done
+    fi
+elif [[ $MODE == "add_command_to_sudo" ]]
+then
+    if [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$PERMISSION" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2009
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
+
+
+        for TRPERMISSION in $(echo $PERMISSION | tr ',' ' '); do
+            add_command_to_sudo $TRPERMISSION
+        done
+
+        
+    fi
+elif [[ $MODE == "delete_command_to_sudo" ]]
+then
+    if [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$PERMISSION" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2010
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
+
+        for TRPERMISSION in $(echo $PERMISSION | tr ',' ' '); do
+            delete_command_to_sudo $TRPERMISSION
         done
     fi
 else
