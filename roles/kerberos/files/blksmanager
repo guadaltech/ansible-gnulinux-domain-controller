@@ -53,6 +53,12 @@ blksmanager -m add_command_to_sudo_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d
 Example delete command to Sudo Group:
 blksmanager -m delete_command_to_sudo_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -C (COMMAND) -S (SGROUPNAME)
 
+Example add group to sudoers:
+blksmanager -m add_group_to_sudoers -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -S (SGROUPNAME)
+
+Example delete group to sudoers:
+blksmanager -m delete_group_to_sudoers -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -S (SGROUPNAME)
+
 EOF
 exit 2
 }
@@ -82,6 +88,10 @@ elif [ $ERROR_CODE == 2009 ]; then
     ERROR_MSG="Mode add_command_to_sudo_group need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -C (COMMAND) -S (SGROUPNAME)"
 elif [ $ERROR_CODE == 2010 ]; then
     ERROR_MSG="Mode delete_command_to_sudo_group need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -C (COMMAND) -S (SGROUPNAME)"
+elif [ $ERROR_CODE == 2011 ]; then
+    ERROR_MSG="Mode add_group_to_sudoers need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -S (SGROUPNAME)"
+elif [ $ERROR_CODE == 2012 ]; then
+    ERROR_MSG="Mode delete_group_to_sudoers need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -S (SGROUPNAME)"
 else
     ERROR_CODE="2404"
     ERROR_MSG="Error not found..."
@@ -174,6 +184,26 @@ dn: cn=$2,ou=SUDOers,$ldapDN
 changetype: modify
 delete: sudoCommand
 sudoCommand: $1
+EOF
+}
+
+function add_group_to_sudoers ()
+{
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=$1,ou=SUDOers,$ldapDN
+objectClass: sudoRole
+objectClass: top
+sudoOrder: 0
+sudoHost: ALL
+cn: $1
+EOF
+}
+
+function delete_group_to_sudoers ()
+{
+ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
+dn: cn=$1,ou=SUDOers,$ldapDN
+changetype: delete
 EOF
 }
 #################################################
@@ -533,6 +563,50 @@ then
             for TRCOMMAND in $(echo $COMMAND | tr ',' ' '); do
                 delete_command_to_sudo_group $TRCOMMAND $TRSGROUPNAME
             done
+        done
+    fi
+elif [[ $MODE == "add_group_to_sudoers" ]]
+then
+    if [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$SGROUPNAME" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2011
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
+
+
+        for TRSGROUPNAME in $(echo $SGROUPNAME | tr ',' ' '); do
+            add_group_to_sudoers $TRSGROUPNAME
+        done
+    fi
+elif [[ $MODE == "delete_group_to_sudoers" ]]
+then
+    if [ -z "$ADMIN" ] \
+        || [ -z "$ADMIN_PASS" ] \
+        || [ -z "$SGROUPNAME" ] \
+        || [ -z "$DOMAIN" ]
+    then
+        error 2012
+        usage
+    else
+        UPPER_DOMAIN=$(echo "$DOMAIN" | awk '{print toupper($0)}')
+        DC1=$(echo "$DOMAIN" | cut -d"." -f1)
+        DC2=$(echo "$DOMAIN" | cut -d"." -f2)
+        DC3=$(echo "$DOMAIN" | cut -d"." -f3)
+
+        ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
+
+
+        for TRSGROUPNAME in $(echo $SGROUPNAME | tr ',' ' '); do
+            delete_group_to_sudoers $TRSGROUPNAME
         done
     fi
 else
