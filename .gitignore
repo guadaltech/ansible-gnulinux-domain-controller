@@ -6,7 +6,3 @@ inventory-blk
 .create_hosts.sh
 tools/build_variable_domain
 .custom_cache
-id_temporal01
-id_temporal01.pub
-inventory/local/hosts.ini
-Vagrantfile
