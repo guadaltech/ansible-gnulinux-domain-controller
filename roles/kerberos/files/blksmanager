@@ -13,7 +13,8 @@ Options:
   -x [HOSTNAME]
   -u [USERNAME]
   -p [USERNAME PASSWD]
-  -P [PERMISSION]
+  -C [COMMAND]
+  -S [SGROUPNAME]
   -g <GID>
   -d <DOMAIN>
   -e [PWEXPIRE]
@@ -46,11 +47,11 @@ blksmanager -m delete_user_to_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GRO
 Example delete user to Group:
 blksmanager -m delete_user_to_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)
 
-Example add permission to Group:
-blksmanager -m add_command_to_sudo -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -P (PERMISSION)
+Example add command to Sudo Group:
+blksmanager -m add_command_to_sudo_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -C (COMMAND) -S (SGROUPNAME)
 
-Example delete permission to Group:
-blksmanager -m delete_command_to_sudo -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -P (PERMISSION)
+Example delete command to Sudo Group:
+blksmanager -m delete_command_to_sudo_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -C (COMMAND) -S (SGROUPNAME)
 
 EOF
 exit 2
@@ -78,9 +79,9 @@ elif [ $ERROR_CODE == 2007 ]; then
 elif [ $ERROR_CODE == 2008 ]; then
     ERROR_MSG="Mode delete_user_to_group need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)"
 elif [ $ERROR_CODE == 2009 ]; then
-    ERROR_MSG="Mode add_command_to_sudo need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -P (PERMISSION)"
+    ERROR_MSG="Mode add_command_to_sudo_group need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -C (COMMAND) -S (SGROUPNAME)"
 elif [ $ERROR_CODE == 2010 ]; then
-    ERROR_MSG="Mode delete_command_to_sudo need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -P (PERMISSION)"
+    ERROR_MSG="Mode delete_command_to_sudo_group need: -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -C (COMMAND) -S (SGROUPNAME)"
 else
     ERROR_CODE="2404"
     ERROR_MSG="Error not found..."
@@ -156,20 +157,20 @@ sudoUser: $USERNAME
 EOF
 }
 #############################################
-function add_command_to_sudo ()
+function add_command_to_sudo_group ()
 {
 ldapmodify -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
-dn: cn=sudobase,ou=SUDOers,$ldapDN
+dn: cn=$2,ou=SUDOers,$ldapDN
 changetype: modify
 add: sudoCommand
 sudoCommand: $1
 EOF
 }
 
-function delete_command_to_sudo ()
+function delete_command_to_sudo_group ()
 {
 ldapmodify -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
-dn: cn=sudobase,ou=SUDOers,$ldapDN
+dn: cn=$2,ou=SUDOers,$ldapDN
 changetype: modify
 delete: sudoCommand
 sudoCommand: $1
@@ -287,7 +288,7 @@ kadmin.local -q "delete_principal $USERNAME@$UPPER_DOMAIN"
 kdestroy
 }
 
-while getopts ":m:l:a:w:x:u:p:P:G:g:d:e:k:h" OPTIONS; do
+while getopts ":m:l:a:w:x:u:p:C:S:G:g:d:e:k:h" OPTIONS; do
         case "${OPTIONS}" in
                 m) MODE=${OPTARG} ;;
                 l) HOST_IP=${OPTARG} ;;
@@ -296,7 +297,8 @@ while getopts ":m:l:a:w:x:u:p:P:G:g:d:e:k:h" OPTIONS; do
                 x) HOSTNAME=${OPTARG} ;;
                 u) USERNAME=${OPTARG} ;;
                 p) USERNAME_PASSWD=${OPTARG} ;;
-                P) PERMISSION=${OPTARG} ;;                
+                C) COMMAND=${OPTARG} ;;
+                S) SGROUPNAME=${OPTARG} ;;
                 G) GROUPNAME=${OPTARG} ;;
                 g) GID=${OPTARG} ;;
                 d) DOMAIN=${OPTARG} ;;
@@ -485,11 +487,12 @@ then
             del_user_group $TRGROUPNAME
         done
     fi
-elif [[ $MODE == "add_command_to_sudo" ]]
+elif [[ $MODE == "add_command_to_sudo_group" ]]
 then
     if [ -z "$ADMIN" ] \
         || [ -z "$ADMIN_PASS" ] \
-        || [ -z "$PERMISSION" ] \
+        || [ -z "$COMMAND" ] \
+        || [ -z "$SGROUPNAME" ] \
         || [ -z "$DOMAIN" ]
     then
         error 2009
@@ -502,18 +505,18 @@ then
 
         ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
 
-
-        for TRPERMISSION in $(echo $PERMISSION | tr ',' ' '); do
-            add_command_to_sudo $TRPERMISSION
+        for TRSGROUPNAME in $(echo $SGROUPNAME | tr ',' ' '); do
+            for TRCOMMAND in $(echo $COMMAND | tr ',' ' '); do
+                add_command_to_sudo_group $TRCOMMAND $TRSGROUPNAME
+            done
         done
-
-        
     fi
-elif [[ $MODE == "delete_command_to_sudo" ]]
+elif [[ $MODE == "delete_command_to_sudo_group" ]]
 then
     if [ -z "$ADMIN" ] \
         || [ -z "$ADMIN_PASS" ] \
-        || [ -z "$PERMISSION" ] \
+        || [ -z "$COMMAND" ] \
+        || [ -z "$SGROUPNAME" ] \
         || [ -z "$DOMAIN" ]
     then
         error 2010
@@ -526,8 +529,10 @@ then
 
         ldapDN="dc=$DC1, dc=$DC2, dc=$DC3"
 
-        for TRPERMISSION in $(echo $PERMISSION | tr ',' ' '); do
-            delete_command_to_sudo $TRPERMISSION
+        for TRSGROUPNAME in $(echo $SGROUPNAME | tr ',' ' '); do
+            for TRCOMMAND in $(echo $COMMAND | tr ',' ' '); do
+                delete_command_to_sudo_group $TRCOMMAND $TRSGROUPNAME
+            done
         done
     fi
 else
