@@ -47,13 +47,13 @@ blksmanager -m delete_user_to_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GRO
 Example delete user to Group:
 blksmanager -m delete_user_to_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -G (GROUPNAME) -u (USER) -d (DOMAIN)
 
-Example add command to Sudo Group:
+Example add command to Sudo Group (Default:sudobase):
 blksmanager -m add_command_to_sudo_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -C (COMMAND) -S (SGROUPNAME)
 
-Example delete command to Sudo Group:
+Example delete command to Sudo Group (Default:sudobase):
 blksmanager -m delete_command_to_sudo_group -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -C (COMMAND) -S (SGROUPNAME)
 
-Example add group to sudoers:
+Example add group to sudoers (Default:sudobase):
 blksmanager -m add_group_to_sudoers -a (ADMIN_LDAP) -w (ADMIN_PASS_LDAP) -d (DOMAIN) -S (SGROUPNAME)
 
 Example delete group to sudoers:
@@ -166,7 +166,7 @@ add: sudoUser
 sudoUser: $USERNAME
 EOF
 }
-#############################################
+
 function add_command_to_sudo_group ()
 {
 ldapmodify -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
@@ -206,7 +206,7 @@ dn: cn=$1,ou=SUDOers,$ldapDN
 changetype: delete
 EOF
 }
-#################################################
+
 function add_hostname_to_ldap ()
 {
 ldapadd -h $HOST_IP -D "cn=$ADMIN,$ldapDN" -w $ADMIN_PASS << EOF
