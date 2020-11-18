@@ -84,7 +84,7 @@ blksmanager -m add_user -a admin -w admin_pass -u user1 -p user1 -g 5000 -d exam
 **Add user with password [expire time](https://web.mit.edu/kerberos/krb5-1.12/doc/basic/date_format.html#getdate): or this [link](https://docs.oracle.com/cd/E19683-01/816-0211/6m6nc66tj/index.html)**
 
 ```
-blksmanager -m add_user -a admin -w admin_pass -u user1 -p User1234567890@ -g 5000 -e "6 months" -d example.com 
+blksmanager -m add_user -a admin -w admin_pass -u user1 -p User1234567890@ -g 5000 -e "90 days" -d example.com 
 ```
 
 **Add Host**
