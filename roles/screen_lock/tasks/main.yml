@@ -1,0 +1,6 @@
+---
+- include_tasks: config_lock.yml
+  when: screen_lock_setup == true
+
+- include_tasks: delete_config_lock.yml
+  when: screen_lock_uninstall == true

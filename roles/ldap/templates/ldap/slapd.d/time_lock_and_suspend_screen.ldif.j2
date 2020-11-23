@@ -1,0 +1,9 @@
+dn: cn={{ name_lock }},{{ openldap_base }}
+cn: {{ name_lock }}
+objectClass: organizationalRole
+description: {{ name_lock }}-{{ time_lock }}
+
+dn: cn={{ name_suspend }},{{ openldap_base }}
+cn: {{ name_suspend }}
+objectClass: organizationalRole
+description: {{ name_suspend }}-{{ time_suspend }}

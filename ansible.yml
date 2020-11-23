@@ -27,3 +27,8 @@
   gather_facts: true
   roles:
     - apple
+
+- hosts: screen_lock
+  gather_facts: true
+  roles:
+    - screen_lock

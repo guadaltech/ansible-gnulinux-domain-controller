@@ -1,0 +1,26 @@
+- name: config_systemd | configuring xss
+  template:
+    src: "lock.service.j2"
+    dest: "/etc/systemd/system/lock.service"
+    owner: root
+    group: root
+    mode: 0755
+
+
+- name: Enable service xss and ensure it is not masked
+  systemd:
+    name: lock.service
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+    masked: no
+
+- name: config_systemd | configuring xss
+  template:
+    src: "init-time-lock.sh.j2"
+    dest: "/usr/bin/init-time-lock.sh"
+    owner: root
+    group: root
+    mode: 0700
+
+- include: config_suspend.yml
