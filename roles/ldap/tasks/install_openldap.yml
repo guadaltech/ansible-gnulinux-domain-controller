@@ -54,6 +54,7 @@
 
 - include: config_openldap.yml
 - include: read_only_openldap.yml
+- include: time_lock_screen_and_suspend_openldap.yml
 - include: apple_openldap.yml
 
 - name: Copy script backup and logrotate

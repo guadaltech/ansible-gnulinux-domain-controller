@@ -5,6 +5,7 @@ ldap_setup: true
 kerberos_setup: true
 sssd_setup: true
 apple_blk_setup: true
+screen_lock_setup: true
 
 main_uninstall: false
 bind9_uninstall: false
@@ -12,6 +13,7 @@ ldap_uninstall: false
 kerberos_uninstall: false
 sssd_uninstall: false
 apple_blk_uninstall: false
+screen_lock_uninstall: false
 
 domain: '{{ domainbase }}'
 openldap_org: '{{ organization }}'
@@ -21,3 +23,9 @@ sudoers: "SUDOers"
 backup_hour: 1
 backup_minute: 24
 backup_days_to_delete: 10
+
+#Lock screen and suspend computer
+name_lock: screen_lock
+time_lock: 600
+name_suspend: suspend
+time_suspend: 1800

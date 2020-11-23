@@ -1,0 +1,36 @@
+#!/bin/sh
+suspend () {
+suspend_second=$1
+for x in /tmp/.X11-unix/*; do
+    for i in $(loginctl list-users | awk '{ print $1}' | tail -n +2 | head -n -2); do
+            runuser -l $(id -un $i) -c "DISPLAY=\":${x#/tmp/.X11-unix/X}\" /usr/bin/xprintidle"
+            time=$(runuser -l $(id -un $i) -c "DISPLAY=\":${x#/tmp/.X11-unix/X}\" /usr/bin/xprintidle")
+            if [ $time ] ; then
+               result=$(($time/1000))
+               if [ $result -ge $suspend_second ]; then
+                  systemctl suspend
+               fi
+            fi
+    done
+    sleep 5
+done
+}
+
+
+if ldapsearch -x -b "cn={{ name_suspend }},{{ openldap_base }}" -H ldap://ldap.{{ domain }} ; then
+    suspend_second=$(ldapsearch -x -b "cn={{ name_suspend }},{{ openldap_base }}" -H ldap://ldap.{{ domain }} | grep 'description' | cut -d '-' -f 2)
+    echo "$suspend_second" > /etc/time_suspend
+else
+    if ! -f /etc/time_suspend ; then
+        suspend_second=$(cat /etc/time_suspend)
+    else
+        echo "300" > /etc/time_suspend
+        suspend_second=$(cat /etc/time_suspend)
+    fi
+fi
+
+while :
+do
+    suspend $suspend_second
+    sleep 1
+done

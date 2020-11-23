@@ -1,0 +1,12 @@
+- name: Generate ldif, time lock screen
+  template:
+    src: "ldap/slapd.d/time_lock_and_suspend_screen.ldif.j2"
+    dest: "/etc/ldap/slapd.d/time_lock_and_suspend_screen.ldif"
+    owner: root
+    group: root
+    mode: 0640
+
+- name: Create user, time lock screen
+  shell: 'ldapadd -x -D {{ openldap_bind_id }} -w {{ openldap_admin_password }} -f /etc/ldap/slapd.d/time_lock_and_suspend_screen.ldif'
+  ignore_errors: yes
+  

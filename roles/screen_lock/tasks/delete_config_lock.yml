@@ -1,0 +1,19 @@
+- name: Recursively remove service lock
+  file:
+    path: /etc/systemd/system/lock.service
+    state: absent
+
+- name: Recursively remove service suspend
+  file:
+    path: /etc/systemd/system/suspend.service
+    state: absent
+
+- name: Recursively remove script lock
+  file:
+    path: /usr/bin/init-time-lock.sh
+    state: absent
+  
+- name: Recursively remove script suspend
+  file:
+    path: /usr/bin/init-time-suspend.sh
+    state: absent

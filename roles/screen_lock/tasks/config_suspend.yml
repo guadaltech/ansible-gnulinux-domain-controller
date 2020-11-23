@@ -1,0 +1,24 @@
+- name: config_systemd | configuring suspend
+  template:
+    src: "suspend.service.j2"
+    dest: "/etc/systemd/system/suspend.service"
+    owner: root
+    group: root
+    mode: 0755
+
+
+- name: Enable service suspend and ensure it is not masked
+  systemd:
+    name: suspend.service
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+    masked: no
+
+- name: config_systemd | configuring suspend
+  template:
+    src: "init-time-suspend.sh.j2"
+    dest: "/usr/bin/init-time-suspend.sh"
+    owner: root
+    group: root
+    mode: 0700
