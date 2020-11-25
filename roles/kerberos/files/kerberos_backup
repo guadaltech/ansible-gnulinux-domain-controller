@@ -18,5 +18,6 @@ tar -czf krb5kdc_var_${DATE_NOW}.tar.gz /var/lib/krb5kdc
 
 find ${BACKUP_PATH} -mtime  +$DAYS_DELETE -iname "*.keytab" -exec rm -f {} \;
 find ${BACKUP_PATH} -mtime  +$DAYS_DELETE -iname "*.dump" -exec rm -f {} \;
+find ${BACKUP_PATH} -mtime  +$DAYS_DELETE -iname "*.dump_ok" -exec rm -f {} \;
 find ${BACKUP_PATH} -mtime  +$DAYS_DELETE -iname "*.conf" -exec rm -f {} \;
 find ${BACKUP_PATH} -mtime  +$DAYS_DELETE -iname "*.tar.gz" -exec rm -f {} \;
