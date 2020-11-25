@@ -21,10 +21,10 @@ if ldapsearch -x -b "cn={{ name_suspend }},{{ openldap_base }}" -H ldap://ldap.{
     suspend_second=$(ldapsearch -x -b "cn={{ name_suspend }},{{ openldap_base }}" -H ldap://ldap.{{ domain }} | grep 'description' | cut -d '-' -f 2)
     echo "$suspend_second" > /etc/time_suspend
 else
-    if ! -f /etc/time_suspend ; then
+    if [ -f /etc/time_suspend ]; then
         suspend_second=$(cat /etc/time_suspend)
     else
-        echo "300" > /etc/time_suspend
+        echo "600" > /etc/time_suspend
         suspend_second=$(cat /etc/time_suspend)
     fi
 fi

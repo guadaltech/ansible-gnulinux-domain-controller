@@ -1,3 +1,11 @@
+- name: Update apt and install xprintidle
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - xprintidle
+
 - name: config_systemd | configuring xss
   template:
     src: "lock.service.j2"
