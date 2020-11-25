@@ -15,8 +15,8 @@ minlength: 8
 minclasses: 4
 history: 12
 maxfailure: 15
-failurecountinterval: "0"
-lockoutduration: "30 minutes"
+failurecountinterval: "10 sec"
+lockoutduration: "2 hours"
 policy_name: "default"
 
 units:
